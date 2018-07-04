@@ -49,9 +49,10 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private IncrementPanel incrementPanel;
         private JPanel optionPanel;
         private JPanel gamePanel;
-        private boolean isGameStarted;
-        private boolean isGameRunning;
-        private Timer timer;
+        private boolean isGameStarted;// a game can start only once at the beginning
+        private boolean isGameRunning;// a started game can be running or in pause
+        private Timer timer; // TImer
+        
         private JButton menuBut;
 	private JButton startPauseBut;
 	private JLabel playerNameLab;
@@ -59,10 +60,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	private JLabel playerScoreLab;
 	private JLabel playerScorePrefixLab;
 	private JLabel nextPiecePrefixLab;
-//        private Timer timer;
-//	private boolean isGameStarted; // a game can start only once at the beginning
-//	private boolean isGameRunning; // a started game can be running or in pause
-        
+
         public MainGUI() {
 		super("BlockBuster");
 		this.createGUI();

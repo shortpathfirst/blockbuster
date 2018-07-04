@@ -17,15 +17,20 @@ public class IncrementLine {
     private int[] incrementLine;
     private int level;
     private LinkedList<Integer> incLine;
+    private Block block;
     public IncrementLine(){
         NUM_COLUMNS = 15;//Model.getInstance().getNumColumnsOfBoard();
         incLine = new LinkedList<Integer>();
+        this.block=new Block();
         this.level=0;//Model.getInstance().getLevel();
     }
+//    if(incLine==null)
+//     return 0
+//    else return block
     public void addBlock(){ 
 
         if(incLine.size()<NUM_COLUMNS)
-             this.incLine.add(Block.randomBlock(level));
+             this.incLine.add(block.randomBlock(level));
         //add line to board
         else this.incLine.clear(); 
         

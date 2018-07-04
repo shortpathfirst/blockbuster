@@ -17,7 +17,7 @@ public class Block {
     private int y;
     protected Block[] neighbors; 
     private boolean isVisited;
-    public Block(int x, int y){
+    public Block(){//int x, int y
         isVisited=false;
 //        this.blockType = blockType;
         neighbors = this.getNeighborns(x, y);
@@ -45,10 +45,9 @@ public class Block {
                levelMode = false;
             Random myRandom = new Random();
             final int ran = myRandom.nextInt(100); // random da 0 a 100
-
-            int randNormalBlock=(int)Math.random() %3;
+            int randNormalBlock=new Random().nextInt(2)+1;
             if(level>6 || !levelMode)
-                randNormalBlock=(int)Math.random() %5;
+                randNormalBlock=new Random().nextInt(4)+1;
 
 
             if (ran < 6 && (level >1||!levelMode)) { return REPAINT_BLOCK; } //6 %

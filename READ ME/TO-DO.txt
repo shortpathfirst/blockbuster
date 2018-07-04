@@ -1,0 +1,71 @@
+Avaiable Textures-->API
+#Sample Collapse preferences.ini File 
+
+[Board Size]
+small = 8
+medium = 10
+large = 12
+
+[Skin]
+Default = Default
+Serenity = Serenity
+NeoPet = NeoPet
+Giraud = Giraud
+
+000113333111
+011112333332
+000003312221
+
+MODEL : It directly manages the data, logic and rules of the application.
+VIEW: the view is simply handling how the data is being displayed to the user.(reusable)
+CONTROLLER: The controller receives the input, optionally validates it and then passes the input to the model
+https://stackoverflow.com/questions/555283/how-can-you-organize-the-code-for-a-game-to-fit-the-mvc-pattern
+https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
+Uses in web applictaion
+https://www.javacodegeeks.com/2012/02/building-games-using-mvc-pattern.html
+
+metodi privati paintBoard(), paintPath(), paintKnight() paintHighlight() paintLoader(), <- Con particolare attenzione la divisione dei paint componenti separando quella del loader per non avere interruzioni
+ciascuno dei quali si occupa di disegnare una parte specifica della scacchiera
+
+Model: 1, 2 ,3 ,4 ,5 colours + 4 types  /
+//Definire model dei blocchi speciali (+class)
+
+Controller: manageClickOnBoard()
+	    updateView(),
+
+View:
+// Finestra di menu + apri app o apri score
+
+
+https://stackoverflow.com/questions/5822384/getting-a-color-from-a-string-input 
+http://www.simplesoft.it/background_image_per_componenti_java_swing.html
+
+make image resizable (pack());
+use .add(ImageSetting) in StartWindows
+how to use sprites java
+scoreboard , file config
+
+Fixed resizable proportion
+model piece.randompreviewpiece
+
+https://stackoverflow.com/questions/7876186/proportional-resizing-of-jframe //import the 2 
+
+best scores : prato fiorito
+https://www.dreamincode.net/forums/topic/326837-add-a-button-on-top-of-background-image/
+
+space to able/disable keyboard input (+highlight)
+
+catch exeptions: color not found, sprite not found, background not found-> launch exeption : message immagini non presenti
+
+BUBBLE EFFECT : http://zetcode.com/gfx/java2d/effects/
+https://www.youtube.com/watch?v=sJsMGR_xvqM   --> spongebob
+
+https://stackoverflow.com/questions/21898425/how-to-use-cardlayout-with-netbeans-gui-builder
+
+
+sprites:
+BufferedImage image = ImageIO.read(new File(yourfilename));
+Graphics g = panel.getGraphics();
+g.drawImage(image, x, y, imageObserver (most likely null));
+
+https://docs.oracle.com/javase/7/docs/api/java/awt/MediaTracker.html

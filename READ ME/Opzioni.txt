@@ -1,0 +1,30 @@
+Volume suono
+Volume effetti
+
+Check, style blocchi
+Check, effetti blocchi (label) effetti blocchi speciali (label) effetti menù (label)
+	punteggi su schermo (label) (visivo+suono)
+
+https://stackoverflow.com/questions/953598/audio-volume-control-increase-or-decrease-in-java
+https://stackoverflow.com/questions/5895829/resizing-image-in-java?utm_medium=organic
+
+https://www.youtube.com/watch?v=ESuqA-cIzVU SPRITES
+https://stackoverflow.com/questions/35472233/load-a-sprites-image-in-java
+
+
+
+https://stackoverflow.com/questions/17854661/how-to-display-an-images-instantly-in-java-applet
+https://www.youtube.com/watch?v=oXmUp4ZTW2Q
+try catch in getImage()
+
+ComponentListener to resize an image (check boardpanel)
+
+
+volume:  - 00001111 +
+
+Show highscore
+Close -> back to menù
+http://forum.codecall.net/topic/50071-making-a-simple-high-score-system/
+
+https://stackoverflow.com/questions/3879610/how-to-clear-contents-of-a-jtable
+https://stackoverflow.com/questions/28128035/how-to-add-table-header-and-scrollbar-in-jtable-java
