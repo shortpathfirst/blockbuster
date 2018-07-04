@@ -47,17 +47,8 @@ public class IncrementPanel extends JPanel implements ActionListener {
 //        l=new IncrementLine();
         initialized = false;
     }
-    public void actionPerformed(ActionEvent e) { //è sul jpanel non jframe
-//                startIncrement();
-//                startTimer(Model.getInstance().getLevel()); //passa da controllerforview
-                
-//                l.addBlock();//nextmove() through controller for view
-                //questione di istanze incLine su panel, su model ecc..
-		this.repaint();
-	}
-//    public void startIncrement(){
-//
-//    }
+    public void actionPerformed(ActionEvent e) { }
+
     public void startTimer(int level){
        
         if(level<3)
@@ -128,7 +119,8 @@ public class IncrementPanel extends JPanel implements ActionListener {
         
         private void drawBlockAtCell(Graphics2D g2d,int j, int pieceNumber) { 
                 Color oldColor = g2d.getColor();
-                g2d.setColor(BlockStyle.getInstance().getBlockColor(pieceNumber)); //each piace a color
+                Color c  =BlockStyle.getInstance().getBlockColor(pieceNumber);
+                g2d.setColor(c); //each piace a color
                 this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN, this.uX, this.uY);
                 
                 g2d.fill(this.block);
@@ -143,7 +135,6 @@ public class IncrementPanel extends JPanel implements ActionListener {
             Graphics2D g2d = (Graphics2D)g;
             this.paintGrid(g2d);
             //if (this.isNotPaused )// boolean di -> Pausa o salvataggio precedente
-            //Here draw the panel
             if(initialized)
                 for(int j=0; j<15; j++)
                       this.drawBlockAtCell(g2d,j,Model.getInstance().getBlockAt(j));								
