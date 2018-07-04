@@ -190,7 +190,7 @@ private void paintFallingPiece(Graphics2D g2d) {                                
                 
 		Graphics2D g2d = (Graphics2D)g;
 		paintGrid(g2d);
-                drawSprites(g);
+                //drawSprites(g);
 		//if (this.isFallingPieceAvailable) {
 			//this.paintFallingPiece(g2d);
 			//this.paintFilledBoardCells(g2d);

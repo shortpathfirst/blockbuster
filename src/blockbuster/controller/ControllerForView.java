@@ -85,6 +85,24 @@ public class ControllerForView implements IControllerForView{
         public int getBlock(int i, int j) {
 		return 0;
 	}
+        
+        public void nextIncrementLine() {
+//		if (incrementLineisnotFull)
+			Model.getInstance().incrementLine();
+//		else {
+//			Model.getInstance().fillBoardCellsWithBlocksOfFallingPiece();
+//			this.removeFullRows();
+//			if (this.isGameOver())
+//				View.getInstance().gameOverDialog();
+//			else {
+//				Model.getInstance().nextFallingAndPreviewPieces();
+//				this.resumeIndexes();
+//			}
+//		}
+	} // end method next()
+        
+        
+        
         //---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------

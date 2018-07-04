@@ -66,8 +66,16 @@ public class BlockStyle {
                 return this.colorBlock4;
 	}
         
-        public Color getBlockColor(int pieceName) {  // Piace name
-            return Color.RED;
+        public Color getBlockColor(int numBlock) {  // Piace name
+            if(numBlock ==0)
+                 return Color.WHITE;
+            if(numBlock ==1)
+                return Color.ORANGE;
+            if(numBlock ==2)
+                return Color.MAGENTA;
+            if(numBlock ==3)
+                return Color.BLUE;
+            return Color.CYAN;
         }
         
         

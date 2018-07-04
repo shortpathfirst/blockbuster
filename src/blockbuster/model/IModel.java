@@ -12,6 +12,7 @@ package blockbuster.model;
 public interface IModel {
        public int getNumColumnsOfBoard();
        public int getNumRowsOfBoard();
+       public int getLevel();
 
 //	public String getPlayerName();
 //        
@@ -23,7 +24,7 @@ public interface IModel {
         public boolean isEmptyCell(int i, int j); //da rimuovere forse
         public void removeVisitedRows(int indexOfColumn);
         public void removeColor(int blockType);
-        
+        public int getBlockAt(int index);
         
         
         
@@ -38,5 +39,8 @@ public interface IModel {
 //        initialize i index and j index
         
 //        public void removeRow(int indexOfRow);
+
+    public void incrementLine();
+
      
 }

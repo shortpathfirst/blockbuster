@@ -48,4 +48,6 @@ public interface IControllerForView {
     
     //TO DO
     //Click -> If adiacent() remove() compact()
+
+    public void nextIncrementLine();
 }

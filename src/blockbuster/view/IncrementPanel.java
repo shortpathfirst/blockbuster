@@ -5,6 +5,8 @@
  */
 package blockbuster.view;
 import blockbuster.controller.ControllerForView;
+import blockbuster.model.Model;
+import blockbuster.model.IncrementLine;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,12 +14,15 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 /**
  *
  * @author Andrea
  */
-public class IncrementPanel extends JPanel {
+public class IncrementPanel extends JPanel implements ActionListener {
     
     private final static int NUM_COLUMNS = 15;
     private static int CELL_SIZE = 25;//Number of pixel given by a proprtion
@@ -30,7 +35,8 @@ public class IncrementPanel extends JPanel {
     public double uY;
     private Line2D.Double line;
     private Rectangle2D.Double block;
-    
+    private Timer timer;
+    private boolean initialized;
     public IncrementPanel(){
         super();
         //this.setBackground(/*ColorSettings.getInstance().getColorBackgroundPreview()*/);   //Here you set the background
@@ -38,6 +44,34 @@ public class IncrementPanel extends JPanel {
         this.line = new Line2D.Double();
         this.block = new Rectangle2D.Double();
         this.setBackground(Color.BLACK);
+//        l=new IncrementLine();
+        initialized = false;
+    }
+    public void actionPerformed(ActionEvent e) { //è sul jpanel non jframe
+//                startIncrement();
+//                startTimer(Model.getInstance().getLevel()); //passa da controllerforview
+                
+//                l.addBlock();//nextmove() through controller for view
+                //questione di istanze incLine su panel, su model ecc..
+		this.repaint();
+	}
+//    public void startIncrement(){
+//
+//    }
+    public void startTimer(int level){
+       
+        if(level<3)
+            this.timer = new Timer(200, this);
+        if(level==4)
+            this.timer = new Timer(160, this);
+        if(level==5)
+            this.timer = new Timer(120, this);
+        if(level==6)
+            this.timer = new Timer(100, this);
+        if(level>7)
+            this.timer = new Timer(80, this);
+       this.timer.start();
+       initialized = true;
     }
     private void paintGrid(Graphics2D g2d) {
 		Color oldColor = g2d.getColor();
@@ -79,23 +113,29 @@ public class IncrementPanel extends JPanel {
         
         
         
-//
-//                private void paintFilledBoardCells(Graphics2D g2d) {
+//            private void drawReferenceBlockAtCell(Graphics2D g2d, int i, int j, String pieceName) {
 //		Color oldColor = g2d.getColor();
-//		for (int j = 0; j < 15; j++)
-//                            if (!ControllerForView.getInstance().isEmptyCell(1, j))
-//                                    this.drawBlockAtCell(g2d, 1, j, ControllerForView.getInstance().getBlock(1, j));
-//		g2d.setColor(oldColor);
-//	} // end method paintFilledBoardCells()
-//                private void drawBlockAtCell(Graphics2D g2d, int i, int j, int pieceNumber) { 
-//                Color oldColor = g2d.getColor();
-//                g2d.setColor(BlockStyle.getInstance().getBlockColor(pieceNumber)); //each piace a color
-//                this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY, this.uX, this.uY);
-//                g2d.fill(this.block);
-//                g2d.setColor(Color.CYAN);  //  ColorSettings.getInstance().getColorForOutlineOfPiece(pieceNumber)
-//                g2d.draw(this.block);
-//                g2d.setColor(oldColor);
-//        }
+//		g2d.setColor(Color.BLUE); //get color of block or sprite
+//		this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY, this.uX, this.uY);
+//		g2d.fill(this.block);
+//		g2d.setColor(Color.DARK_GRAY);
+//		g2d.draw(this.block);
+//		this.block.setRect(X_MARGIN + this.uX * 0.25 + this.uX * (double)j, Y_MARGIN + this.uY * 0.25 + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX * 0.5, this.uY * 0.5);
+//		g2d.draw(this.block);
+//		g2d.setColor(oldColor);		
+//	}
+     
+        
+        private void drawBlockAtCell(Graphics2D g2d,int j, int pieceNumber) { 
+                Color oldColor = g2d.getColor();
+                g2d.setColor(BlockStyle.getInstance().getBlockColor(pieceNumber)); //each piace a color
+                this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN, this.uX, this.uY);
+                
+                g2d.fill(this.block);
+                g2d.setColor(Color.CYAN);  //  ColorSettings.getInstance().getColorForOutlineOfPiece(pieceNumber)
+                g2d.draw(this.block);
+                g2d.setColor(oldColor);
+        }
         
     @Override
     public void paintComponent(Graphics g) {
@@ -104,7 +144,10 @@ public class IncrementPanel extends JPanel {
             this.paintGrid(g2d);
             //if (this.isNotPaused )// boolean di -> Pausa o salvataggio precedente
             //Here draw the panel
-    }
+            if(initialized)
+                for(int j=0; j<15; j++)
+                      this.drawBlockAtCell(g2d,j,Model.getInstance().getBlockAt(j));								
+    }//end paint
     
     
     
