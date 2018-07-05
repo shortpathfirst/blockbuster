@@ -86,13 +86,7 @@ public class Model implements IModel {
                         this.playerName = "Unknown";
                 this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
                 incLine = new IncrementLine();
-               
-                
         }
-        //Initialize first blocks
-
-        //end
-        
     	public boolean isEmptyCell(int i, int j) {
 		boolean isEmptyCell = false;
 		if ((0 <= i) && (i < DEFAULT_NUM_ROWS) && (0 <= j) && (j < DEFAULT_NUM_COLUMNS) && (this.boardArray[i][j] == EMPTY_CELL))
@@ -155,11 +149,25 @@ public class Model implements IModel {
         
         
         public void incrementLine(){
-            this.incLine.addBlock();
+            this.incLine.addBlock(this.level);
+        }
+        public void pushIncrement(){//check game over
+           	for (int i = this.boardArray.length-2; i>=0; i--)
+			for (int j = 0; j < this.boardArray[i].length; j++){
+                            this.boardArray[i+1][j] = this.boardArray[i][j];
+                        }
+                for (int j = 0; j < this.boardArray[0].length; j++)  {
+                    //this.boardArray[1][j] = this.boardArray[0][j];
+                    this.boardArray[0][j] = this.incLine.getBlockAt(j);
+                }
         }
         public int getBlockAt(int index){
             return this.incLine.getBlockAt(index);
         }
+        public int getBoardBlock(int i,int j){
+            return this.boardArray[i][j];
+        }
+    
         
         
         

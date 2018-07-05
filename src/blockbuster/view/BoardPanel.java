@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 import blockbuster.controller.ControllerForView;
+import blockbuster.model.Model;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
@@ -127,29 +128,6 @@ public class BoardPanel extends JPanel { //implements KeyListener
 	public Dimension getPreferredSize() {
 		return PREFERRED_SIZE;
 	}
-private void paintFallingPiece(Graphics2D g2d) {                                    //caduta pezzi
-		Color oldColor = g2d.getColor();
-		g2d.setColor(Color.RED);
-
-                this.block.setRect(X_MARGIN + this.uX * (double)(3 + 3),
-                                                   Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - 3 - 3),
-                                                   this.uX, this.uY);
-                g2d.fill(this.block);
-		g2d.setColor(Color.RED);
-                
-                this.block.setRect(X_MARGIN + this.uX * (double)(3 + 3),
-							   Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - 3 - 3),
-							   this.uX, this.uY);
-                g2d.draw(this.block);
-
-		// It makes the reference block recognizable if it is enabled the flag isRefBlockRecognizableInBoard
-                this.block.setRect(X_MARGIN + this.uX * 0.25 + this.uX * 3.0,
-                                                   Y_MARGIN + this.uY * 0.25 + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - 3),
-                                                   this.uX * 0.5, this.uY * 0.5);
-                g2d.draw(this.block);
-                
-		g2d.setColor(oldColor);
-	} // end method paintFallingPiece()
         private void drawSprites(Graphics g) { 
                     BufferedImage bigImg= null;
                 try{
@@ -191,10 +169,9 @@ private void paintFallingPiece(Graphics2D g2d) {                                
 		Graphics2D g2d = (Graphics2D)g;
 		paintGrid(g2d);
                 //drawSprites(g);
-		//if (this.isFallingPieceAvailable) {
-			//this.paintFallingPiece(g2d);
-			//this.paintFilledBoardCells(g2d);
-                        // }
+           for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) //add increment line (drawline)
+			for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++)
+                            this.drawBlockAtCell(g2d,i,j,Model.getInstance().getBoardBlock(i,j));
         }
         
 }//end class

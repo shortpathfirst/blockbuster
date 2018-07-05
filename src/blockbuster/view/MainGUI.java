@@ -188,7 +188,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	public void actionPerformed(ActionEvent e) {
 		ControllerForView.getInstance().nextIncrementLine();
 //                if(incrementLineisFull)
-//                    this.boardPanel.repaint();
+                this.boardPanel.repaint();
 		this.incrementPanel.repaint();
 	}
         

@@ -45,9 +45,9 @@ public class Block {
                levelMode = false;
             Random myRandom = new Random();
             final int ran = myRandom.nextInt(100); // random da 0 a 100
-            int randNormalBlock=new Random().nextInt(2)+1;
+            int randNormalBlock=new Random().nextInt(3)+1;
             if(level>6 || !levelMode)
-                randNormalBlock=new Random().nextInt(4)+1;
+                randNormalBlock=new Random().nextInt(5)+1;
 
 
             if (ran < 6 && (level >1||!levelMode)) { return REPAINT_BLOCK; } //6 %

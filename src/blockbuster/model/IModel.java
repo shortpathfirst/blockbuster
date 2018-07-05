@@ -26,8 +26,8 @@ public interface IModel {
         public void removeColor(int blockType);
         public int getBlockAt(int index);
         
-        
-        
+        public void pushIncrement();
+         public int getBoardBlock(int i,int j);
         
         
         

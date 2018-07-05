@@ -12,37 +12,27 @@ import java.util.LinkedList;
  * @author Andrea
  */
 public class IncrementLine {
-    private static int NUM_COLUMNS; //final
+    private static final int NUM_COLUMNS=15;
     
-    private int[] incrementLine;
-    private int level;
     private LinkedList<Integer> incLine;
     private Block block;
+    
     public IncrementLine(){
-        NUM_COLUMNS = 15;//Model.getInstance().getNumColumnsOfBoard();
         incLine = new LinkedList<Integer>();
         this.block=new Block();
-        this.level=0;//Model.getInstance().getLevel();
     }
 //    if(incLine==null)
 //     return 0
 //    else return block
-    public void addBlock(){ 
-
+    public void addBlock(int level){ 
         if(incLine.size()<NUM_COLUMNS)
              this.incLine.add(block.randomBlock(level));
         //add line to board
-        else this.incLine.clear(); 
-        
-
-    }   
-       public int[] getIncrementLineArray(){
-        int[] incrementArray =new int[NUM_COLUMNS];
-        for(int i=0; i< incrementArray.length; i++){
-            incrementArray[i]=this.incLine.removeFirst();
+        else{
+            Model.getInstance().pushIncrement();
+            this.incLine.clear(); 
         }
-        return incrementArray;
-       }
+    }   
     public int getBlockAt(int index){
         if(index < 0 || index >= incLine.size())
             return 0;
