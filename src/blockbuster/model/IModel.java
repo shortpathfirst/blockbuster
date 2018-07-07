@@ -28,8 +28,7 @@ public interface IModel {
         
         public void pushIncrement();
          public int getBoardBlock(int i,int j);
-        
-        
+        public void TrimRows();
         
         
         

@@ -107,8 +107,11 @@ public class ControllerForView implements IControllerForView{
         public void remove(int i,int j,int blockType) { 
                 //add scoreincrement(vedi removefullrow()
                 //fist setvisited then remove visitedblocks
+                if(blockType != 0){
                 Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
                 Model.getInstance().removeVisitedBlocks();
+                Model.getInstance().TrimRows();
+                }
 //		Model.getInstance().removeColor(blockType);
 	}
         //---------------------------------------------------------------

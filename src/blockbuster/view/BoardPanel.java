@@ -80,12 +80,10 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
 	}
 
 	public void mousePressed(MouseEvent e) {
-		this.selectedCell = getSelectedCell(20-getRowIndex(e.getY())-1, getColumnIndex(e.getX())); //get row number from model
-                System.out.println(this.selectedCell);
-                if(selectedCell !=0)//Add to method (andrebbe su controller, è dinamica di gioco)
-                    ControllerForView.getInstance().remove(20-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
-                System.out.println("[i, j] = [" + (20-getRowIndex(e.getY())-1) + ", " + getColumnIndex(e.getX()) + "]");
-                System.out.println(this.selectedCell);
+		this.selectedCell = getSelectedCell(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(e.getY())-1, getColumnIndex(e.getX())); //get row number from model
+                ControllerForView.getInstance().remove(20-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
+//                System.out.println("[i, j] = [" + (20-getRowIndex(e.getY())-1) + ", " + getColumnIndex(e.getX()) + "]");
+//                System.out.println(this.selectedCell);
 	}
 
 	public void mouseReleased(MouseEvent e)  {
