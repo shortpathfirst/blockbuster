@@ -86,6 +86,7 @@ public class Model implements IModel {
         public void initGame() {
                 this.score = 0;
                 this.level=0;
+                this.numVisited = 0;
                 if (this.playerName == null)
                         this.playerName = "Unknown";
                 this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
@@ -99,10 +100,10 @@ public class Model implements IModel {
 	}
         
         //se colonna si svuota chiamo metodo per avvicinare le colonne
-        
-        public void setVisitedBlocks(int i, int j, int blockType) {//findconnectedblocks()
-            //setVisited() tutti i blocchi vicini uguali
-            setVisited(i,j);
+        private int numVisited;
+        public void setVisitedBlocks(int i, int j, int blockType) {
+            numVisited++;
+                    this.visitedArray[i][j] = true;
                     if(i<this.boardArray.length && blockType == this.getBoardBlock(i+1, j) && !this.visitedArray[i+1][j]){//top
                         setVisitedBlocks(i+1,j,blockType);
                     }
@@ -115,13 +116,12 @@ public class Model implements IModel {
                     if(i>0 && blockType == this.getBoardBlock(i-1, j) && !this.visitedArray[i-1][j]){ //bottom
                         setVisitedBlocks(i-1,j,blockType);
                     }
-
-            
 	} 
-         public void removeVisitedBlocks(){
+         public void removeVisitedBlocks(){ // agisce sul model? va sul controllforview
+             if(numVisited >= 3)//Da sistemare meglio
              for(int j=0; j<this.boardArray[0].length;j++){
                    List<Integer> boardColumn = new ArrayList<Integer>();
-                    for(int i=0; i<this.boardArray.length;i++){
+                    for(int i=0; i<this.boardArray.length;i++){ 
                         if(!this.visitedArray[i][j])
                             boardColumn.add(this.boardArray[i][j]);
                     }
@@ -133,15 +133,43 @@ public class Model implements IModel {
                     }
              }
              this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
+             this.numVisited = 0;
          }//end method
-         
+        public void TrimRows(){//add to controller?
+                for (int j =0; j < this.boardArray[0].length/2; j++){
+                    if(this.boardArray[0][j]==0){
+                        RemoveLeftColumn(j);
+                    }
+                }
+                for (int j = this.boardArray[0].length-1; j >= this.boardArray[0].length/2; j--){
+                    if(this.boardArray[0][j]==0){
+                        RemoveRightColumn(j);
+                    }
+                }
+                
+        }
+        private void RemoveLeftColumn(int indexOfColumn){
+//            if(indexOfColumn <= this.boardArray[0].length/2)//prima di metà
+                for (int j = indexOfColumn; j >= 0; j--){
+                    for(int i = 0; i<this.boardArray.length; i++){
+                        if(j!=0)
+                                this.boardArray[i][j] = this.boardArray[i][(j-1)];
+                        else    this.boardArray[i][j] = 0;
+                    }
+                }
+        }
+        private void RemoveRightColumn(int indexOfColumn){
+                for (int j = indexOfColumn; j < this.boardArray[0].length; j++){
+                    for(int i = 0; i<this.boardArray.length; i++){
+                        if ((j + 1) < this.boardArray[0].length)
+                                this.boardArray[i][j] = this.boardArray[i][(j+1)];
+                        else this.boardArray[i][j] = 0;
+                    }
+                }
+        }
         public void removeColor(int blockType){
                 //To do
         } 
-        //used for remove, move to other class
-        public void setVisited(int i, int j) { //to do
-               this.visitedArray[i][j] = true;
-        }
     //end for remove
 
          public int getLevel(){ 
