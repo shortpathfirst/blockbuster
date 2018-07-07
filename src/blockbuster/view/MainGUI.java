@@ -95,7 +95,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private void setGamePanel(){
                 this.boardPanel = new BoardPanel();
                 this.incrementPanel = new IncrementPanel();
-                
                 this.gamePanel=new JPanel();
                 this.incrementPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
                 this.boardPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
@@ -105,7 +104,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         private void setOptionPanel() {
 		this.optionPanel = new JPanel();
-		//this.rightPanel.setBackground(Color.ORANGE);
+		this.optionPanel.setBackground(Color.decode("#fdb94d"));
 		this.optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
                 //this.optionPanel.setSize(10, this.getHeight());
 		this.optionPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 

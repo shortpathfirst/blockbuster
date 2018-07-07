@@ -21,13 +21,9 @@ public class IncrementLine {
         incLine = new LinkedList<Integer>();
         this.block=new Block();
     }
-//    if(incLine==null)
-//     return 0
-//    else return block
     public void addBlock(int level){ 
         if(incLine.size()<NUM_COLUMNS)
              this.incLine.add(block.randomBlock(level));
-        //add line to board
         else{
             Model.getInstance().pushIncrement();
             this.incLine.clear(); 

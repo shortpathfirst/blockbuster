@@ -26,9 +26,9 @@ public class IncrementPanel extends JPanel implements ActionListener {
     
     private final static int NUM_COLUMNS = 15;
     private static int CELL_SIZE = 25;//Number of pixel given by a proprtion
-    private final static Dimension PREFERRED_SIZE = new Dimension(NUM_COLUMNS * CELL_SIZE, CELL_SIZE);
-    private final static int X_MARGIN = 5;
-    private final static int Y_MARGIN = 5;
+    private final static Dimension PREFERRED_SIZE = new Dimension(NUM_COLUMNS * CELL_SIZE, CELL_SIZE +15);
+    private final static int X_MARGIN = 10;
+    private final static int Y_MARGIN = 10;
     //private boolean isNotPaused;
     
     public double uX; // Indici di posizione
@@ -73,6 +73,7 @@ public class IncrementPanel extends JPanel implements ActionListener {
                 for (int i = 0; i <= 1; i++) {
 			this.line.setLine(X_MARGIN, Y_MARGIN + i * this.uY,
 							  X_MARGIN + 15 * this.uX, Y_MARGIN + i * this.uY);
+                        
 			g2d.draw(this.line);
 		}
 
@@ -89,8 +90,8 @@ public class IncrementPanel extends JPanel implements ActionListener {
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
 	public void setGridUnit() {
-		this.uX = (double)(getWidth() - 2 * X_MARGIN) / (double)NUM_COLUMNS;
-		this.uY = (double)(getHeight() - 2 * Y_MARGIN);
+		this.uX = (double)(getWidth()-2 * X_MARGIN) / (double)NUM_COLUMNS;
+		this.uY = (double)(getHeight()-2 * Y_MARGIN);
 	}
 	@Override
 	public Dimension getMaximumSize() {
@@ -121,8 +122,9 @@ public class IncrementPanel extends JPanel implements ActionListener {
                 Color oldColor = g2d.getColor();
                 Color c  =BlockStyle.getInstance().getBlockColor(pieceNumber);
                 g2d.setColor(c); //each piace a color
+//                this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN+ this.uY, this.uX, this.uY);
                 this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN, this.uX, this.uY);
-                
+
                 g2d.fill(this.block);
                 g2d.setColor(Color.CYAN);  //  ColorSettings.getInstance().getColorForOutlineOfPiece(pieceNumber)
                 g2d.draw(this.block);

@@ -17,16 +17,19 @@ import java.awt.geom.Rectangle2D;
 
 import blockbuster.view.BlockStyle;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import java.awt.event.MouseListener;
+
 /**
  *
  * @author Andrea
  */
-public class BoardPanel extends JPanel { //implements KeyListener 
+public class BoardPanel extends JPanel implements MouseListener{ //implements KeyListener 
     //---------------------------------------------------------------
     // STATIC CONSTANTS
     //---------------------------------------------------------------
@@ -46,24 +49,67 @@ public class BoardPanel extends JPanel { //implements KeyListener
 	private Rectangle2D.Double block;
         private BufferedImage[] sprites;//////////////////
         
+        private int selectedCell;
         
 	public BoardPanel() {
 		super();
                 this.isHighlighted = true;                                      //Controller.getvalue() se ha input attiva altrimenti toglie
 		this.line = new Line2D.Double();
 		this.block = new Rectangle2D.Double();
+                this.selectedCell = -1;
 		this.setBackground(Color.BLACK);    //ColorSettings.getInstance().getColorBackgroundBoard()
 		//this.addKeyListener(this);
-        //Da rimuovere:
-
-    //end costructor
+                addMouseListener(this);   
                 
+	}//end constructor
+        
+        //--------------------------------------
+	// java.awt.event.MouseListener methods
+	//--------------------------------------
+
+	public void mouseClicked(MouseEvent e) {
+		// do nothing
+	}
+
+	public void mouseEntered(MouseEvent e)  {
+		// do nothing
+	}
+
+	public void mouseExited(MouseEvent e) {
+		// do nothing
+	}
+
+	public void mousePressed(MouseEvent e) {
+		this.selectedCell = getSelectedCell(20-getRowIndex(e.getY())-1, getColumnIndex(e.getX())); //get row number from model
+                System.out.println(this.selectedCell);
+                if(selectedCell !=0)//Add to method (andrebbe su controller, è dinamica di gioco)
+                    ControllerForView.getInstance().remove(20-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
+                System.out.println("[i, j] = [" + (20-getRowIndex(e.getY())-1) + ", " + getColumnIndex(e.getX()) + "]");
+                System.out.println(this.selectedCell);
+	}
+
+	public void mouseReleased(MouseEvent e)  {
+		// do nothing
 	}
 
 	//---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
-	private void paintGrid(Graphics2D g2d) {
+        private int getRowIndex(int y) {// [20,0] out index
+		int i = -1;
+                i = (int)((double)(y - Y_MARGIN) / this.uY);
+		return i;
+	}
+	private int getColumnIndex(int x) {// [0,15] out index
+		int j = -1;
+                j = (int)((double)(x - X_MARGIN) / this.uX);
+		return j;
+	}
+        private int getSelectedCell(int x, int y) {
+                return Model.getInstance().getBoardBlock(x, y);
+	}
+        
+        private void paintGrid(Graphics2D g2d) {
 		Color oldColor = g2d.getColor();                                //to change block style
 		g2d.setColor(Color.GRAY);
 
@@ -96,38 +142,6 @@ public class BoardPanel extends JPanel { //implements KeyListener
                 g2d.draw(this.block);
                 g2d.setColor(oldColor);
         }
-	
-	private void drawHightLight(Graphics2D g2d, int i, int j) { //draw highlight
-                Color oldColor = g2d.getColor();
-                this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
-                g2d.fill(this.block);
-                g2d.setColor(Color.GRAY); //ColorSettings.getInstance().getColorForHighlight()
-                g2d.draw(this.block);
-                this.block.setRect(X_MARGIN + this.uX * + this.uX * (double)j, Y_MARGIN + this.uY * 1.05 + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX * 1.05, this.uY * 1.05);
-                g2d.draw(this.block);
-                g2d.setColor(oldColor);		
-	}
-  
-        private void paintFilledBoardCells(Graphics2D g2d) {
-		Color oldColor = g2d.getColor();
-		for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++)
-			for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++)
-				if (!ControllerForView.getInstance().isEmptyCell(i, j))
-					this.drawBlockAtCell(g2d, i, j, ControllerForView.getInstance().getBlock(i, j)); //Get matrix [0, 0 ,0 ,1 ,1, 0 , 2 , 1) of board
-		g2d.setColor(oldColor);
-	} // end method paintFilledBoardCells()
-
-	//---------------------------------------------------------------
-	// PUBLIC INSTANCE METHODS
-	//---------------------------------------------------------------
-	public void setGridUnit() {
-		this.uX = (double)(getWidth() - 2 * X_MARGIN) / (double)ControllerForView.getInstance().getNumColumnsOfBoard();
-		this.uY = (double)(getHeight() - 2 * Y_MARGIN) / (double)ControllerForView.getInstance().getNumRowsOfBoard();
-	}
-        @Override
-	public Dimension getPreferredSize() {
-		return PREFERRED_SIZE;
-	}
         private void drawSprites(Graphics g) { 
                     BufferedImage bigImg= null;
                 try{
@@ -162,6 +176,19 @@ public class BoardPanel extends JPanel { //implements KeyListener
             
             
         }
+        
+	//---------------------------------------------------------------
+	// PUBLIC INSTANCE METHODS
+	//---------------------------------------------------------------
+	public void setGridUnit() {
+		this.uX = (double)(getWidth() - 2 * X_MARGIN) / (double)ControllerForView.getInstance().getNumColumnsOfBoard();
+		this.uY = (double)(getHeight() - 1 * Y_MARGIN) / (double)ControllerForView.getInstance().getNumRowsOfBoard();
+	}
+        @Override
+	public Dimension getPreferredSize() {
+		return PREFERRED_SIZE;
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

@@ -104,28 +104,12 @@ public class ControllerForView implements IControllerForView{
         //---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
-        private boolean isRowFull(int iIndexOfRow) {  // FULL!! ROW
-            boolean isRowFull = true;
-            for (int j = 0; (j < Model.getInstance().getNumColumnsOfBoard()) && isRowFull; j++)
-                    isRowFull = !(Model.getInstance().isEmptyCell(iIndexOfRow, j));
-            return isRowFull;
-        }
-        private int topMostFullRow() {  // FULL!! ROW
-            int topMostFullRow = -1;
-            for (int i = 0; i < Model.getInstance().getNumRowsOfBoard(); i++)
-                    if (this.isRowFull(i))
-                            topMostFullRow = i;
-            return topMostFullRow;
-	}
-        private void removeFullRows() {             //remove visible=true
-		int i = Model.getInstance().getNumRowsOfBoard();
-		//int scoreIncrement = -1;
-		while ((i = this.topMostFullRow()) >= 0) { //tutte le righe piene
-			Model.getInstance().removeVisitedRows(i);
-			//coreIncrement = SCORE_FACTOR * (Model.getInstance().getNumRowsOfBoard() - i);
-			//Model.getInstance().incrementScore(scoreIncrement);
-			//View.getInstance().updateScoreLabel(Model.getInstance().getScore());
-		}
+        public void remove(int i,int j,int blockType) { 
+                //add scoreincrement(vedi removefullrow()
+                //fist setvisited then remove visitedblocks
+                Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
+                Model.getInstance().removeVisitedBlocks();
+//		Model.getInstance().removeColor(blockType);
 	}
         //---------------------------------------------------------------
 	// STATIC METHODS

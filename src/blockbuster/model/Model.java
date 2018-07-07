@@ -38,12 +38,14 @@ public class Model implements IModel {
     private int score;
     private String playerName;
     private int[][] boardArray;
-
+    private boolean[][] visitedArray;
+//    private Block[][] boardAr;
     private int level;
     private IncrementLine incLine;
 
     private Model() {
             this.boardArray = new int[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
+            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
             this.initGame();
     }
     //---------------------------------------------------------------
@@ -52,8 +54,10 @@ public class Model implements IModel {
     
     private void initBoardArray(int rows, int columns) {//Modificato da jtetris
 		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < columns; j++)
+			for (int j = 0; j < columns; j++){
 				this.boardArray[i][j] = EMPTY_CELL;
+                                this.visitedArray[i][j] = false; //andrebbe per ogni istanza di rimozione
+                        }
 	}
     //---------------------------------------------------------------
     // PUBLIC INSTANCE METHODS
@@ -93,39 +97,53 @@ public class Model implements IModel {
 			isEmptyCell = true;
 		return isEmptyCell;
 	}
-        public void removeVisitedRows(int indexOfColumn) {
-		for (int j = 0; j < this.boardArray[indexOfColumn].length; j++){ // PER OGNI RIGA DA QUELLA DA ELIMINARE
-                    int row = 0;
-                    while(!isEmptyCell(indexOfColumn,j+row) && isCellVisited(indexOfColumn,j+row)){
-                       this.boardArray[indexOfColumn][j]=this.boardArray[indexOfColumn][j+row+1];
-                       row++;
-                    }      
-                }
-	} //se colonna si svuota chiamo metodo per avvicinare le colonne
         
+        //se colonna si svuota chiamo metodo per avvicinare le colonne
+        
+        public void setVisitedBlocks(int i, int j, int blockType) {//findconnectedblocks()
+            //setVisited() tutti i blocchi vicini uguali
+            setVisited(i,j);
+                    if(i<this.boardArray.length && blockType == this.getBoardBlock(i+1, j) && !this.visitedArray[i+1][j]){//top
+                        setVisitedBlocks(i+1,j,blockType);
+                    }
+                    if(j< this.boardArray[0].length-1 && blockType == this.getBoardBlock(i, j+1)&& !this.visitedArray[i][j+1]){//right
+                        setVisitedBlocks(i,j+1,blockType);
+                    }
+                    if(j>0 && blockType == this.getBoardBlock(i, j-1)&& !this.visitedArray[i][j-1]){//left
+                        setVisitedBlocks(i,j-1,blockType);
+                    }
+                    if(i>0 && blockType == this.getBoardBlock(i-1, j) && !this.visitedArray[i-1][j]){ //bottom
+                        setVisitedBlocks(i-1,j,blockType);
+                    }
+
+            
+	} 
+         public void removeVisitedBlocks(){
+             for(int j=0; j<this.boardArray[0].length;j++){
+                   List<Integer> boardColumn = new ArrayList<Integer>();
+                    for(int i=0; i<this.boardArray.length;i++){
+                        if(!this.visitedArray[i][j])
+                            boardColumn.add(this.boardArray[i][j]);
+                    }
+                    for(int i=0; i<boardColumn.size();i++){
+                          this.boardArray[i][j]=boardColumn.get(i);
+                    }
+                    for(int i=boardColumn.size(); i<this.boardArray.length-boardColumn.size();i++){
+                          this.boardArray[i][j]=0;
+                    }
+             }
+             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
+         }//end method
+         
         public void removeColor(int blockType){
-            for (int i  = 0; i < this.boardArray.length; i++){
-                 for (int j = 0; j < this.boardArray[i].length; j++){
-                     if(this.boardArray[i][j]==blockType && blockType <=3)
-                         setVisited(i,j,true);
-                 }
-                 removeVisitedRows(i);
-            }
+                //To do
         } 
         //used for remove, move to other class
-        public boolean setVisited(int i, int j,boolean value) { //to do
-            return value; //visited= value; (set, get)
+        public void setVisited(int i, int j) { //to do
+               this.visitedArray[i][j] = true;
         }
-        public boolean isCellVisited(int i, int j) { // to do
-		boolean isCellVisited = false;
-		
-		return isCellVisited;
-	}
     //end for remove
-        
-       
 
-   
          public int getLevel(){ 
             return this.level;
         }
@@ -157,7 +175,6 @@ public class Model implements IModel {
                             this.boardArray[i+1][j] = this.boardArray[i][j];
                         }
                 for (int j = 0; j < this.boardArray[0].length; j++)  {
-                    //this.boardArray[1][j] = this.boardArray[0][j];
                     this.boardArray[0][j] = this.incLine.getBlockAt(j);
                 }
         }
