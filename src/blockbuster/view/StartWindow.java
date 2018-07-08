@@ -24,21 +24,17 @@ public class StartWindow extends JFrame {
 
         private ImageSetting img;
         private GroupLayout layout;
-        private int WIDTH;
-        private int HEIGHT;
+
 	public StartWindow() {
             
             super("Menù");
             
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            //this.setSize(476,718);                                              //set default size + proprtion
-            this.setResizable(false);
-            
-            WIDTH= 476;
-            HEIGHT=718;
+            this.setSize(476,718);                                              //set default size + proprtion
+            this.setResizable(false);//make button resizable
+
             Container contPane = this.getContentPane();
             this.img = new ImageSetting();                                        // Background
-            this.img.setBackgroundScale(WIDTH, HEIGHT);
             layout = new GroupLayout(img);
             img.setLayout(layout);
             contPane.add(img,BorderLayout.CENTER);
@@ -60,6 +56,12 @@ public class StartWindow extends JFrame {
         jbutScoreboard.setText("Score Board");
         jbutLoadGame.setText("Load Game");
         
+        jbutGamemode1.setAlignmentY(CENTER_ALIGNMENT);
+        jbutGamemode2.setAlignmentY(CENTER_ALIGNMENT);
+        jbutHowToPlay.setAlignmentY(CENTER_ALIGNMENT);
+        jbutExit.setAlignmentY(CENTER_ALIGNMENT);
+        jbutScoreboard.setAlignmentY(CENTER_ALIGNMENT);
+        jbutLoadGame.setAlignmentY(CENTER_ALIGNMENT);
         this.jbutGamemode1.addActionListener(new ActionListener() {                       //add actionlisteners
             public void actionPerformed(ActionEvent e) {
                                     handleGamemode1Event();
@@ -84,7 +86,7 @@ public class StartWindow extends JFrame {
 
       
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
             .addGroup(layout.createSequentialGroup()
                 .addGap(109, 109, 109)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,18 +154,19 @@ public class StartWindow extends JFrame {
 		this.setVisible(false);
 	}
         private void SetButtonColor(){
+            Color buttonColor = new Color(204, 204, 204);
             jbutGamemode1.setOpaque(true);
-            jbutGamemode1.setBackground(new Color(204, 204, 204));
+            jbutGamemode1.setBackground(buttonColor);
             jbutGamemode2.setOpaque(true);
-            jbutGamemode2.setBackground(new Color(204, 204, 204));
+            jbutGamemode2.setBackground(buttonColor);
             jbutHowToPlay.setOpaque(true);
-            jbutHowToPlay.setBackground(new Color(204, 204, 204));
+            jbutHowToPlay.setBackground(buttonColor);
             jbutExit.setOpaque(true);
-            jbutExit.setBackground(new Color(204, 204, 204));
+            jbutExit.setBackground(buttonColor);
             jbutLoadGame.setOpaque(true);
-            jbutLoadGame.setBackground(new Color(204, 204, 204));
+            jbutLoadGame.setBackground(buttonColor);
             jbutScoreboard.setOpaque(true);
-            jbutScoreboard.setBackground(new Color(204, 204, 204));
+            jbutScoreboard.setBackground(buttonColor);
         
         }
         

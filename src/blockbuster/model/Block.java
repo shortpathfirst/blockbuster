@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Andrea
  */
-public class Block {
+public class Block {//utile per blocchi speciali
     protected int blockType;
     private int x;
     private int y;

@@ -40,7 +40,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	private final static int WINDOW_PREFERRED_HEIGHT = 600;
 	private final static String START_BUTTON_LABEL = "Start";
 	private final static String PAUSE_BUTTON_LABEL = "Pause";
-	private final static String PLAY_BUTTON_LABEL = "Play";
         
 	//---------------------------------------------------------------
 	// INSTANCE ATTRIBUTES
@@ -59,7 +58,8 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	private JLabel playerNamePrefixLab;
 	private JLabel playerScoreLab;
 	private JLabel playerScorePrefixLab;
-	private JLabel nextPiecePrefixLab;
+	private JLabel linesLeftLab;
+        private JLabel linesLeftPrefixLab;
 
         public MainGUI() {
 		super("BlockBuster");
@@ -113,7 +113,8 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.playerNameLab = new JLabel(ControllerForView.getInstance().getPlayerName());
 		this.playerScorePrefixLab = new JLabel("Score");
 		this.playerScoreLab = new JLabel(ControllerForView.getInstance().getScore());
-		this.nextPiecePrefixLab = new JLabel("Next Piece");
+                this.linesLeftPrefixLab= new JLabel("Line Left");
+                this.linesLeftLab = new JLabel(ControllerForView.getInstance().getLineLeft());
 		this.startPauseBut = new JButton("Start");
 		this.startPauseBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +126,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.menuBut = new JButton("Menu");
 		this.menuBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//menuEvent();
+                              menuEvent();
 			}
 		});		
 
@@ -133,7 +134,8 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.playerNameLab.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 		this.playerScorePrefixLab.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 		this.playerScoreLab.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-		this.nextPiecePrefixLab.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+                this.linesLeftPrefixLab.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+                this.linesLeftLab.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 		this.startPauseBut.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 		this.menuBut.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
 
@@ -143,25 +145,41 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.optionPanel.add(playerScorePrefixLab);
 		this.optionPanel.add(this.playerScoreLab);
 		this.optionPanel.add(Box.createVerticalGlue());
-		this.optionPanel.add(nextPiecePrefixLab);
-//		this.optionPanel.add(this.incrementPanel);
-		this.optionPanel.add(Box.createVerticalGlue());
+                this.optionPanel.add(this.linesLeftPrefixLab);
+                this.optionPanel.add(this.linesLeftLab);
+                this.optionPanel.add(Box.createVerticalGlue());
 		this.optionPanel.add(this.startPauseBut);
 		this.optionPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		this.optionPanel.add(this.menuBut);
 	}
-        private void startPauseEvent(){
+        private void menuEvent(){
+            this.dispose();
+            ControllerForView.getInstance().openStartWindow();
+        }
+        private void startPauseEvent(){//Save game when pause
             if (!this.isGameStarted) {
 			this.isGameStarted = true;
 			this.isGameRunning = true;
 			ControllerForView.getInstance().initGame();
-//			interrompi azioni sul boardpanel
 			this.boardPanel.requestFocusInWindow();
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
                         this.timer.start();
-                        incrementPanel.startTimer(Model.getInstance().getLevel());//simply start
+                        incrementPanel.startTimer(Model.getInstance().getLevel());
+		}else if (!this.isGameRunning) {
+			this.isGameRunning = true;
+			this.boardPanel.requestFocusInWindow();
+			this.timer.start();
+			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
+			this.menuBut.setEnabled(false);
 		}
+		else {
+			this.isGameRunning = false;
+			this.timer.stop();
+                        this.boardPanel.setEnabled(false);
+			this.startPauseBut.setText(START_BUTTON_LABEL);
+			this.menuBut.setEnabled(true);
+                }
         }
 	//-------------------------------------------------------------------------
 	// To implement the interface java.awt.event.ComponentListener
@@ -190,5 +208,10 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.boardPanel.repaint();
 		this.incrementPanel.repaint();
 	}
-        
+        public void updateScoreLabel(int score) {
+		this.playerScoreLab.setText(String.valueOf(score));
+	}
+         public void updateLineLabel(int lines) {
+		this.linesLeftLab.setText(String.valueOf(lines));
+	}
 }//end class

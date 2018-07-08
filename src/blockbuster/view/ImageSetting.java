@@ -10,6 +10,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.io.File;
+import java.net.URISyntaxException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 /**
@@ -17,16 +19,19 @@ import javax.swing.JPanel;
  * @author Andrea
  */
 public class ImageSetting extends JPanel{
-    public static final String image_folder  = "C:\\Users\\Andrea\\Desktop\\background.gif";
-    public static final String backgroundPath = "C:\\Users\\Andrea\\Desktop\\background.gif";
+    public static String backgroundPath;
+    public static final String backgroundRelPath = "\\source\\background.gif";
     private Image img;
-    private int Width=476;//DEFAULT Width 476
-    private int Height=718;//DEFAULT Height 718
-    
-    public ImageSetting() {
-        //Take defaul in dimension of panel (418 719)
-        img = Toolkit.getDefaultToolkit().createImage(backgroundPath).getScaledInstance(Width, Height, Image.SCALE_DEFAULT);
-        loadImage(img);
+    private final static Dimension PREFERRED_SIZE = new Dimension(476 ,718);
+    public ImageSetting() { 
+        try{
+            backgroundPath = getHomeFolderForDevVersion() + backgroundRelPath;
+        }catch(URISyntaxException urise) {
+                urise.printStackTrace();
+        }
+        this.setSize(PREFERRED_SIZE);
+        img = Toolkit.getDefaultToolkit().createImage(backgroundPath).getScaledInstance(this.getWidth(),this.getHeight(), Image.SCALE_DEFAULT);
+//        loadImage(img);
   }
 private void loadImage(Image img) {
     try {
@@ -37,27 +42,36 @@ private void loadImage(Image img) {
       e.printStackTrace();
     }
 }
-public void setBackgroundScale(int newWidth,int newHeight){
-    this.Width = newWidth;
-    this.Height = newHeight;
-    img=Toolkit.getDefaultToolkit().createImage(backgroundPath).getScaledInstance(Width, Height, Image.SCALE_DEFAULT);
-   // img.getScaledInstance(Width, Height, Image.SCALE_DEFAULT);
-  //  loadImage(img);
-}
-
+	private String getHomeFolderForDevVersion() throws URISyntaxException {
+		File configFile = null;
+		File byteCodeFileOfThisClass = new File(ImageSetting.class.getResource("ImageSetting.class").toURI());
+		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+		//System.out.println("configFile: " + configFile.toString());
+		return configFile.toString();
+	}
+private String getHomeFolderForDistVersion() throws URISyntaxException {
+		String homeDir = null;
+		String jarPath = ImageSetting.class.getResource("ImageSetting.class").toURI().toString();
+		int indexOfExclamationMark = jarPath.indexOf("/build");
+		String prefix = "file:/"; // this is the prefix for Windows OS platform
+		if (System.getProperty("os.name").startsWith("Linux")) {
+			prefix = "jar:file:";
+		}
+		homeDir = jarPath.substring(prefix.length(), indexOfExclamationMark);
+		int lastIndexOfSlash = homeDir.lastIndexOf("/");
+		homeDir = homeDir.substring(0, lastIndexOfSlash);
+		return homeDir;
+	}
+@Override
+	public Dimension getPreferredSize() {
+		return PREFERRED_SIZE;
+	}
 @Override
 protected void paintComponent(Graphics g) {// da spostare come con colorsetting
-    //super.paintComponent(g);
+//    super.paintComponent(g);
     setOpaque(false);
-    g.drawImage(img, 0, 0, null);
-//    g.drawImage(img,
-//                    dx, dy, 
-//                    x+cellWidth, dy+cellHeight,
-//                    sx, sy,
-//                    sx+cellWidth, sy+cellHeight,
-//                    null);
-
-    super.paintComponent(g);
+    g.drawImage(img, 0, 0, this.getWidth(),this.getHeight(), null);
   }
 
 }//End Class

@@ -24,6 +24,6 @@ public interface IView {
 	public void openMainGUI();
 	
 	public void updateScoreLabel(int score);
-	
+	public void updateLineLabel(int lines);
 	public void gameOverDialog();
 }

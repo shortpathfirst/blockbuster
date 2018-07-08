@@ -59,20 +59,20 @@ public class ControllerForView implements IControllerForView{
 		return Model.getInstance().getNumRowsOfBoard();
 	}
 
-	public String getPlayerName() {return null;
-//		return Model.getInstance().getPlayerName();
+	public String getPlayerName() {
+		return Model.getInstance().getPlayerName();
 	}
 
 	public void setPlayerName(String playerName) {
-//		Model.getInstance().setPlayerName(playerName);
+		Model.getInstance().setPlayerName(playerName);
 	}
 
-	public String getScore() {return null;
-//		return String.valueOf(Model.getInstance().getScore());
+	public String getScore() {
+		return String.valueOf(Model.getInstance().getScore());
 	}
 
 	public void incrementScore(int increment) {
-//		Model.getInstance().incrementScore(increment);
+		Model.getInstance().incrementScore(increment);
 	}
 
 	public void initGame() {
@@ -85,10 +85,14 @@ public class ControllerForView implements IControllerForView{
         public int getBlock(int i, int j) {
 		return 0;
 	}
-        
+        public String getLineLeft(){
+            return ""+Model.getInstance().getLineLeft();
+        }
         public void nextIncrementLine() {
-//		if (isIncrementLineFull())
+		if (!Model.getInstance().isLevelCompleted()){
 			Model.getInstance().incrementLine();
+                        View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());//aggiora ogni movimento di incrementline non va bene
+                }
 //		else {
 //			Model.getInstance().pushIncrement();
 //			this.removeFullRows();
@@ -105,13 +109,12 @@ public class ControllerForView implements IControllerForView{
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
         public void remove(int i,int j,int blockType) { 
-                //add scoreincrement(vedi removefullrow()
-                //fist setvisited then remove visitedblocks
                 if(blockType != 0){
                 Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
                 Model.getInstance().removeVisitedBlocks();
                 Model.getInstance().TrimRows();
                 }
+                View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
 //		Model.getInstance().removeColor(blockType);
 	}
         //---------------------------------------------------------------

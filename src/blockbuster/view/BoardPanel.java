@@ -79,9 +79,11 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
 		// do nothing
 	}
 
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {//su controller for view
+            if(this.isEnabled()){
 		this.selectedCell = getSelectedCell(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(e.getY())-1, getColumnIndex(e.getX())); //get row number from model
                 ControllerForView.getInstance().remove(20-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
+            }
 //                System.out.println("[i, j] = [" + (20-getRowIndex(e.getY())-1) + ", " + getColumnIndex(e.getX()) + "]");
 //                System.out.println(this.selectedCell);
 	}
@@ -109,7 +111,7 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
         
         private void paintGrid(Graphics2D g2d) {
 		Color oldColor = g2d.getColor();                                //to change block style
-		g2d.setColor(Color.GRAY);
+//		g2d.setColor(Color.GRAY);
 
 		int numColumns = ControllerForView.getInstance().getNumColumnsOfBoard();
 		int numRows = ControllerForView.getInstance().getNumRowsOfBoard();
@@ -136,7 +138,7 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
                 g2d.setColor(BlockStyle.getInstance().getBlockColor(pieceNumber)); //each piace a color
                 this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
                 g2d.fill(this.block);
-                g2d.setColor(Color.CYAN);  //  ColorSettings.getInstance().getColorForOutlineOfPiece(pieceNumber)
+                g2d.setColor(Color.LIGHT_GRAY);  //  ColorSettings.getInstance().getColorForOutlineOfPiece(pieceNumber)
                 g2d.draw(this.block);
                 g2d.setColor(oldColor);
         }

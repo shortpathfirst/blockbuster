@@ -5,6 +5,7 @@
  */
 package blockbuster.model;
 
+import blockbuster.view.View;
 import java.util.*;
 
 
@@ -70,18 +71,18 @@ public class Model implements IModel {
                 return this.boardArray.length;
         }
 
-//        public void setPlayerName(String playerName) {
-//		this.playerName = playerName;
-//	}
-//        public String getPlayerName() {
-//		return this.playerName;
-//	}
-//        public int getScore() {
-//		return this.score;
-//	}
-//        public void incrementScore(int increment) {
-//		this.score += increment;
-//	}
+        public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+        public String getPlayerName() {
+		return this.playerName;
+	}
+        public int getScore() {
+		return this.score;
+	}
+        public void incrementScore(int increment) {
+		this.score += increment;
+	}
         
         public void initGame() {
                 this.score = 0;
@@ -118,7 +119,7 @@ public class Model implements IModel {
                     }
 	} 
          public void removeVisitedBlocks(){ // agisce sul model? va sul controllforview
-             if(numVisited >= 3)//Da sistemare meglio
+             if(numVisited >= 3){//Da sistemare meglio
              for(int j=0; j<this.boardArray[0].length;j++){
                    List<Integer> boardColumn = new ArrayList<Integer>();
                     for(int i=0; i<this.boardArray.length;i++){ 
@@ -132,9 +133,17 @@ public class Model implements IModel {
                           this.boardArray[i][j]=0;
                     }
              }
-             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
-             this.numVisited = 0;
+             incrementScore(numVisited * 5); 
+         }
+             resetInstance();
+//            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
+//            incrementScore(numVisited * 5);                                                      
+//            this.numVisited = 0;
          }//end method
+        public void resetInstance(){ //update score
+            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];                                            
+            this.numVisited = 0;
+        }
         public void TrimRows(){//add to controller?
                 for (int j =0; j < this.boardArray[0].length/2; j++){
                     if(this.boardArray[0][j]==0){
@@ -178,7 +187,7 @@ public class Model implements IModel {
          public void nextLevel(){
              this.level++;
          }
-         public Block[] getNeighbor(int x, int y){
+         public Block[] getNeighbor(int x, int y){//non usato rimuovere
             Block[] neighbors = new Block[3];
                 if(y==this.boardArray[0].length) neighbors[0] = null;
                 else neighbors[0].blockType = this.boardArray[x][y+1];//[0]Top
@@ -212,7 +221,16 @@ public class Model implements IModel {
         public int getBoardBlock(int i,int j){
             return this.boardArray[i][j];
         }
-    
+        
+        public boolean isLevelCompleted(){
+            if(this.incLine.lineNumber ==15)//level 0
+                return true;
+            return false;
+        }
+        public int getLineLeft(){
+            int lines = 15-this.incLine.lineNumber;
+            return lines;
+        }
         
         
         

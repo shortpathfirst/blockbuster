@@ -80,9 +80,11 @@ public class View implements IView{
 	}
 	
 	public void updateScoreLabel(int score) {
-//		this.mainGUI.updateScoreLabel(score);
+		this.mainGUI.updateScoreLabel(score);
 	}
-	
+	public void updateLineLabel(int lines){
+            this.mainGUI.updateLineLabel(lines);
+        }
 	public void gameOverDialog() {
 //		this.mainGUI.setEndGameOrNotStarted();
 //		JOptionPane.showMessageDialog(this.mainGUI, "Game Over!\nPress Start to start a new game");

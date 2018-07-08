@@ -14,13 +14,13 @@ public interface IModel {
        public int getNumRowsOfBoard();
        public int getLevel();
 
-//	public String getPlayerName();
-//        
-//        public void setPlayerName(String playerName);
+	public String getPlayerName();
         
-//        public int getScore();
+        public void setPlayerName(String playerName);
         
-//        public void incrementScore(int increment);
+        public int getScore();
+        
+        public void incrementScore(int increment);
         public boolean isEmptyCell(int i, int j); //da rimuovere forse
         public void setVisitedBlocks(int i, int j, int blockType);
         public void removeColor(int blockType);
@@ -30,16 +30,11 @@ public interface IModel {
          public int getBoardBlock(int i,int j);
         public void TrimRows();
         
-        
-        
-        
+
         public void initGame();
-        
-//        initialize i index and j index
-        
-//        public void removeRow(int indexOfRow);
-
     public void incrementLine();
-
+    public boolean isLevelCompleted();
+     public int getLineLeft();
      public void removeVisitedBlocks();
+
 }

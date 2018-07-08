@@ -50,4 +50,5 @@ public interface IControllerForView {
     //Click -> If adiacent() remove() compact()
     public void remove(int i,int j,int blockType);
     public void nextIncrementLine();
+    public String getLineLeft();
 }

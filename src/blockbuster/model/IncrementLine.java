@@ -5,6 +5,7 @@
  */
 package blockbuster.model;
 
+import blockbuster.view.View;
 import java.util.LinkedList;
 
 /**
@@ -16,9 +17,11 @@ public class IncrementLine {
     
     private LinkedList<Integer> incLine;
     private Block block;
+    public int lineNumber;
     
     public IncrementLine(){
         incLine = new LinkedList<Integer>();
+        lineNumber=0;
         this.block=new Block();
     }
     public void addBlock(int level){ 
@@ -26,6 +29,7 @@ public class IncrementLine {
              this.incLine.add(block.randomBlock(level));
         else{
             Model.getInstance().pushIncrement();
+            lineNumber++;
             this.incLine.clear(); 
         }
     }   
@@ -42,7 +46,6 @@ public class IncrementLine {
     public void clear(){
         this.incLine.clear();
     }
-    
     
     
     
