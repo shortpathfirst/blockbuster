@@ -35,7 +35,10 @@ public class ControllerForView implements IControllerForView{
 	}
 
 	public void openNewGameWindow() {
+            if(Model.getInstance().getScore()==0)
 		View.getInstance().openNewGameWindow();
+            else
+                View.getInstance().openMainGUI();                               //set new instance
 	}
 
 	public void loadPreviouslySavedGame(String file) {
@@ -90,19 +93,26 @@ public class ControllerForView implements IControllerForView{
         }
         public void nextIncrementLine() {
 		if (!Model.getInstance().isLevelCompleted()){
-			Model.getInstance().incrementLine();
-                        View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());//aggiora ogni movimento di incrementline non va bene
+                        if(Model.getInstance().isIncrementLineFull()){
+                            Model.getInstance().pushIncrement();
+                            Model.getInstance().updateLine();
+                        }
+                        else {
+                                Model.getInstance().incrementLine();
+                                View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());
+                        }
                 }
-//		else {
-//			Model.getInstance().pushIncrement();
-//			this.removeFullRows();
-//			if (this.isGameOver())
+		else {
+                    Model.getInstance().setLineLeft();
+                    Model.getInstance().nextLevel();
+                }
+//			else if (this.isGameOver())
 //				View.getInstance().gameOverDialog();
 //			else {
 //				Model.getInstance().nextFallingAndPreviewPieces();
 //				this.resumeIndexes();
 //			}
-//		}
+
 	} // end method next()
         
         //---------------------------------------------------------------

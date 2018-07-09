@@ -33,8 +33,13 @@ public interface IModel {
 
         public void initGame();
     public void incrementLine();
+    public void updateLine();
+    public void setLineLeft();
+    public boolean isIncrementLineFull();
     public boolean isLevelCompleted();
      public int getLineLeft();
      public void removeVisitedBlocks();
-
+     public void nextLevel();
+    public int getLevelDelay();
+    
 }

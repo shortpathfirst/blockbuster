@@ -136,9 +136,6 @@ public class Model implements IModel {
              incrementScore(numVisited * 5); 
          }
              resetInstance();
-//            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
-//            incrementScore(numVisited * 5);                                                      
-//            this.numVisited = 0;
          }//end method
         public void resetInstance(){ //update score
             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];                                            
@@ -187,26 +184,17 @@ public class Model implements IModel {
          public void nextLevel(){
              this.level++;
          }
-         public Block[] getNeighbor(int x, int y){//non usato rimuovere
-            Block[] neighbors = new Block[3];
-                if(y==this.boardArray[0].length) neighbors[0] = null;
-                else neighbors[0].blockType = this.boardArray[x][y+1];//[0]Top
-                if(x==0) neighbors[1] = null;
-                else neighbors[1].blockType = this.boardArray[x-1][y];//[1]Left
-                if(x==this.boardArray.length) neighbors[2] = null;
-                else neighbors[2].blockType = this.boardArray[x+1][y];//[2]Right
-                if(y==0) neighbors[3] = null;
-                else neighbors[3].blockType = this.boardArray[x][y-1];//[3]Bottom
-            
-            return neighbors;
-         }
         
-        
-        
+        public boolean isIncrementLineFull(){
+            return this.incLine.isIncrementLineFull();
+        }
+        public void updateLine(){
+            this.incLine.updateLine();
+        }
         public void incrementLine(){
             this.incLine.addBlock(this.level);
         }
-        public void pushIncrement(){//check game over
+        public void pushIncrement(){//check game over and level completed (incrementLine left)
            	for (int i = this.boardArray.length-2; i>=0; i--)
 			for (int j = 0; j < this.boardArray[i].length; j++){
                             this.boardArray[i+1][j] = this.boardArray[i][j];
@@ -223,15 +211,59 @@ public class Model implements IModel {
         }
         
         public boolean isLevelCompleted(){
-            if(this.incLine.lineNumber ==15)//level 0
+            if(getLineLeft() ==-1)//Termina a 0
                 return true;
             return false;
         }
+        private int getLinesOfLevel(){//setlineleft in incrementline e metti su config
+            if(this.level==0)
+                return 15;
+            else if(this.level==1)
+                return 20;
+            else if(this.level==2)
+                return 25;
+            else if(this.level==3)
+                return 30;
+            else if(this.level==4)
+                return 35;
+            else if(this.level==5)
+                return 40;
+            else if(this.level==6)
+                return 45;
+            else if(this.level==7)
+                return 50;
+            else if(this.level==8)
+                return 55;
+            else if(this.level==9)
+                return 60;
+            else return 70;
+        }
         public int getLineLeft(){
-            int lines = 15-this.incLine.lineNumber;
+            int lines = getLinesOfLevel()-this.incLine.lineNumber;
             return lines;
         }
-        
+        public void setLineLeft(){
+            this.incLine.lineNumber=0;
+        }
+        public int getLevelDelay(){//add to config ore incrementPanel
+             if(this.level==0 || this.level==1 || this.level==2)
+                 return 30;
+             else if(this.level==3)
+                return 120;
+            if(this.level==4)
+                return 120;
+            if(this.level==5)
+                return 100;
+            if(this.level==6)
+                return 100;
+            if(this.level==7)
+                return 80;
+            if(this.level==8)
+                return 80;
+            if(this.level==9)
+                return 50;
+            else return 30;
+        }
         
         
         

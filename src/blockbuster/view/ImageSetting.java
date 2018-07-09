@@ -22,7 +22,9 @@ public class ImageSetting extends JPanel{
     public static String backgroundPath;
     public static final String backgroundRelPath = "\\source\\background.gif";
     private Image img;
-    private final static Dimension PREFERRED_SIZE = new Dimension(476 ,718);
+//    private final static Dimension PREFERRED_SIZE = new Dimension(476 ,718);
+    private final static Dimension PREFERRED_SIZE = new Dimension(382 ,580);
+    
     public ImageSetting() { 
         try{
             backgroundPath = getHomeFolderForDevVersion() + backgroundRelPath;
@@ -43,25 +45,12 @@ private void loadImage(Image img) {
     }
 }
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
-		File configFile = null;
+		File homeFolder = null;
 		File byteCodeFileOfThisClass = new File(ImageSetting.class.getResource("ImageSetting.class").toURI());
 		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+		homeFolder = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 		//System.out.println("configFile: " + configFile.toString());
-		return configFile.toString();
-	}
-private String getHomeFolderForDistVersion() throws URISyntaxException {
-		String homeDir = null;
-		String jarPath = ImageSetting.class.getResource("ImageSetting.class").toURI().toString();
-		int indexOfExclamationMark = jarPath.indexOf("/build");
-		String prefix = "file:/"; // this is the prefix for Windows OS platform
-		if (System.getProperty("os.name").startsWith("Linux")) {
-			prefix = "jar:file:";
-		}
-		homeDir = jarPath.substring(prefix.length(), indexOfExclamationMark);
-		int lastIndexOfSlash = homeDir.lastIndexOf("/");
-		homeDir = homeDir.substring(0, lastIndexOfSlash);
-		return homeDir;
+		return homeFolder.toString();
 	}
 @Override
 	public Dimension getPreferredSize() {
@@ -69,9 +58,10 @@ private String getHomeFolderForDistVersion() throws URISyntaxException {
 	}
 @Override
 protected void paintComponent(Graphics g) {// da spostare come con colorsetting
-//    super.paintComponent(g);
-    setOpaque(false);
+    super.paintComponent(g);
+    
     g.drawImage(img, 0, 0, this.getWidth(),this.getHeight(), null);
+
   }
 
 }//End Class

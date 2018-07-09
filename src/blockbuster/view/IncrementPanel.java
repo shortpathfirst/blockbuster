@@ -35,8 +35,7 @@ public class IncrementPanel extends JPanel implements ActionListener {
     public double uY;
     private Line2D.Double line;
     private Rectangle2D.Double block;
-    private Timer timer;
-    private boolean initialized;
+
     public IncrementPanel(){
         super();
         //this.setBackground(/*ColorSettings.getInstance().getColorBackgroundPreview()*/);   //Here you set the background
@@ -44,26 +43,9 @@ public class IncrementPanel extends JPanel implements ActionListener {
         this.line = new Line2D.Double();
         this.block = new Rectangle2D.Double();
         this.setBackground(Color.BLACK);
-//        l=new IncrementLine();
-        initialized = false;
     }
     public void actionPerformed(ActionEvent e) { }
 
-    public void startTimer(int level){
-       
-        if(level<3)
-            this.timer = new Timer(200, this);
-        if(level==4)
-            this.timer = new Timer(160, this);
-        if(level==5)
-            this.timer = new Timer(120, this);
-        if(level==6)
-            this.timer = new Timer(100, this);
-        if(level>7)
-            this.timer = new Timer(80, this);
-       this.timer.start();
-       initialized = true;
-    }
     private void paintGrid(Graphics2D g2d) {
 		Color oldColor = g2d.getColor();
 		g2d.setColor(Color.GRAY); //colorsetting getcolor for textures
@@ -137,7 +119,6 @@ public class IncrementPanel extends JPanel implements ActionListener {
             Graphics2D g2d = (Graphics2D)g;
             this.paintGrid(g2d);
             //if (this.isNotPaused )// boolean di -> Pausa o salvataggio precedente
-            if(initialized)
                 for(int j=0; j<15; j++)
                       this.drawBlockAtCell(g2d,j,Model.getInstance().getBlockAt(j));								
     }//end paint

@@ -21,7 +21,7 @@ public class View implements IView{
 	// INSTANCE ATTRIBUTES
 	//---------------------------------------------------------------
 	protected StartWindow startWindow = null;
-//	protected NewGameWindow newGameWindow = null;
+	protected NewGameWindow newGameWindow = null;
 	protected MainGUI mainGUI = null;
 
 	private View() {
@@ -51,22 +51,22 @@ public class View implements IView{
 	}
 
 	public void openNewGameWindow() {
-//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-//				if (newGameWindow == null)
-//					newGameWindow = new NewGameWindow();
-//				newGameWindow.setVisible(true);
-//			}
-//		});
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (newGameWindow == null)
+					newGameWindow = new NewGameWindow();
+				newGameWindow.setVisible(true);
+			}
+		});
 	}
 
 	public void closeNewGameWindow() {
-//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-//				if (newGameWindow != null)
-//					newGameWindow.setVisible(false);
-//			}
-//		});
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (newGameWindow != null)
+					newGameWindow.setVisible(false);
+			}
+		});
 	}
 
 	public void openMainGUI() {
