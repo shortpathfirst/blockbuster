@@ -50,7 +50,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private JPanel gamePanel;
         private boolean isGameStarted;// a game can start only once at the beginning
         private boolean isGameRunning;// a started game can be running or in pause
-        private Timer timer; // TImer
+        private Timer timer; 
         
         private JButton menuBut;
 	private JButton startPauseBut;
@@ -64,7 +64,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         public MainGUI() {
 		super("BlockBuster");
 		this.createGUI();
-                this.timer = new Timer(200, this);
+                this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
 		this.isGameStarted = false;
 		this.isGameRunning = false;
 	}
@@ -165,7 +165,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
                         this.timer.start();
-                        incrementPanel.startTimer(Model.getInstance().getLevel());
 		}else if (!this.isGameRunning) {
 			this.isGameRunning = true;
 			this.boardPanel.requestFocusInWindow();
@@ -204,7 +203,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         /* Method to implement the interface java.awt.ActionListener. */
 	public void actionPerformed(ActionEvent e) {
 		ControllerForView.getInstance().nextIncrementLine();
-//                if(incrementLineisFull)
                 this.boardPanel.repaint();
 		this.incrementPanel.repaint();
 	}
