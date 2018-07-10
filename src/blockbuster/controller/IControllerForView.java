@@ -51,4 +51,7 @@ public interface IControllerForView {
     public void remove(int i,int j,int blockType);
     public void nextIncrementLine();
     public String getLineLeft();
+    public void nextLevel();
+    
+    public boolean isGameOver();
 }

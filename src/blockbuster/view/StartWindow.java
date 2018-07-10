@@ -45,7 +45,6 @@ public class StartWindow extends JFrame {
             this.img.setLayout(new BoxLayout(img, BoxLayout.Y_AXIS));
             this.img.setBorder(BorderFactory.createEmptyBorder(200, 100, 20, 100));
 //            this.img.setLayout(layout);                                       Alternativa
-
              contPane.add(img,BorderLayout.CENTER); 
         
         jbutGamemode1 = new JButton();

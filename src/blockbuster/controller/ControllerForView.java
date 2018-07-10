@@ -91,33 +91,50 @@ public class ControllerForView implements IControllerForView{
         public String getLineLeft(){
             return ""+Model.getInstance().getLineLeft();
         }
+        
         public void nextIncrementLine() {
-		if (!Model.getInstance().isLevelCompleted()){
+            
+            if (!Model.getInstance().isLevelCompleted()){
                         if(Model.getInstance().isIncrementLineFull()){
-                            Model.getInstance().pushIncrement();
-                            Model.getInstance().updateLine();
+                            if (isGameOver()){
+                                View.getInstance().gameOverDialog();
+                            }else{
+                                Model.getInstance().pushIncrement();
+                                Model.getInstance().updateLine();
+                            }
                         }
                         else {
                                 Model.getInstance().incrementLine();
                                 View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());
                         }
                 }
-		else {
-                    Model.getInstance().setLineLeft();
-                    Model.getInstance().nextLevel();
-                }
-//			else if (this.isGameOver())
-//				View.getInstance().gameOverDialog();
-//			else {
-//				Model.getInstance().nextFallingAndPreviewPieces();
-//				this.resumeIndexes();
-//			}
-
+            else {
+                View.getInstance().nextLevelDialog();
+                View.getInstance().nextLevelAnimation();
+//                //Animation 1
+//                
+//                Model.getInstance().incrementLine();
+//                Model.getInstance().pushIncrement();
+//
+//                //end animation
+            }
 	} // end method next()
-        
+        public void nextLevel(){
+            Model.getInstance().nextLevel();
+            nextIncrementLine();
+        }
         //---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
+        public boolean isGameOver() {
+		boolean isGameOver = false;
+		if (!Model.getInstance().islastRowEmpty())
+			isGameOver = true;
+		return isGameOver;
+	}
+        
+        
+        
         public void remove(int i,int j,int blockType) { 
                 if(blockType != 0){
                 Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)

@@ -93,7 +93,7 @@ public class Model implements IModel {
                 this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
                 incLine = new IncrementLine();
         }
-    	public boolean isEmptyCell(int i, int j) {
+    	public boolean isEmptyCell(int i, int j) { ////da rimuovere se non usato
 		boolean isEmptyCell = false;
 		if ((0 <= i) && (i < DEFAULT_NUM_ROWS) && (0 <= j) && (j < DEFAULT_NUM_COLUMNS) && (this.boardArray[i][j] == EMPTY_CELL))
 			isEmptyCell = true;
@@ -182,6 +182,8 @@ public class Model implements IModel {
             return this.level;
         }
          public void nextLevel(){
+             this.incLine.lineNumber=0;
+             this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
              this.level++;
          }
         
@@ -242,9 +244,6 @@ public class Model implements IModel {
             int lines = getLinesOfLevel()-this.incLine.lineNumber;
             return lines;
         }
-        public void setLineLeft(){
-            this.incLine.lineNumber=0;
-        }
         public int getLevelDelay(){//add to config ore incrementPanel
              if(this.level==0 || this.level==1 || this.level==2)
                  return 30;
@@ -265,7 +264,17 @@ public class Model implements IModel {
             else return 30;
         }
         
-        
+        public boolean islastRowEmpty(){
+            for(int j=0; j<this.boardArray[0].length;j++){
+                if(this.boardArray[getGameOverIndex()][j]!= 0)
+                    return false;
+            }
+            return true;
+        }
+        private int getGameOverIndex(){
+            //Config , this.boardarray.lenght (row);
+            return 19;
+        }
         
         
         
@@ -283,4 +292,5 @@ public class Model implements IModel {
 			instance = new Model();
 		return instance;
 	}
+
 }

@@ -5,6 +5,7 @@
  */
 package blockbuster.view;
 
+import blockbuster.model.Model;
 import javax.swing.JOptionPane;
 
 /**
@@ -86,11 +87,17 @@ public class View implements IView{
             this.mainGUI.updateLineLabel(lines);
         }
 	public void gameOverDialog() {
-//		this.mainGUI.setEndGameOrNotStarted();
-//		JOptionPane.showMessageDialog(this.mainGUI, "Game Over!\nPress Start to start a new game");
-//		this.mainGUI.updateScoreLabel(0);
+		this.mainGUI.setEndGameOrNotStarted();
+		JOptionPane.showMessageDialog(this.mainGUI, "Game Over!\nPress Start to start a new game");
+		this.mainGUI.updateScoreLabel(0);
 	}
-
+        public void nextLevelDialog(){
+            this.mainGUI.createEndLevelButton();
+            this.mainGUI.setEndGameOrNotStarted();
+        }
+        public void nextLevelAnimation(){
+//            this.mainGUI.endLevelAnimation();  
+        }
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------

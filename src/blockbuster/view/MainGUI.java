@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 package blockbuster.view;
+
 import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -19,9 +19,13 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URISyntaxException;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,9 +55,10 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private boolean isGameStarted;// a game can start only once at the beginning
         private boolean isGameRunning;// a started game can be running or in pause
         private Timer timer; 
-        
+        private boolean endLevelAnimation;
         private JButton menuBut;
 	private JButton startPauseBut;
+        private JButton endLevelBut;
 	private JLabel playerNameLab;
 	private JLabel playerNamePrefixLab;
 	private JLabel playerScoreLab;
@@ -67,6 +72,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
 		this.isGameStarted = false;
 		this.isGameRunning = false;
+                this.endLevelAnimation = false;
 	}
         private void ReturnToStartWindows(){            //Questo o tasto menu
                this.addWindowListener(new WindowAdapter() {
@@ -89,6 +95,12 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		contPane.setLayout(new BorderLayout());
 		contPane.add(this.optionPanel, BorderLayout.WEST);
                 contPane.add(this.gamePanel, BorderLayout.EAST);
+                try { //B of block buster
+                Image img = ImageIO.read(jbutSourceImg("\\source\\background.gif"));
+                this.setIconImage(img);        
+                } catch (Exception ex) {
+                System.out.println("Source not found");
+                }
                 
 		this.pack();
 	}
@@ -155,6 +167,16 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private void menuEvent(){
             this.dispose();
             ControllerForView.getInstance().openStartWindow();
+            //loadpreviuly started game if not game over
+            if(ControllerForView.getInstance().isGameOver()){
+                handleVisibleBut();
+                Model.getInstance().initGame();                     //use controller for view
+//                handleVisibleBut();
+                this.isGameStarted = false;
+		this.isGameRunning = false;
+            }
+            //loadpreviuly started game if not game over
+//            setEndGameOrNotStarted(); 
         }
         private void startPauseEvent(){//Save game when pause
             if (!this.isGameStarted) {
@@ -171,7 +193,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.timer.start();
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
-		}
+                }
 		else {
 			this.isGameRunning = false;
 			this.timer.stop();
@@ -179,6 +201,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.startPauseBut.setText(START_BUTTON_LABEL);
 			this.menuBut.setEnabled(true);
                 }
+                
         }
 	//-------------------------------------------------------------------------
 	// To implement the interface java.awt.event.ComponentListener
@@ -211,5 +234,72 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	}
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
+                this.boardPanel.repaint();                                      //updategui
 	}
+        private File jbutSourceImg(String image){
+            File homeFolder = null;
+                try{
+                    File byteCodeFileOfThisClass = new File(ImageSetting.class.getResource("MainGUI.class").toURI());
+                    homeFolder = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+                }catch(URISyntaxException urise) {
+                urise.printStackTrace();
+                 }
+                return new File(homeFolder.toString()+image);
+        }
+        public void createEndLevelButton(){
+            this.endLevelBut = new JButton();
+
+            try {
+                Image img = ImageIO.read(jbutSourceImg("\\source\\background.gif"));
+                this.endLevelBut.setIcon(new ImageIcon(img));
+            } catch (Exception ex) {
+                System.out.println("Source not found");
+            }
+            this.endLevelBut.setText("LEVEL "+Model.getInstance().getLevel()+" COMPLETED");
+            this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
+            this.endLevelBut.setVerticalTextPosition(JButton.CENTER);
+            this.endLevelBut.setPreferredSize(new Dimension(150,250));
+            this.endLevelBut.setMaximumSize(new Dimension(150,250));
+            this.endLevelBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+                                handleEndLevelButton();
+			}
+		});
+
+            this.boardPanel.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20)); 
+            this.boardPanel.add(endLevelBut);
+        }
+        public void handleEndLevelButton(){
+            this.boardPanel.remove(this.endLevelBut);
+            handleVisibleBut();
+            ControllerForView.getInstance().nextLevel();  
+            this.isGameStarted = true;
+            this.isGameRunning = true;
+            this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
+            this.timer.start();
+        }
+        public void setEndGameOrNotStarted(){
+                this.isGameStarted = false;
+		this.isGameRunning = false;
+		this.timer.stop();
+//		this.startPauseBut.setText("New Game");
+                this.startPauseBut.setVisible(false);
+		this.menuBut.setEnabled(true);
+                
+                this.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        Model.getInstance().initGame();                     //use controller for view
+                        handleVisibleBut();
+                    }
+                  });
+        }
+        public void handleVisibleBut(){
+            if(ControllerForView.getInstance().isGameOver())
+                this.startPauseBut.setText(START_BUTTON_LABEL); // if gameover else PAUSE BUTTON
+            else{
+                this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
+            }
+            this.startPauseBut.setVisible(true);
+        }
 }//end class

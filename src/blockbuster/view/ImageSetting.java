@@ -23,7 +23,9 @@ public class ImageSetting extends JPanel{
     public static final String backgroundRelPath = "\\source\\background.gif";
     private Image img;
 //    private final static Dimension PREFERRED_SIZE = new Dimension(476 ,718);
-    private final static Dimension PREFERRED_SIZE = new Dimension(382 ,580);
+    private final static int WIDTH = 382;
+    private final static int HEIGHT = 580;
+    private final static Dimension PREFERRED_SIZE = new Dimension(WIDTH ,HEIGHT);
     
     public ImageSetting() { 
         try{
@@ -33,6 +35,7 @@ public class ImageSetting extends JPanel{
         }
         this.setSize(PREFERRED_SIZE);
         img = Toolkit.getDefaultToolkit().createImage(backgroundPath).getScaledInstance(this.getWidth(),this.getHeight(), Image.SCALE_DEFAULT);
+        Toolkit.getDefaultToolkit().prepareImage(img, 382, 580, this);
 //        loadImage(img);
   }
 private void loadImage(Image img) {
@@ -58,10 +61,12 @@ private void loadImage(Image img) {
 	}
 @Override
 protected void paintComponent(Graphics g) {// da spostare come con colorsetting
-    super.paintComponent(g);
+        super.paintComponent(g);
+        g.drawImage(img, 0, 0, this.getWidth(),this.getHeight(), null);
+//        this.setOpaque(false);
+        
     
-    g.drawImage(img, 0, 0, this.getWidth(),this.getHeight(), null);
-
+ 
   }
 
 }//End Class
