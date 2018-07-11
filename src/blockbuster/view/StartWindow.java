@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 public class StartWindow extends JFrame {
 
-	private JButton jbutGamemode1;
+        private JButton jbutGamemode1;
         private JButton jbutGamemode2;
 	private JButton jbutLoadGame;
         private JButton jbutScoreboard;
@@ -32,36 +32,31 @@ public class StartWindow extends JFrame {
 	public StartWindow() {
             
             super("Menù");
-            
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-//            this.setResizable(false);//make button resizable                  Alternativa
-
-            Container contPane = this.getContentPane();
 
             this.img = new ImageSetting();// Background
             layout = new GroupLayout(img);
 
             this.img.setLayout(new BoxLayout(img, BoxLayout.Y_AXIS));
             this.img.setBorder(BorderFactory.createEmptyBorder(200, 100, 20, 100));
-//            this.img.setLayout(layout);                                       Alternativa
-             contPane.add(img,BorderLayout.CENTER); 
+            Container contPane = this.getContentPane();
+            contPane.add(img,BorderLayout.CENTER); 
         
-        jbutGamemode1 = new JButton();
-        jbutGamemode2 = new JButton();
-        jbutHowToPlay = new JButton();
-        jbutExit = new JButton();
-        jbutScoreboard = new JButton();
-        jbutLoadGame = new JButton();
+            jbutGamemode1 = new JButton();
+            jbutGamemode2 = new JButton();
+            jbutHowToPlay = new JButton();
+            jbutExit = new JButton();
+            jbutScoreboard = new JButton();
+            jbutLoadGame = new JButton();
         
-        SetButtonColor();  
+            SetButtonColor();  
         
-        jbutGamemode1.setText("Level Mode");
-        jbutGamemode2.setText("Unlimited Mode");
-        jbutHowToPlay.setText("How to play");
-        jbutExit.setText("Exit");
-        jbutScoreboard.setText("Score Board");
-        jbutLoadGame.setText("Load Game");
+            jbutGamemode1.setText("Level Mode");
+            jbutGamemode2.setText("Unlimited Mode");
+            jbutHowToPlay.setText("How to play");
+            jbutExit.setText("Exit");
+            jbutScoreboard.setText("Score Board");
+            jbutLoadGame.setText("Load Game");
 
 //        jbutGamemode1.setForeground(Color.RED);
 //        jbutGamemode2.setForeground(Color.ORANGE);
@@ -115,81 +110,41 @@ public class StartWindow extends JFrame {
                                     handleExitEvent();
                                 }
         });
-                                                                                //remove alternativa
-                this.jbutGamemode1.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-		this.jbutGamemode2.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-		this.jbutHowToPlay.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-		this.jbutExit.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-                this.jbutScoreboard.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-                this.jbutLoadGame.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+                                                                                
+        this.jbutGamemode1.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        this.jbutGamemode2.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        this.jbutHowToPlay.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        this.jbutExit.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        this.jbutScoreboard.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+        this.jbutLoadGame.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
                 
-                this.img.add(this.jbutGamemode1);
-                this.img.add(Box.createVerticalGlue());
-                this.img.add(this.jbutGamemode2);
-                this.img.add(Box.createVerticalGlue());
-                this.img.add(this.jbutHowToPlay);
-                this.img.add(Box.createVerticalGlue());
-                this.img.add(this.jbutLoadGame);
-                this.img.add(Box.createVerticalGlue());
-                this.img.add(this.jbutScoreboard);
-                this.img.add(Box.createVerticalGlue());
-                this.img.add(this.jbutExit);
-                this.img.add(Box.createVerticalGlue());
-                
-//        layout.setHorizontalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-//            .addGroup(layout.createSequentialGroup()
-//                .addGap(109, 109, 109)
-//                .addContainerGap()
-//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                    .addGroup(layout.createSequentialGroup()
-//                        .addComponent(jbutLoadGame, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                        .addContainerGap(108, Short.MAX_VALUE))
-//                    .addGroup(layout.createSequentialGroup()
-//                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-//                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//                                .addComponent(jbutExit, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                                .addComponent(jbutHowToPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
-//                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-//                                .addGap(1, 1, 1)
-//                                .addComponent(jbutGamemode1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-//                                .addComponent(jbutGamemode2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-//                        .addGap(0, 0, Short.MAX_VALUE))))
-//            .addGroup(layout.createSequentialGroup()
-//                .addContainerGap()
-//                .addComponent(jbutScoreboard)
-//                .addGap(0, 0, Short.MAX_VALUE))
-//        );
-//        layout.setVerticalGroup(
-//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-//            .addGroup(layout.createSequentialGroup()
-//                .addGap(243, 243, 243)
-//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-//                    .addComponent(jbutGamemode1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                    .addComponent(jbutGamemode2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-//                .addGap(33, 33, 33)
-//                .addComponent(jbutHowToPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                .addGap(18, 18, 18)
-//                .addComponent(jbutLoadGame, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-//                .addComponent(jbutExit, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                .addGap(68, 68, 68)
-//                .addComponent(jbutScoreboard, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                .addGap(21, 21, 21))
-//        );
+        this.img.add(this.jbutGamemode1);
+        this.img.add(Box.createVerticalGlue());
+        this.img.add(this.jbutGamemode2);
+        this.img.add(Box.createVerticalGlue());
+        this.img.add(this.jbutHowToPlay);
+        this.img.add(Box.createVerticalGlue());
+        this.img.add(this.jbutLoadGame);
+        this.img.add(Box.createVerticalGlue());
+        this.img.add(this.jbutScoreboard);
+        this.img.add(Box.createVerticalGlue());
+        this.img.add(this.jbutExit);
+        this.img.add(Box.createVerticalGlue());
+            
             pack();
 	} // end constructor
 
 	private void handleGamemode1Event() {
 		ControllerForView.getInstance().closeStartWindow();
-		ControllerForView.getInstance().openMainGUI();                   // openNewGameWindow();        FOR PLAYER NAME
+                if(ControllerForView.getInstance().isGameOver())
+                    ControllerForView.getInstance().initGame(); 
+                ControllerForView.getInstance().openMainGUI();                   // openNewGameWindow();        FOR PLAYER NAME
 	}
         private void handleGamemode2Event() {
 		ControllerForView.getInstance().closeStartWindow();
 		ControllerForView.getInstance().openNewGameWindow();
 	}
-	private void handleHowToPlayEvent() {
+	private void handleHowToPlayEvent() {//check game over
 		//System.out.println("Event: load a previously saved game");
                 ControllerForView.getInstance().closeStartWindow();
                 ControllerForView.getInstance().openOptionWindow();

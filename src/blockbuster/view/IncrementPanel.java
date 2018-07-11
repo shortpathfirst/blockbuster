@@ -102,7 +102,8 @@ public class IncrementPanel extends JPanel implements ActionListener {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D)g;
             this.paintGrid(g2d);
-            drawCells(g2d);								
+            drawCells(g2d);	
+            this.repaint();
     }//end paint
     
     public void drawCells(Graphics2D g2d){

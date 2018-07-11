@@ -40,7 +40,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
     //---------------------------------------------------------------
     // STATIC CONSTANTS
     //---------------------------------------------------------------
-	private final static int WINDOW_PREFERRED_WIDTH = 500;
+	private final static int WINDOW_PREFERRED_WIDTH = 550;
 	private final static int WINDOW_PREFERRED_HEIGHT = 600;
 	private final static String START_BUTTON_LABEL = "Start";
 	private final static String PAUSE_BUTTON_LABEL = "Pause";
@@ -55,7 +55,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private boolean isGameStarted;// a game can start only once at the beginning
         private boolean isGameRunning;// a started game can be running or in pause
         private Timer timer; 
-        private boolean endLevelAnimation;
+//        private boolean endLevelAnimation;
         private JButton menuBut;
 	private JButton startPauseBut;
         private JButton endLevelBut;
@@ -72,13 +72,14 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
 		this.isGameStarted = false;
 		this.isGameRunning = false;
-                this.endLevelAnimation = false;
+//                this.endLevelAnimation = false;
 	}
-        private void ReturnToStartWindows(){            //Questo o tasto menu
+        private void ReturnToStartWindows(){           
                this.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
+                        StopGame(); //load saved game
                     }
                   });
         }
@@ -87,22 +88,22 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 ReturnToStartWindows();
               //this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		this.setPreferredSize(new Dimension(WINDOW_PREFERRED_WIDTH, WINDOW_PREFERRED_HEIGHT));
-
+                
                 this.setGamePanel();
 		this.setOptionPanel();                             
                 
 		Container contPane = this.getContentPane();
 		contPane.setLayout(new BorderLayout());
-		contPane.add(this.optionPanel, BorderLayout.WEST);
+		contPane.add(this.optionPanel);
                 contPane.add(this.gamePanel, BorderLayout.EAST);
+
                 try { //B of block buster
-                Image img = ImageIO.read(jbutSourceImg("\\source\\background.gif"));
-                this.setIconImage(img);        
+                    Image img = ImageIO.read(jbutSourceImg("\\source\\background.gif"));
+                    this.setIconImage(img);        
                 } catch (Exception ex) {
                 System.out.println("Source not found");
                 }
-                
-		this.pack();
+		this.pack();    
 	}
         private void setGamePanel(){
                 this.boardPanel = new BoardPanel();
@@ -118,15 +119,14 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.optionPanel = new JPanel();
 		this.optionPanel.setBackground(Color.decode("#fdb94d"));
 		this.optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
-                //this.optionPanel.setSize(10, this.getHeight());
-		this.optionPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
+		this.optionPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
 
 		this.playerNamePrefixLab = new JLabel("Player Name");
-		this.playerNameLab = new JLabel(ControllerForView.getInstance().getPlayerName());
+		this.playerNameLab = new JLabel(ControllerForView.getInstance().getPlayerName());    //Config
 		this.playerScorePrefixLab = new JLabel("Score");
-		this.playerScoreLab = new JLabel(ControllerForView.getInstance().getScore());
+		this.playerScoreLab = new JLabel(ControllerForView.getInstance().getScore());       //Config
                 this.linesLeftPrefixLab= new JLabel("Line Left");
-                this.linesLeftLab = new JLabel(ControllerForView.getInstance().getLineLeft());
+                this.linesLeftLab = new JLabel(ControllerForView.getInstance().getLineLeft());      //Config
 		this.startPauseBut = new JButton("Start");
 		this.startPauseBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,23 +167,18 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private void menuEvent(){
             this.dispose();
             ControllerForView.getInstance().openStartWindow();
+//            this.createGUI();
             //loadpreviuly started game if not game over
-            if(ControllerForView.getInstance().isGameOver()){
-                handleVisibleBut();
-                Model.getInstance().initGame();                     //use controller for view
-//                handleVisibleBut();
-                this.isGameStarted = false;
-		this.isGameRunning = false;
-            }
-            //loadpreviuly started game if not game over
+            
 //            setEndGameOrNotStarted(); 
         }
         private void startPauseEvent(){//Save game when pause
-            if (!this.isGameStarted) {
+                if (!this.isGameStarted) {
 			this.isGameStarted = true;
 			this.isGameRunning = true;
 			ControllerForView.getInstance().initGame();
 			this.boardPanel.requestFocusInWindow();
+                        this.boardPanel.setEnabled(true);
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
                         this.timer.start();
@@ -193,13 +188,19 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.timer.start();
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
+                        this.boardPanel.setEnabled(true);
+                        
+                        this.boardPanel.setVisible(true);
+                        this.incrementPanel.setVisible(true);
                 }
-		else {
+		else { //stop game
 			this.isGameRunning = false;
 			this.timer.stop();
                         this.boardPanel.setEnabled(false);
 			this.startPauseBut.setText(START_BUTTON_LABEL);
 			this.menuBut.setEnabled(true);
+                        this.boardPanel.setVisible(false);
+                        this.incrementPanel.setVisible(false);
                 }
                 
         }
@@ -234,7 +235,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	}
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
-                this.boardPanel.repaint();                                      //updategui
 	}
         private File jbutSourceImg(String image){
             File homeFolder = null;
@@ -271,35 +271,49 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         public void handleEndLevelButton(){
             this.boardPanel.remove(this.endLevelBut);
-            handleVisibleBut();
+            this.boardPanel.setEnabled(true);
+            
+            this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
+            this.startPauseBut.setVisible(true);
+            this.menuBut.setEnabled(false);
             ControllerForView.getInstance().nextLevel();  
             this.isGameStarted = true;
             this.isGameRunning = true;
             this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
             this.timer.start();
         }
-        public void setEndGameOrNotStarted(){
+        public void setNewGame(){
+            
                 this.isGameStarted = false;
 		this.isGameRunning = false;
 		this.timer.stop();
-//		this.startPauseBut.setText("New Game");
-                this.startPauseBut.setVisible(false);
+		this.startPauseBut.setText("Start");
+                this.startPauseBut.setVisible(true);
 		this.menuBut.setEnabled(true);
-                
-                this.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        Model.getInstance().initGame();                     //use controller for view
-                        handleVisibleBut();
-                    }
-                  });
+//                
+//                this.addWindowListener(new WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(WindowEvent e) {
+//                        Model.getInstance().initGame();                     //use controller for view
+//                        handleVisibleBut();
+//                    }
+//                  });
         }
         public void handleVisibleBut(){
-            if(ControllerForView.getInstance().isGameOver())
+//            if(ControllerForView.getInstance().isGameOver())
+              if(!this.isGameRunning)
                 this.startPauseBut.setText(START_BUTTON_LABEL); // if gameover else PAUSE BUTTON
             else{
-                this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
+//                this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
             }
             this.startPauseBut.setVisible(true);
+        }
+        public void StopGame(){
+            this.isGameRunning = false;
+            this.timer.stop();
+            this.boardPanel.setEnabled(false);
+            this.startPauseBut.setText(START_BUTTON_LABEL);
+            this.menuBut.setEnabled(true);
+            
         }
 }//end class

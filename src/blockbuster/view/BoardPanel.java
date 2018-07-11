@@ -60,7 +60,6 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
 		this.setBackground(Color.BLACK);    //ColorSettings.getInstance().getColorBackgroundBoard()
 		//this.addKeyListener(this);
                 addMouseListener(this);   
-                
 	}//end constructor
         
         //--------------------------------------

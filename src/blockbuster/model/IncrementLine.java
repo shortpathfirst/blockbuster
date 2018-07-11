@@ -17,7 +17,7 @@ public class IncrementLine {
     private static final int NUM_COLUMNS=15;
     
     private LinkedList<Integer> incLine;
-    public int lineNumber;
+    private int lineNumber;
     
     public IncrementLine(){
         this.incLine = new LinkedList<Integer>();
@@ -25,7 +25,13 @@ public class IncrementLine {
     }
     public void addBlock(int level){ 
         this.incLine.add(randomBlock(level));
-    }   
+    }
+    public int getLineNumber(){
+        return this.lineNumber;
+    }
+    public void setLineNumber(int n){
+        this.lineNumber=n;
+    }
     public void updateLine(){
             this.lineNumber++;
             this.incLine.clear(); 
@@ -47,19 +53,17 @@ public class IncrementLine {
             int REPAINT_BLOCK = 8; //Colora i vicini 3x3
             
             boolean levelMode = true;
-            
             if(level <0)
                levelMode = false;
-            Random myRandom = new Random();
-            final int ran = myRandom.nextInt(100); // random da 0 a 100
+
             int randNormalBlock=new Random().nextInt(3)+1;
             if(level>6 || !levelMode)
                 randNormalBlock=new Random().nextInt(5)+1;
 
-
-            if (ran < 6 && (level >1||!levelMode)) { return REPAINT_BLOCK; } //6 %
-            else if (ran < 12 && (level >2||!levelMode)) { return BLACK_BLOCK; } //6%
-            else if (ran < 15 && (level >3||!levelMode)) { return REMOVER_BLOCK; } //3%
+            final int ran = new Random().nextInt(1000); // random da 0 a 100
+            if (ran < 15 && (level >0||!levelMode)) { return REPAINT_BLOCK; } //6 %      >LV1
+            else if (ran <25 && (level >0||!levelMode)) { return BLACK_BLOCK; } //6%      >2
+            else if (ran < 40 && (level >0||!levelMode)) { return REMOVER_BLOCK; } //3%  >3
             else { return randNormalBlock ; } //85%
     }
 

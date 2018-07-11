@@ -67,15 +67,25 @@ public class BlockStyle {
 	}
         
         public Color getBlockColor(int numBlock) {  // Piace name
-            if(numBlock ==0)
-                 return Color.WHITE;
+            
             if(numBlock ==1)
                 return Color.ORANGE;
             if(numBlock ==2)
                 return Color.MAGENTA;
             if(numBlock ==3)
                 return Color.BLUE;
-            return Color.CYAN;
+            if(numBlock ==4)
+                return Color.YELLOW;
+            if(numBlock ==5)
+                return Color.GREEN;
+            if(numBlock ==6)
+                return Color.CYAN;
+            if(numBlock ==7)
+                return Color.BLACK;
+            if(numBlock ==8)
+                 return Color.GREEN;
+            else
+            return Color.WHITE;
         }
         
         

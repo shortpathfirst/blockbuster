@@ -7,6 +7,7 @@ package blockbuster.controller;
 
 import blockbuster.view.View;
 import blockbuster.model.Model;
+import java.util.Random;
 /**
  *
  * @author Andrea
@@ -99,7 +100,8 @@ public class ControllerForView implements IControllerForView{
             if (!Model.getInstance().isLevelCompleted()){
                         if(Model.getInstance().isIncrementLineFull()){
                             if (isGameOver()){
-                                View.getInstance().gameOverDialog();
+                                View.getInstance().gameOverEvent();
+                                Model.getInstance().initGame();
                             }else{
                                 Model.getInstance().pushIncrement();
                                 Model.getInstance().updateLine();
@@ -138,12 +140,22 @@ public class ControllerForView implements IControllerForView{
         
         
         public void remove(int i,int j,int blockType) { 
-                if(blockType != 0){
-                Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
-                Model.getInstance().removeVisitedBlocks();
-                Model.getInstance().TrimRows();
+                if(blockType != 0 && !isGameOver()){
+                    if(blockType==7)
+                        Model.getInstance().removeColor(i,j);
+                    if(blockType==8)
+                        Model.getInstance().removeColor(i,j);
+                    else
+                        Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
+                    
+                    Model.getInstance().removeVisitedBlocks();
+                    Model.getInstance().TrimRows();
+                    View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
                 }
-                View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
+              
+                    
+                
+                
 //		Model.getInstance().removeColor(blockType);
 	}
         //---------------------------------------------------------------

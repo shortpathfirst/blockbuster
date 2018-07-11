@@ -12,7 +12,6 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URISyntaxException;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 /**
  *

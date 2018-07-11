@@ -95,14 +95,14 @@ public class View implements IView{
 	public void updateLineLabel(int lines){
             this.mainGUI.updateLineLabel(lines);
         }
-	public void gameOverDialog() {
-		this.mainGUI.setEndGameOrNotStarted();
-		JOptionPane.showMessageDialog(this.mainGUI, "Game Over!\nPress Start to start a new game");
-		this.mainGUI.updateScoreLabel(0);
+	public void gameOverEvent() {
+		this.mainGUI.setNewGame();
+                JOptionPane.showMessageDialog(this.mainGUI, "Press Ok to start a new game", "Game Over!", 0);
+                updateScoreLabel(0);
 	}
         public void nextLevelDialog(){
             this.mainGUI.createEndLevelButton();
-            this.mainGUI.setEndGameOrNotStarted();
+            this.mainGUI.setNewGame();
         }
         public void nextLevelAnimation(){
 //            this.mainGUI.endLevelAnimation();  

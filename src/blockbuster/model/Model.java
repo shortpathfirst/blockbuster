@@ -40,7 +40,6 @@ public class Model implements IModel {
     private String playerName;
     private int[][] boardArray;
     private boolean[][] visitedArray;
-//    private Block[][] boardAr;
     private int level;
     private IncrementLine incLine;
 
@@ -91,7 +90,8 @@ public class Model implements IModel {
                 if (this.playerName == null)
                         this.playerName = "Unknown";
                 this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
-                incLine = new IncrementLine();
+                this.incLine = new IncrementLine();
+                this.incLine.setLineNumber(0);
         }
     	public boolean isEmptyCell(int i, int j) { ////da rimuovere se non usato
 		boolean isEmptyCell = false;
@@ -126,8 +126,11 @@ public class Model implements IModel {
                         if(!this.visitedArray[i][j])
                             boardColumn.add(this.boardArray[i][j]);
                     }
-                    for(int i=0; i<boardColumn.size();i++){
+                    for(int i=0; i<boardColumn.size();i++){//<boardlenght?
+//                        if(i<boardColumn.size())
                           this.boardArray[i][j]=boardColumn.get(i);
+//                        else
+//                            this.boardArray[i][j]=0;
                     }
                     for(int i=boardColumn.size(); i<this.boardArray.length-boardColumn.size();i++){
                           this.boardArray[i][j]=0;
@@ -173,8 +176,17 @@ public class Model implements IModel {
                     }
                 }
         }
-        public void removeColor(int blockType){
-                //To do
+        public void removeColor(int i, int j){
+            int ranColor=new Random().nextInt(3)+1;
+                if(this.level>=6)
+                    ranColor=new Random().nextInt(5)+1;;
+                this.visitedArray[i][j] = true;
+            for (int row = 0; row < this.boardArray.length; row++)
+			for (int column = 0; column < this.boardArray[row].length; column++){
+                            if(this.boardArray[row][column]==ranColor)
+                                this.visitedArray[row][column] = true;
+                                numVisited++;
+                        }
         } 
     //end for remove
 
@@ -182,7 +194,7 @@ public class Model implements IModel {
             return this.level;
         }
          public void nextLevel(){
-             this.incLine.lineNumber=0;
+             this.incLine.setLineNumber(0);
              this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
              this.level++;
          }
@@ -209,7 +221,10 @@ public class Model implements IModel {
             return this.incLine.getBlockAt(index);
         }
         public int getBoardBlock(int i,int j){
-            return this.boardArray[i][j];
+           if(i<this.boardArray.length && j<this.boardArray[0].length)
+                return this.boardArray[i][j];
+           else return 0;
+            
         }
         
         public boolean isLevelCompleted(){
@@ -241,7 +256,7 @@ public class Model implements IModel {
             else return 70;
         }
         public int getLineLeft(){
-            int lines = getLinesOfLevel()-this.incLine.lineNumber;
+            int lines = getLinesOfLevel()-this.incLine.getLineNumber();
             return lines;
         }
         public int getLevelDelay(){//add to config ore incrementPanel
@@ -272,8 +287,7 @@ public class Model implements IModel {
             return true;
         }
         private int getGameOverIndex(){
-            //Config , this.boardarray.lenght (row);
-            return 19;
+            return this.boardArray.length-1;
         }
         
         

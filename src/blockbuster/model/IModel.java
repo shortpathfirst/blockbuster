@@ -23,7 +23,7 @@ public interface IModel {
         public void incrementScore(int increment);
         public boolean isEmptyCell(int i, int j); //da rimuovere forse
         public void setVisitedBlocks(int i, int j, int blockType);
-        public void removeColor(int blockType);
+        public void removeColor(int i, int j);
         public int getIncrementBlock(int index);
         
         public void pushIncrement();

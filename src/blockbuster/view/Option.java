@@ -114,12 +114,11 @@ public class Option extends JFrame{
          int volume = 4;
          public Volume(){
             super(); 
-            this.repaint();
          }
          @Override
          public void drawCells(Graphics2D g2d){
-            for(int j=0; j<15; j++)
-                drawBlockAtCell(g2d,j,0);
+            for(int j=0; j<15; j++)//<volumeLevel else empty
+                drawBlockAtCell(g2d,j,2);
         }
      }
 }
