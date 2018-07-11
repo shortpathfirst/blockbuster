@@ -20,7 +20,7 @@ public interface IControllerForView {
     public void closeNewGameWindow();
     
     public void openMainGUI();
-    
+    public void openOptionWindow();
     
     
 //    public void openScoreBoardWindow(); //ADD

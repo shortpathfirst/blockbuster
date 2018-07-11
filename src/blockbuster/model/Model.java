@@ -205,7 +205,7 @@ public class Model implements IModel {
                     this.boardArray[0][j] = this.incLine.getBlockAt(j);
                 }
         }
-        public int getBlockAt(int index){
+        public int getIncrementBlock(int index){
             return this.incLine.getBlockAt(index);
         }
         public int getBoardBlock(int i,int j){

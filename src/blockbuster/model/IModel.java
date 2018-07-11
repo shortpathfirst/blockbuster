@@ -24,7 +24,7 @@ public interface IModel {
         public boolean isEmptyCell(int i, int j); //da rimuovere forse
         public void setVisitedBlocks(int i, int j, int blockType);
         public void removeColor(int blockType);
-        public int getBlockAt(int index);
+        public int getIncrementBlock(int index);
         
         public void pushIncrement();
         public int getBoardBlock(int i,int j);

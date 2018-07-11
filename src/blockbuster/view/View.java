@@ -24,6 +24,7 @@ public class View implements IView{
 	protected StartWindow startWindow = null;
 	protected NewGameWindow newGameWindow = null;
 	protected MainGUI mainGUI = null;
+        protected Option optionWindow = null;
 
 	private View() {
 		//TO-DO
@@ -79,7 +80,15 @@ public class View implements IView{
 			}
 		});
 	}
-	
+	public void openOptionWindow(){
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (optionWindow == null)
+					optionWindow = new Option();
+				optionWindow.setVisible(true);
+			}
+		});
+        }
 	public void updateScoreLabel(int score) {
 		this.mainGUI.updateScoreLabel(score);
 	}

@@ -29,7 +29,9 @@ public class ControllerForView implements IControllerForView{
 	public void openStartWindow() {
 		View.getInstance().openStartWindow();
 	}
-
+        public void openOptionWindow() {
+		View.getInstance().openOptionWindow();
+	}
 	public void closeStartWindow() {
 		View.getInstance().closeStartWindow();
 	}

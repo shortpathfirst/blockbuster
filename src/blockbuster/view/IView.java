@@ -16,7 +16,7 @@ public interface IView {
 
 	public void openNewGameWindow(); // Menu incorporato applicazione (repaint)
 	public void closeNewGameWindow();
-    
+        public void openOptionWindow();
 //        public void openScoreBoardWindow(); //ADD
 //
 //        public void closeScoreBoardWindow(); //ADD

@@ -191,7 +191,8 @@ public class StartWindow extends JFrame {
 	}
 	private void handleHowToPlayEvent() {
 		//System.out.println("Event: load a previously saved game");
-		new OptionFrame().setVisible(true);
+                ControllerForView.getInstance().closeStartWindow();
+                ControllerForView.getInstance().openOptionWindow();
 	}
         private void handleOptionEvent() {
 		//System.out.println("Event: load a previously saved game");
