@@ -188,6 +188,37 @@ public class Model implements IModel {
                                 numVisited++;
                         }
         } 
+        public void removeSquare(int i, int j){
+            this.visitedArray[i][j] = true;
+            if(i>0)
+               if(j>0) 
+                    this.visitedArray[i-1][j-1] = true; //left corner
+               else if(j<this.boardArray[0].length) 
+                    this.visitedArray[i-1][j+1] = true; //right corner
+               else this.visitedArray[i-1][j] = true; //bottom
+            if(i<this.boardArray.length)
+                if(j>0) 
+                    this.visitedArray[i+1][j-1] = true; //left corner
+               else if(j<this.boardArray[0].length) 
+                    this.visitedArray[i+1][j+1] = true; //right corner
+               else this.visitedArray[i+1][j] = true; //bottom
+            if(j>0)
+                this.visitedArray[i][j-1] = true;
+            if(j<this.boardArray[0].length)
+                this.visitedArray[i][j+1] = true;
+            
+        }
+        public void paintSquare(int i, int j){
+            int ranColor=new Random().nextInt(3)+1;
+                if(this.level>=6)
+                    ranColor=new Random().nextInt(5)+1;;
+             removeSquare(i,j);
+             for (int row = 0;row<this.boardArray.length; row++)
+			for (int columns = 0; columns < this.boardArray[0].length; columns++){
+				if(this.visitedArray[i][j]=true)
+                                    this.boardArray[i][j]=ranColor;
+                        }
+        }
     //end for remove
 
          public int getLevel(){ 

@@ -5,6 +5,7 @@
  */
 package blockbuster.view;
 
+import blockbuster.controller.ControllerForView;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -18,6 +19,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import sun.security.krb5.Config;
 
 /**
  *
@@ -33,7 +35,6 @@ public class Option extends JFrame{
     private JPanel mainpanel;
     private JPanel buttonPanel;
     Volume incrementPane;
-    
     
     public Option() {
         initComponents();
@@ -53,8 +54,19 @@ public class Option extends JFrame{
         incrementPane = new Volume();
         jpanePage1.setLayout(new BorderLayout());
         jpanePage1.setPreferredSize(new Dimension(400,400));
-        jpanePage1.add(incrementPane,BorderLayout.SOUTH);
-        
+         //MODE 1
+//        jpanePage1.add(incrementPane,BorderLayout.SOUTH);
+//        while(Config.getInstance().    = true){
+//            JLabel player_i = new Jlabel(config..)
+//            jpanePage1.add(player_i);
+//          }
+        //MODE 2
+        //        jpanePage2.add(incrementPane,BorderLayout.SOUTH);
+//        while(Config.getInstance().    = true){
+//            JLabel player_i = new Jlabel(config..)
+//            jpanePage2.add(player_i);
+//          }
+                
         
         
         

@@ -51,7 +51,7 @@ public class IncrementLine {
             int BLACK_BLOCK = 6; // Non rimovibile
             int REMOVER_BLOCK = 7; //Sceglie colore a caso(presente in tavola) e rimuove 
             int REPAINT_BLOCK = 8; //Colora i vicini 3x3
-            
+            int REMOVE_SQUARE = 9;
             boolean levelMode = true;
             if(level <0)
                levelMode = false;
@@ -64,6 +64,7 @@ public class IncrementLine {
             if (ran < 15 && (level >0||!levelMode)) { return REPAINT_BLOCK; } //6 %      >LV1
             else if (ran <25 && (level >0||!levelMode)) { return BLACK_BLOCK; } //6%      >2
             else if (ran < 40 && (level >0||!levelMode)) { return REMOVER_BLOCK; } //3%  >3
+            else if (ran< 50 && (level >0||!levelMode) ){ return REMOVE_SQUARE;}
             else { return randNormalBlock ; } //85%
     }
 

@@ -12,6 +12,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -19,7 +22,7 @@ import java.util.Properties;
  * @author Andrea
  */
 
-public class Config {
+public class Score {
 
 	//---------------------------------------------------------------
 	// STATIC CONSTANTS
@@ -29,14 +32,14 @@ public class Config {
 	//---------------------------------------------------------------
 	// STATIC ATTRIBUTE
 	//---------------------------------------------------------------
-	private static Config instance = null;
+	private static Score instance = null;
 
 	//---------------------------------------------------------------
 	// INSTANCE ATTRIBUTE
 	//---------------------------------------------------------------
 	private Properties properties;
 
-	private Config() {
+	private Score() {
 		try {
 			String configFile = getConfigFile();
 			BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "ISO-8859-1"));
@@ -59,9 +62,9 @@ public class Config {
 	//---------------------------------------------------------------
 	private String getConfigFile() throws URISyntaxException {
 		String configFile = null;
-		String relPath = "\\config\\config.txt";
+		String relPath = "\\config\\score.txt";
 		if (System.getProperty("os.name").startsWith("Linux")) {
-			relPath = "/conf/config.txt";
+			relPath = "/conf/score.txt";
 		}
 		if (IS_DIST_VERSION)
 			configFile = getHomeFolderForDistVersion() + relPath;
@@ -72,7 +75,7 @@ public class Config {
 
 	private String getHomeFolderForDistVersion() throws URISyntaxException {
 		String homeDir = null;
-		String jarPath = Config.class.getResource("Config.class").toURI().toString();
+		String jarPath = Config.class.getResource("Score.class").toURI().toString();
 		int indexOfExclamationMark = jarPath.indexOf("!");
 		String prefix = "jar:file:/"; // this is the prefix for Windows OS platform
 		if (System.getProperty("os.name").startsWith("Linux")) {
@@ -86,23 +89,56 @@ public class Config {
 
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
-		File byteCodeFileOfThisClass = new File(Config.class.getResource("Config.class").toURI());
+		File byteCodeFileOfThisClass = new File(Config.class.getResource("Score.class").toURI());
 		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
 		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
-		System.out.println("configFile: " + configFile.toString());
-		return configFile.toString();
+		
+                System.out.println("configFile: " + configFile.toString());
+		
+                return configFile.toString();
 	}
 
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
-
+        public int getPlayerScore(String p){
+            String name="";
+            int value = 0;
+            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
+                name = (String)e.nextElement();
+                try{
+                    value = Integer.parseInt(this.properties.getProperty(name).trim());
+                }catch (NumberFormatException num) {
+                     value=0;
+                     setPlayerScore(name,0);
+                }
+            }
+            if(name.equals(p)) return value;
+            else return -1;
+        }
+        public List<String> getPlayers(){
+            List<String> players = new ArrayList();
+            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
+                players.add((String)e.nextElement());
+            }
+            return players;
+        }
+        public List<String> getScores(){
+            List<String> scores = new ArrayList();
+            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
+                scores.add((String)e.nextElement());
+            }
+            return scores;
+        }
+        public void setPlayerScore(String player,int score){
+            this.properties.setProperty(player,""+score);
+        }
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------
-	public static Config getInstance() {
+	public static Score getInstance() {
 		if (instance == null)
-			instance = new Config();
+			instance = new Score();
 		return instance;
 	}
 

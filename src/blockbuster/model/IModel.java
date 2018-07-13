@@ -42,4 +42,7 @@ public interface IModel {
         public int getLevelDelay();
 
     public boolean islastRowEmpty();
+    
+    public void removeSquare(int i, int j);
+    public void paintSquare(int i, int j);
 }

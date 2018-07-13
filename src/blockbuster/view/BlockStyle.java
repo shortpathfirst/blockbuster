@@ -84,6 +84,8 @@ public class BlockStyle {
                 return Color.BLACK;
             if(numBlock ==8)
                  return Color.GREEN;
+            if(numBlock == 9)
+                return Color.RED;
             else
             return Color.WHITE;
         }

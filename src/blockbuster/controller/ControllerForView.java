@@ -144,7 +144,11 @@ public class ControllerForView implements IControllerForView{
                     if(blockType==7)
                         Model.getInstance().removeColor(i,j);
                     if(blockType==8)
-                        Model.getInstance().removeColor(i,j);
+                        Model.getInstance().paintSquare(i, j);
+                    if(blockType==9){
+                        Model.getInstance().removeSquare(i, j);
+                        Model.getInstance().removeVisitedBlocks();
+                    }
                     else
                         Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
                     
