@@ -5,12 +5,15 @@
  */
 package blockbuster.view;
 
+import blockbuster.controller.ControllerForModel;
 import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
+import blockbuster.utils.SoundPlayer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -45,9 +49,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	private final static String START_BUTTON_LABEL = "Start";
 	private final static String PAUSE_BUTTON_LABEL = "Pause";
         
-	//---------------------------------------------------------------
-	// INSTANCE ATTRIBUTES
-	//---------------------------------------------------------------
+    //---------------------------------------------------------------
+    // INSTANCE ATTRIBUTES
+    //---------------------------------------------------------------
 	private BoardPanel boardPanel;
         private IncrementPanel incrementPanel;
         private JPanel optionPanel;
@@ -65,7 +69,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	private JLabel playerScorePrefixLab;
 	private JLabel linesLeftLab;
         private JLabel linesLeftPrefixLab;
-
+        private SoundPlayer bcMusic;
         public MainGUI() {
 		super("BlockBuster");
 		this.createGUI();
@@ -79,7 +83,10 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                     @Override
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
-                        StopGame(); //load saved game
+                        initGame(); //load saved game
+                        StopGame();
+                        StopMusic();
+                        
                     }
                   });
         }
@@ -96,9 +103,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		contPane.setLayout(new BorderLayout());
 		contPane.add(this.optionPanel);
                 contPane.add(this.gamePanel, BorderLayout.EAST);
-
+                this.bcMusic=new SoundPlayer("bcMusic");
                 try { //B of block buster
-                    Image img = ImageIO.read(jbutSourceImg("\\source\\background.gif"));
+                    Image img = ImageIO.read(jbutSourceImg("\\source\\logo.png"));
                     this.setIconImage(img);        
                 } catch (Exception ex) {
                 System.out.println("Source not found");
@@ -126,7 +133,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.playerScorePrefixLab = new JLabel("Score");
 		this.playerScoreLab = new JLabel(ControllerForView.getInstance().getScore());       //Config
                 this.linesLeftPrefixLab= new JLabel("Line Left");
-                this.linesLeftLab = new JLabel(ControllerForView.getInstance().getLineLeft());      //Config
+                this.linesLeftLab = new JLabel(""+ControllerForView.getInstance().getLineLeft());      //Config
 		this.startPauseBut = new JButton("Start");
 		this.startPauseBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,6 +174,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private void menuEvent(){
             this.dispose();
             ControllerForView.getInstance().openStartWindow();
+            this.bcMusic.pause();
 //            this.createGUI();
             //loadpreviuly started game if not game over
             
@@ -182,6 +190,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
                         this.timer.start();
+                        this.bcMusic.play();
 		}else if (!this.isGameRunning) {
 			this.isGameRunning = true;
 			this.boardPanel.requestFocusInWindow();
@@ -189,21 +198,16 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
 			this.menuBut.setEnabled(false);
                         this.boardPanel.setEnabled(true);
-                        
                         this.boardPanel.setVisible(true);
                         this.incrementPanel.setVisible(true);
+                        this.bcMusic.play();
                 }
-		else { //stop game
-			this.isGameRunning = false;
-			this.timer.stop();
-                        this.boardPanel.setEnabled(false);
-			this.startPauseBut.setText(START_BUTTON_LABEL);
-			this.menuBut.setEnabled(true);
-                        this.boardPanel.setVisible(false);
-                        this.incrementPanel.setVisible(false);
+		else {
+			StopGame();
                 }
                 
         }
+        
 	//-------------------------------------------------------------------------
 	// To implement the interface java.awt.event.ComponentListener
 	//-------------------------------------------------------------------------
@@ -248,18 +252,21 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         public void createEndLevelButton(){
             this.endLevelBut = new JButton();
-
+            this.endLevelBut.setText("LEVEL "+Model.getInstance().getLevel()+" COMPLETED");
+            this.endLevelBut.setFont(new Font("Arial", Font.BOLD, 15));
+            this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
+            this.endLevelBut.setVerticalTextPosition(JButton.BOTTOM);
+            this.endLevelBut.setBackground(Color.WHITE);
             try {
-                Image img = ImageIO.read(jbutSourceImg("\\source\\background.gif"));
+                Image img = ImageIO.read(jbutSourceImg("\\source\\level.png"));
+                img.getScaledInstance(130, -1, Image.SCALE_SMOOTH);
+                System.out.print(this.gamePanel.getWidth());
                 this.endLevelBut.setIcon(new ImageIcon(img));
             } catch (Exception ex) {
                 System.out.println("Source not found");
             }
-            this.endLevelBut.setText("LEVEL "+Model.getInstance().getLevel()+" COMPLETED");
-            this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
-            this.endLevelBut.setVerticalTextPosition(JButton.CENTER);
-            this.endLevelBut.setPreferredSize(new Dimension(150,250));
-            this.endLevelBut.setMaximumSize(new Dimension(150,250));
+            this.endLevelBut.setPreferredSize(new Dimension(220,150));
+            this.endLevelBut.setMaximumSize(new Dimension(220,150));
             this.endLevelBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                                 handleEndLevelButton();
@@ -267,6 +274,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		});
 
             this.boardPanel.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20)); 
+            this.startPauseBut.setEnabled(false);
             this.boardPanel.add(endLevelBut);
         }
         public void handleEndLevelButton(){
@@ -274,39 +282,24 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.boardPanel.setEnabled(true);
             
             this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
+            this.startPauseBut.setEnabled(true);
             this.startPauseBut.setVisible(true);
+            
             this.menuBut.setEnabled(false);
-            ControllerForView.getInstance().nextLevel();  
+            
+            ControllerForModel.getInstance().nextLevel();                         //controller for model  
             this.isGameStarted = true;
             this.isGameRunning = true;
             this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
             this.timer.start();
+            this.bcMusic.start();
         }
-        public void setNewGame(){
-            
+        public void initGame(){//gameover + next level
                 this.isGameStarted = false;
 		this.isGameRunning = false;
 		this.timer.stop();
-		this.startPauseBut.setText("Start");
-                this.startPauseBut.setVisible(true);
+		this.startPauseBut.setText(START_BUTTON_LABEL);
 		this.menuBut.setEnabled(true);
-//                
-//                this.addWindowListener(new WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(WindowEvent e) {
-//                        Model.getInstance().initGame();                     //use controller for view
-//                        handleVisibleBut();
-//                    }
-//                  });
-        }
-        public void handleVisibleBut(){
-//            if(ControllerForView.getInstance().isGameOver())
-              if(!this.isGameRunning)
-                this.startPauseBut.setText(START_BUTTON_LABEL); // if gameover else PAUSE BUTTON
-            else{
-//                this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
-            }
-            this.startPauseBut.setVisible(true);
         }
         public void StopGame(){
             this.isGameRunning = false;
@@ -314,6 +307,11 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.boardPanel.setEnabled(false);
             this.startPauseBut.setText(START_BUTTON_LABEL);
             this.menuBut.setEnabled(true);
-            
+            this.bcMusic.pause();
+        }
+
+        public void StopMusic(){
+            this.bcMusic.stop();
+            this.bcMusic.init();
         }
 }//end class

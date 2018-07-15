@@ -38,20 +38,15 @@ public interface IControllerForView {
     public void setPlayerName(String playerName);
 
     public String getScore();
-
-    public void incrementScore(int increment);
    
     public void initGame();
     ///////////////////
     public boolean isEmptyCell(int i, int j); // To compact() //da rimuovere insieme al model forse
-    public int getBlock(int i,int j);
     
     //TO DO
     //Click -> If adiacent() remove() compact()
     public void remove(int i,int j,int blockType);
     public void nextIncrementLine();
-    public String getLineLeft();
-    public void nextLevel();
-    
+    public int getLineLeft();
     public boolean isGameOver();
 }

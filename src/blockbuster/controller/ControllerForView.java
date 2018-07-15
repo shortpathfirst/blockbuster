@@ -6,7 +6,7 @@
 package blockbuster.controller;
 
 import blockbuster.view.View;
-import blockbuster.model.Model;
+import blockbuster.model.Model;                                                   //CONTROLLER FOR MODEL
 import java.util.Random;
 /**
  *
@@ -36,14 +36,12 @@ public class ControllerForView implements IControllerForView{
 	public void closeStartWindow() {
 		View.getInstance().closeStartWindow();
 	}
-
 	public void openNewGameWindow() {
             if(Model.getInstance().getScore()==0)
 		View.getInstance().openNewGameWindow();
             else
                 View.getInstance().openMainGUI();                               //set new instance
 	}
-
 	public void loadPreviouslySavedGame(String file) {
 		//TO-DO
 	}
@@ -77,9 +75,6 @@ public class ControllerForView implements IControllerForView{
 		return String.valueOf(Model.getInstance().getScore());
 	}
 
-	public void incrementScore(int increment) {
-		Model.getInstance().incrementScore(increment);
-	}
 
 	public void initGame() {
 		Model.getInstance().initGame();
@@ -88,33 +83,30 @@ public class ControllerForView implements IControllerForView{
 	public boolean isEmptyCell(int i, int j) {
 		return Model.getInstance().isEmptyCell(i, j);
 	}
-        public int getBlock(int i, int j) {
-		return 0;
-	}
-        public String getLineLeft(){
-            return ""+Model.getInstance().getLineLeft();
+
+        public int getLineLeft(){
+            return Model.getInstance().getLineLeft();
         }
         
         public void nextIncrementLine() {
             
             if (!Model.getInstance().isLevelCompleted()){
-                        if(Model.getInstance().isIncrementLineFull()){
-                            if (isGameOver()){
-                                View.getInstance().gameOverEvent();
-                                Model.getInstance().initGame();
-                            }else{
-                                Model.getInstance().pushIncrement();
-                                Model.getInstance().updateLine();
-                            }
-                        }
-                        else {
-                                Model.getInstance().incrementLine();
-                                View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());
-                        }
+                if(Model.getInstance().isIncrementLineFull())
+                    if (isGameOver()){
+                        View.getInstance().gameOverEvent();
+                        Model.getInstance().initGame();
+                    }else{
+                        Model.getInstance().pushIncrement();
+                        Model.getInstance().updateLine();
+                    }
+                else {
+                        Model.getInstance().incrementLine();
+                        View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());
                 }
-            else {
-                View.getInstance().nextLevelDialog();
-                View.getInstance().nextLevelAnimation();
+            }
+            else {//next level
+                View.getInstance().nextLevelEvent();
+                View.getInstance().nextLevelAnimation();                        // ANIMATION TO DO
 //                //Animation 1
 //                
 //                Model.getInstance().incrementLine();
@@ -123,38 +115,29 @@ public class ControllerForView implements IControllerForView{
 //                //end animation
             }
 	} // end method next()
-        public void nextLevel(){
-            Model.getInstance().nextLevel();
-            nextIncrementLine();
+        public boolean isGameOver(){
+            return !Model.getInstance().islastRowEmpty();
         }
         //---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
-        public boolean isGameOver() {
-		boolean isGameOver = false;
-		if (!Model.getInstance().islastRowEmpty())
-			isGameOver = true;
-		return isGameOver;
-	}
-        
-        
-        
+
         public void remove(int i,int j,int blockType) { 
                 if(blockType != 0 && !isGameOver()){
                     if(blockType==7)
                         Model.getInstance().removeColor(i,j);
                     if(blockType==8)
                         Model.getInstance().paintSquare(i, j);
-                    if(blockType==9){
+                    if(blockType==9)
                         Model.getInstance().removeSquare(i, j);
-                        Model.getInstance().removeVisitedBlocks();
-                    }
                     else
                         Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
                     
-                    Model.getInstance().removeVisitedBlocks();
-                    Model.getInstance().TrimRows();
-                    View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
+                    
+                    if(Model.getInstance().getVisitedNum() >=3){
+                        Model.getInstance().removeVisitedBlocks();
+                        View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
+                    }
                 }
               
                     

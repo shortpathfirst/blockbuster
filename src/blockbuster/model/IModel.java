@@ -20,7 +20,7 @@ public interface IModel {
         
         public int getScore();
         
-        public void incrementScore(int increment);
+        public int incrementScore();
         public boolean isEmptyCell(int i, int j); //da rimuovere forse
         public void setVisitedBlocks(int i, int j, int blockType);
         public void removeColor(int i, int j);
@@ -28,8 +28,7 @@ public interface IModel {
         
         public void pushIncrement();
         public int getBoardBlock(int i,int j);
-        public void TrimRows();
-        
+        public int getVisitedNum();
 
         public void initGame();
         public void incrementLine();

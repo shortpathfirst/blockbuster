@@ -6,6 +6,7 @@
 package blockbuster.view;
 
 import blockbuster.model.Model;
+import blockbuster.utils.SoundPlayer;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,7 +43,7 @@ public class View implements IView{
 			}
 		});
 	}
-
+        
 	public void closeStartWindow() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -51,7 +52,7 @@ public class View implements IView{
 			}
 		});
 	}
-
+        
 	public void openNewGameWindow() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -80,6 +81,7 @@ public class View implements IView{
 			}
 		});
 	}
+        
 	public void openOptionWindow(){
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -96,13 +98,15 @@ public class View implements IView{
             this.mainGUI.updateLineLabel(lines);
         }
 	public void gameOverEvent() {
-		this.mainGUI.setNewGame();
+		this.mainGUI.initGame();
+                this.mainGUI.StopMusic();
+                new SoundPlayer("gameover").playGameOver();
                 JOptionPane.showMessageDialog(this.mainGUI, "Press Ok to start a new game", "Game Over!", 0);
                 updateScoreLabel(0);
 	}
-        public void nextLevelDialog(){
+        public void nextLevelEvent(){                                          //importante da sistemare view - maingui - controller for view+model
             this.mainGUI.createEndLevelButton();
-            this.mainGUI.setNewGame();
+            this.mainGUI.initGame();
         }
         public void nextLevelAnimation(){
 //            this.mainGUI.endLevelAnimation();  

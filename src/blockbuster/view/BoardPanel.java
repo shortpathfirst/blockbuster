@@ -17,6 +17,7 @@ import java.awt.geom.Rectangle2D;
 
 import blockbuster.view.BlockStyle;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,6 +25,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,8 +53,9 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
 	private Line2D.Double line;
 	private Rectangle2D.Double block;
         private BufferedImage[] sprites;//////////////////
-        
         private int selectedCell;
+        private boolean scored;
+        private int[] pos;
         
 	public BoardPanel() {
 		super();
@@ -82,6 +88,8 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
             if(this.isEnabled()){
 		this.selectedCell = getSelectedCell(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(e.getY())-1, getColumnIndex(e.getX())); //get row number from model
                 ControllerForView.getInstance().remove(20-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
+                this.scored = true;
+                this.pos = new int[]{e.getX(),e.getY()};
             }
 //                System.out.println("[i, j] = [" + (20-getRowIndex(e.getY())-1) + ", " + getColumnIndex(e.getX()) + "]");
 //                System.out.println(this.selectedCell);
@@ -137,43 +145,26 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
                 g2d.setColor(BlockStyle.getInstance().getBlockColor(pieceNumber)); //each piace a color
                 this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
                 g2d.fill(this.block);
-                g2d.setColor(Color.LIGHT_GRAY);  //  ColorSettings.getInstance().getColorForOutlineOfPiece(pieceNumber)
+                g2d.setColor(BlockStyle.getInstance().getGridColor()); 
                 g2d.draw(this.block);
                 g2d.setColor(oldColor);
         }
-        private void drawSprites(Graphics g) { 
-                    BufferedImage bigImg= null;
-                try{
-                    bigImg = ImageIO.read(new File("C:/Users/Andrea/Desktop/LupSalad_BlocksMisc.png"));
-                }catch(IOException ex){
-                     System.out.println("Could not find file");
-                }
+        public void drawScore(Graphics2D g2d){
+            int incScore=Model.getInstance().incrementScore();
+            if(this.pos != null && incScore >0){
+                   g2d.drawString(""+incScore,this.pos[0],this.pos[1]);
+           }
+        }
 
-            final int width =24;
-            final int height = 24;
-            final int rows = 5;
-            final int cols = 7;
-            sprites = new BufferedImage[rows * cols];
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < cols; j++)
-                {
-                    sprites[(i * cols) + j] = bigImg.getSubimage(
-                        j * width,
-                        i * height,
-                        width,
-                        height
-                    );
-                }
-            }
-            g = this.getGraphics();
-            g.drawImage(sprites[1], 120, 40, 24, 24,this);
-            g.drawImage(sprites[7], 120, 60, 24, 24, this);
-            g.drawImage(sprites[8], 120, 80, 24, 24, this);
-            g.drawImage(sprites[15], 120, 100, 24, 24, this);
-            
-            
+        private void drawBlocks(Graphics2D g2d) { 
+           for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
+                for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++){
+                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(Model.getInstance().getBoardBlock(i, j));
+                    if(sprite != null)
+                        g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN+this.uY *(ControllerForView.getInstance().getNumRowsOfBoard() -1- i)), (int) this.uX, (int)this.uY, this);
+                    else
+                        this.drawBlockAtCell(g2d,i,j,Model.getInstance().getBoardBlock(i,j));
+                }      
         }
         
 	//---------------------------------------------------------------
@@ -193,11 +184,9 @@ public class BoardPanel extends JPanel implements MouseListener{ //implements Ke
 		super.paintComponent(g);
                 
 		Graphics2D g2d = (Graphics2D)g;
-		paintGrid(g2d);
-                //drawSprites(g);
-           for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) //add increment line (drawline)
-			for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++)
-                            this.drawBlockAtCell(g2d,i,j,Model.getInstance().getBoardBlock(i,j));
+		paintGrid(g2d);  
+                this.drawBlocks(g2d); 
+                this.drawScore(g2d);                 
         }
         
 }//end class

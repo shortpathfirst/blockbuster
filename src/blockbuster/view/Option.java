@@ -12,13 +12,23 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Window;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import sun.security.krb5.Config;
 
 /**
@@ -42,7 +52,9 @@ public class Option extends JFrame{
     private void initComponents() {
         mainpanel = new JPanel();
         buttonPanel = new JPanel();
-        jpanePage1 = new JPanel();
+        jpanePage1 = new JPanel(){
+            
+        };
         jpanePage2 = new JPanel();
         jpanePage3 = new JPanel();
         jbutPage1 = new JButton();
@@ -66,7 +78,7 @@ public class Option extends JFrame{
 //            JLabel player_i = new Jlabel(config..)
 //            jpanePage2.add(player_i);
 //          }
-                
+         jpanePage1=new Volume();
         
         
         
@@ -122,15 +134,45 @@ public class Option extends JFrame{
         card.show(mainpanel, "card3");
     }         
     
-     private class Volume extends IncrementPanel {
-         int volume = 4;
+     private class Volume extends JPanel{    //inner class chiamata all'interno  
+         int volumeValue;
+         JSlider volumeSlide;
+         JSlider effectsSlide;
          public Volume(){
             super(); 
+            this.setLayout(new GridLayout(2,2));
+            JLabel volumeLabel = new JLabel("Volume:");
+            JLabel effectLabel = new JLabel("Effects:");
+            volumeSlide = Slider();
+            effectsSlide = Slider();
+            add(volumeLabel);
+            add(volumeSlide);
+            add(effectLabel);
+            add(effectsSlide);
          }
-         @Override
-         public void drawCells(Graphics2D g2d){
-            for(int j=0; j<15; j++)//<volumeLevel else empty
-                drawBlockAtCell(g2d,j,2);
-        }
-     }
+         private JSlider Slider(){
+            JSlider volumeSlider= new JSlider(JSlider.HORIZONTAL,0,30,15);
+            volumeSlider.addChangeListener(new ChangeListener(){
+                      public void stateChanged(ChangeEvent e) {
+                        JSlider source = (JSlider)e.getSource();
+                         if (!source.getValueIsAdjusting()) {
+                             volumeValue =source.getValue();
+                             System.out.println(source.getValue());
+                         }
+                }
+            });
+            //Turn on labels at major tick marks.
+            volumeSlider.setMajorTickSpacing(10);
+            volumeSlider.setMinorTickSpacing(1);
+            volumeSlider.setPaintTicks(true);
+            volumeSlider.setPaintLabels(true);
+            volumeSlider.setBorder(
+                BorderFactory.createEmptyBorder(0,0,10,0));
+            
+            return volumeSlider;
+         }
+         public int getVolume(){
+             return volumeValue;
+         }
+     }//end inner class
 }
