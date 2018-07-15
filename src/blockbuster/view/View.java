@@ -98,15 +98,15 @@ public class View implements IView{
             this.mainGUI.updateLineLabel(lines);
         }
 	public void gameOverEvent() {
-		this.mainGUI.initGame();
+                this.mainGUI.StopGame();
                 this.mainGUI.StopMusic();
                 new SoundPlayer("gameover").playGameOver();
                 JOptionPane.showMessageDialog(this.mainGUI, "Press Ok to start a new game", "Game Over!", 0);
                 updateScoreLabel(0);
 	}
-        public void nextLevelEvent(){                                          //importante da sistemare view - maingui - controller for view+model
+        public void nextLevelEvent(){                                        
             this.mainGUI.createEndLevelButton();
-            this.mainGUI.initGame();
+            this.mainGUI.StopGame();
         }
         public void nextLevelAnimation(){
 //            this.mainGUI.endLevelAnimation();  

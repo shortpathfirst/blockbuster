@@ -38,10 +38,11 @@ public class BlockStyle {
         private Color colorBoardLine;  //For highlight
         
         private BufferedImage[] sprites;
-                
+        private Image logoImg;
+        private Image levelImg;
         private BlockStyle(){
            //Costruttore
-           Sprites();
+           loadImage();
            colorGridLineBoard=Color.LIGHT_GRAY;
         }
         private Color ColorSettings() {
@@ -128,17 +129,23 @@ public class BlockStyle {
             File byteCodeFileOfThisClass;
             byteCodeFileOfThisClass = new File(BlockStyle.class.getResource("BlockStyle.class").toURI());
             configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
-            System.out.println(configFile.toString());
         return configFile.toString();
     }
-        private void Sprites() {
-                            BufferedImage bigImg= null;
+        public Image getButtonIcon(){
+            return logoImg;
+        }
+        public Image getEndLevelImage(){
+            levelImg.getScaledInstance(130, -1, Image.SCALE_SMOOTH);
+            return levelImg;
+        }
+        private void loadImage() {
+                BufferedImage bigImg= null;
                 try{
                     bigImg = ImageIO.read(new File(getFileLocation()+"\\source\\LupSalad_BlocksMisc.png"));
-                }catch(IOException ex){
-                     System.out.println("Could not find file");
-                }catch(URISyntaxException e){
-                    System.out.println("Could not find file");
+                    logoImg = ImageIO.read(new File(getFileLocation()+"\\source\\logo.png")); 
+                    levelImg = ImageIO.read(new File(getFileLocation()+"\\source\\level.png"));  
+                }catch (IOException | URISyntaxException ex) {
+                     System.out.println("Source not found");
                 }
 
                 final int width =24;

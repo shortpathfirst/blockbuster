@@ -78,15 +78,13 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.isGameRunning = false;
 //                this.endLevelAnimation = false;
 	}
-        private void ReturnToStartWindows(){           
+        private void ReturnToStartWindows(){                                    //load saved game     
                this.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
-                        initGame(); //load saved game
                         StopGame();
                         StopMusic();
-                        
                     }
                   });
         }
@@ -104,12 +102,10 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		contPane.add(this.optionPanel);
                 contPane.add(this.gamePanel, BorderLayout.EAST);
                 this.bcMusic=new SoundPlayer("bcMusic");
-                try { //B of block buster
-                    Image img = ImageIO.read(jbutSourceImg("\\source\\logo.png"));
-                    this.setIconImage(img);        
-                } catch (Exception ex) {
-                System.out.println("Source not found");
-                }
+                
+                Image img = BlockStyle.getInstance().getButtonIcon();
+                this.setIconImage(img);    
+                
 		this.pack();    
 	}
         private void setGamePanel(){
@@ -240,16 +236,16 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
 	}
-        private File jbutSourceImg(String image){
-            File homeFolder = null;
-                try{
-                    File byteCodeFileOfThisClass = new File(ImageSetting.class.getResource("MainGUI.class").toURI());
-                    homeFolder = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
-                }catch(URISyntaxException urise) {
-                urise.printStackTrace();
-                 }
-                return new File(homeFolder.toString()+image);
-        }
+//        private File jbutSourceImg(String image){
+//            File homeFolder = null;
+//                try{
+//                    File byteCodeFileOfThisClass = new File(ImageSetting.class.getResource("MainGUI.class").toURI());
+//                    homeFolder = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+//                }catch(URISyntaxException urise) {
+//                urise.printStackTrace();
+//                 }
+//                return new File(homeFolder.toString()+image);
+//        }
         public void createEndLevelButton(){
             this.endLevelBut = new JButton();
             this.endLevelBut.setText("LEVEL "+Model.getInstance().getLevel()+" COMPLETED");
@@ -257,14 +253,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
             this.endLevelBut.setVerticalTextPosition(JButton.BOTTOM);
             this.endLevelBut.setBackground(Color.WHITE);
-            try {
-                Image img = ImageIO.read(jbutSourceImg("\\source\\level.png"));
-                img.getScaledInstance(130, -1, Image.SCALE_SMOOTH);
-                System.out.print(this.gamePanel.getWidth());
-                this.endLevelBut.setIcon(new ImageIcon(img));
-            } catch (Exception ex) {
-                System.out.println("Source not found");
-            }
+            Image img = BlockStyle.getInstance().getEndLevelImage();
+            this.endLevelBut.setIcon(new ImageIcon(img));
+
             this.endLevelBut.setPreferredSize(new Dimension(220,150));
             this.endLevelBut.setMaximumSize(new Dimension(220,150));
             this.endLevelBut.addActionListener(new ActionListener() {
@@ -294,22 +285,17 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.timer.start();
             this.bcMusic.start();
         }
-        public void initGame(){//gameover + next level
-                this.isGameStarted = false;
-		this.isGameRunning = false;
-		this.timer.stop();
-		this.startPauseBut.setText(START_BUTTON_LABEL);
-		this.menuBut.setEnabled(true);
-        }
+        
         public void StopGame(){
             this.isGameRunning = false;
             this.timer.stop();
             this.boardPanel.setEnabled(false);
             this.startPauseBut.setText(START_BUTTON_LABEL);
             this.menuBut.setEnabled(true);
-            this.bcMusic.pause();
+            if(!Model.getInstance().isLevelCompleted())                         /// to controller
+                this.bcMusic.pause();
         }
-
+        
         public void StopMusic(){
             this.bcMusic.stop();
             this.bcMusic.init();
