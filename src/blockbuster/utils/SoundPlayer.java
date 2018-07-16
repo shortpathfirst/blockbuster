@@ -21,12 +21,14 @@ import javax.sound.sampled.*;
 public class SoundPlayer implements Runnable 
 {
     private static SoundPlayer instance = null;
-    private String fileLocation = "\\source\\bcMusic.wav";
-    private String gameoverLocation = "\\source\\gameover.wav";
-    Clip clip;
+    private String fileLocation;
+    private final String gameoverLocation = "\\source\\gameover.wav";
+    private final String backgroundLocation ="\\source\\bcMusic.wav";
+    private Clip clip;
     
     public SoundPlayer(String fileToPlay) {
             fileLocation ="\\source\\"+fileToPlay+".wav";
+            instance=null;                                                      //initialized 1 time per object
     }
     public SoundPlayer(){}
     
@@ -38,18 +40,6 @@ public class SoundPlayer implements Runnable
             t.start();
         }else
             this.start();
-    }
-    public void playGameOver() 
-    {  
-        Thread t = new Thread(this);
-        t.start();
-    }
-    public void init(){
-        instance=null;
-    }
-    public void stop(){
-        if(clip != null)
-            clip.close();
     }
     public void pause(){
         if(clip != null)
@@ -73,7 +63,6 @@ public class SoundPlayer implements Runnable
         }catch(LineUnavailableException lue){
             
         }
-        
     }
 
     private void playSound(String fileName) throws UnsupportedAudioFileException, IOException, LineUnavailableException, URISyntaxException 
@@ -82,12 +71,18 @@ public class SoundPlayer implements Runnable
             new File(fileName));
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
-        FloatControl gainControl = 
-            (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-10.0f); // Reduce volume by 10 decibels.
-        if(gameoverLocation.equals(fileLocation)) 
+
+        if (Config.getInstance().isVolumeOn()) {
+            FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float volume = (Config.getInstance().getSoundVolume()/100.0f);
+            if (volume < 0f || volume > 1f)
+                 throw new IllegalArgumentException("Volume not valid: " + volume);
+            control.setValue(20f * (float) Math.log10(volume));
+            if(gameoverLocation.equals(fileLocation)) 
             clip.start();
-        else clip.loop(3);
+            else clip.loop(-1);
+        }
+        
     }
     public String getFileLocation() throws URISyntaxException{
             File configFile = null;

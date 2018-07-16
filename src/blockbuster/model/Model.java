@@ -79,15 +79,14 @@ public class Model implements IModel {
         public int getScore() {
 		return this.score;
 	}
-        public int incrementScore() {
-		this.score += numVisited*5;
-                return numVisited*5;
+        public void addScore() {
+		this.score += numVisitedBlocks*5; //con proporzionalità
 	}
         
         public void initGame() {
                 this.score = 0;
                 this.level=0;
-                this.numVisited = 0;
+                this.numVisitedBlocks = 0;
                 if (this.playerName == null)
                         this.playerName = "Unknown";
                 this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
@@ -102,9 +101,9 @@ public class Model implements IModel {
 	}
         
         //se colonna si svuota chiamo metodo per avvicinare le colonne
-        private int numVisited;
+        private int numVisitedBlocks;
         public void setVisitedBlocks(int i, int j, int blockType) {
-            numVisited++;
+            numVisitedBlocks++;
                     this.visitedArray[i][j] = true;
                     if(i<this.boardArray.length && blockType == this.getBoardBlock(i+1, j) && !this.visitedArray[i+1][j]){//top
                         setVisitedBlocks(i+1,j,blockType);
@@ -133,15 +132,14 @@ public class Model implements IModel {
                             this.boardArray[i][j]=0;
                     }
              }
-            resetVisited();
             TrimRows();
          }//end method
-        private void resetVisited(){
-            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];  //su removeVisited                                           
-            this.numVisited = 0;//su incrementScore()
+       public void resetVisited(){
+            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];                                         
+            this.numVisitedBlocks = 0;
         }
         public int getVisitedNum(){
-            return this.numVisited;
+            return this.numVisitedBlocks;
         }
         private void TrimRows(){
                 for (int j =1; j < this.boardArray[0].length/2; j++){//prima colonna sempre vuota
@@ -184,11 +182,11 @@ public class Model implements IModel {
                             if(this.boardArray[row][column]==ranColor)
                                 this.visitedArray[row][column] = true;
                         
-                numVisited =3; //rimuove sempre
+                numVisitedBlocks =3; //rimuove sempre
         } 
         public void removeSquare(int i, int j){
             this.visitedArray[i][j] = true;
-            if(i>0 && j>0 && j<this.boardArray[0].length){ //non arriva mai al top (game over)
+            if(i>0 && j>0 && j<this.boardArray[0].length-1){ //non arriva mai al top (game over)
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i+1][j+1] = true; //right up corner
@@ -226,7 +224,7 @@ public class Model implements IModel {
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
             }
-                
+                numVisitedBlocks = 3;                                            //da modificare
 //            if(i>0)
 //               if(j>0) 
 //                    this.visitedArray[i-1][j-1] = true; //left corner
@@ -293,15 +291,17 @@ public class Model implements IModel {
            if(i<this.boardArray.length && j<this.boardArray[0].length)
                 return this.boardArray[i][j];
            else return 0;
-            
+        }
+        public int[][] getboardArray(){
+            return this.boardArray;
         }
         
         public boolean isLevelCompleted(){
-            return getLineLeft() ==-1; //Termina a 0
+            return getLineLeft() ==0; 
         }
         private int getLinesOfLevel(){//setlineleft in incrementline e metti su config
             if(this.level==0)
-                return 15;
+                return 21;
             else if(this.level==1)
                 return 20;
             else if(this.level==2)

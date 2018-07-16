@@ -5,7 +5,6 @@
  */
 package blockbuster.view;
 
-import blockbuster.model.Model;
 import blockbuster.utils.SoundPlayer;
 import javax.swing.JOptionPane;
 
@@ -26,6 +25,7 @@ public class View implements IView{
 	protected NewGameWindow newGameWindow = null;
 	protected MainGUI mainGUI = null;
         protected Option optionWindow = null;
+        protected HowToPlayWindow HowToPlayWindow= null;
 
 	private View() {
 		//TO-DO
@@ -81,7 +81,15 @@ public class View implements IView{
 			}
 		});
 	}
-        
+        public void openHowToPlayWindow() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (HowToPlayWindow == null)
+					HowToPlayWindow = new HowToPlayWindow();
+				HowToPlayWindow.setVisible(true);
+			}
+		});
+	}
 	public void openOptionWindow(){
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -97,19 +105,20 @@ public class View implements IView{
 	public void updateLineLabel(int lines){
             this.mainGUI.updateLineLabel(lines);
         }
+
 	public void gameOverEvent() {
-                this.mainGUI.StopGame();
-                this.mainGUI.StopMusic();
-                new SoundPlayer("gameover").playGameOver();
+                this.mainGUI.stopGame();
+                new SoundPlayer("gameover").play();
+                this.mainGUI.restart();
                 JOptionPane.showMessageDialog(this.mainGUI, "Press Ok to start a new game", "Game Over!", 0);
                 updateScoreLabel(0);
 	}
         public void nextLevelEvent(){                                        
             this.mainGUI.createEndLevelButton();
-            this.mainGUI.StopGame();
+            this.mainGUI.stopGame();
         }
         public void nextLevelAnimation(){
-//            this.mainGUI.endLevelAnimation();  
+            this.mainGUI.endLevelAnimation();  
         }
 	//---------------------------------------------------------------
 	// STATIC METHODS

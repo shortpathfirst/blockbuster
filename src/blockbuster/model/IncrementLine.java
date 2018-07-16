@@ -5,6 +5,7 @@
  */
 package blockbuster.model;
 
+import blockbuster.controller.ControllerForView;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -13,7 +14,7 @@ import java.util.Random;
  * @author Andrea
  */
 public class IncrementLine {
-    private static final int NUM_COLUMNS=15;
+    private static final int NUM_COLUMNS = 15;
     
     private LinkedList<Integer> incLine;
     private int lineNumber;

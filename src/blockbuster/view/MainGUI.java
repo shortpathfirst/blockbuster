@@ -8,12 +8,15 @@ package blockbuster.view;
 import blockbuster.controller.ControllerForModel;
 import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
+import blockbuster.utils.Config;
 import blockbuster.utils.SoundPlayer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +25,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,8 +38,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 
 /**
  *
@@ -59,7 +66,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         private boolean isGameStarted;// a game can start only once at the beginning
         private boolean isGameRunning;// a started game can be running or in pause
         private Timer timer; 
-//        private boolean endLevelAnimation;
         private JButton menuBut;
 	private JButton startPauseBut;
         private JButton endLevelBut;
@@ -70,21 +76,21 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	private JLabel linesLeftLab;
         private JLabel linesLeftPrefixLab;
         private SoundPlayer bcMusic;
+        
         public MainGUI() {
 		super("BlockBuster");
 		this.createGUI();
                 this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
 		this.isGameStarted = false;
 		this.isGameRunning = false;
-//                this.endLevelAnimation = false;
 	}
         private void ReturnToStartWindows(){                                    //load saved game     
                this.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
-                        StopGame();
-                        StopMusic();
+                        stopGame();
+//                        StopMusic();
                     }
                   });
         }
@@ -114,9 +120,10 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.gamePanel=new JPanel();
                 this.incrementPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
                 this.boardPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-                this.gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
-                this.gamePanel.add(boardPanel);
-                this.gamePanel.add(incrementPanel);
+//                this.gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
+                this.gamePanel.setLayout(new BorderLayout());
+                this.gamePanel.add(boardPanel,BorderLayout.CENTER);
+                this.gamePanel.add(incrementPanel,BorderLayout.PAGE_END);
         }
         private void setOptionPanel() {
 		this.optionPanel = new JPanel();
@@ -171,10 +178,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.dispose();
             ControllerForView.getInstance().openStartWindow();
             this.bcMusic.pause();
-//            this.createGUI();
-            //loadpreviuly started game if not game over
+            if(!ControllerForView.getInstance().isGameOver())
+                Config.getInstance().saveGame();
             
-//            setEndGameOrNotStarted(); 
         }
         private void startPauseEvent(){//Save game when pause
                 if (!this.isGameStarted) {
@@ -199,7 +205,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                         this.bcMusic.play();
                 }
 		else {
-			StopGame();
+			stopGame();
                 }
                 
         }
@@ -231,21 +237,12 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.incrementPanel.repaint();
 	}
         public void updateScoreLabel(int score) {
-		this.playerScoreLab.setText(String.valueOf(score));
+//            if(cofig == true) add label with increment
+            this.playerScoreLab.setText(String.valueOf(score));
 	}
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
 	}
-//        private File jbutSourceImg(String image){
-//            File homeFolder = null;
-//                try{
-//                    File byteCodeFileOfThisClass = new File(ImageSetting.class.getResource("MainGUI.class").toURI());
-//                    homeFolder = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
-//                }catch(URISyntaxException urise) {
-//                urise.printStackTrace();
-//                 }
-//                return new File(homeFolder.toString()+image);
-//        }
         public void createEndLevelButton(){
             this.endLevelBut = new JButton();
             this.endLevelBut.setText("LEVEL "+Model.getInstance().getLevel()+" COMPLETED");
@@ -284,20 +281,27 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
             this.timer.start();
             this.bcMusic.start();
+            
+//            swapPanel(this.boardPanel,this.animationPanel);
         }
         
-        public void StopGame(){
+        public void stopGame(){
             this.isGameRunning = false;
             this.timer.stop();
             this.boardPanel.setEnabled(false);
             this.startPauseBut.setText(START_BUTTON_LABEL);
             this.menuBut.setEnabled(true);
             if(!Model.getInstance().isLevelCompleted())                         /// to controller
-                this.bcMusic.pause();
+                this.bcMusic.pause(); 
         }
         
-        public void StopMusic(){
-            this.bcMusic.stop();
-            this.bcMusic.init();
+        public void restart(){
+            this.bcMusic = new SoundPlayer("bcMusic");
+            this.isGameStarted=false;
         }
+        
+        public void endLevelAnimation(){ 
+            this.boardPanel.endAnimation = true && Config.getInstance().isEndLevelAnimationOn();
+        }
+
 }//end class

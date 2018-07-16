@@ -5,6 +5,7 @@
  */
 package blockbuster.view;
 
+import blockbuster.utils.Config;
 import blockbuster.utils.SoundPlayer;
 import java.awt.Color;
 import java.awt.Image;
@@ -26,8 +27,6 @@ public class BlockStyle {
 	//---------------------------------------------------------------
 	// INSTANCE ATTRIBUTE
 	//---------------------------------------------------------------
-        private Color colorBackgroundBoard;
-	private Color colorBackgroundTimer;
 	private Color colorGridLineBoard;
 	private Color colorBlock1;
         private Color colorBlock2;
@@ -43,7 +42,6 @@ public class BlockStyle {
         private BlockStyle(){
            //Costruttore
            loadImage();
-           colorGridLineBoard=Color.LIGHT_GRAY;
         }
         private Color ColorSettings() {
 //		try {
@@ -77,9 +75,13 @@ public class BlockStyle {
 //                return this.colorBlock4;
 //	}
         public Color getGridColor() {
+            if(this.colorGridLineBoard== null){
+//                this.colorGridLineBoard = Config.getInstance()
+                  this.colorGridLineBoard = Color.LIGHT_GRAY;
+            }
                 return this.colorGridLineBoard;
 	}
-        public Color getBlockColor(int numBlock) {  // Piace name
+        public Color getBlockColor(int numBlock) { 
             
             if(numBlock ==1)
                 return Color.ORANGE;
@@ -103,24 +105,34 @@ public class BlockStyle {
             return Color.WHITE;
         }
         public BufferedImage getBlockSprite(int numBlock){
+            int i = Config.getInstance().getBlockStyle();
             if(numBlock ==1)
-                return this.sprites[0];
+                return this.sprites[0+i];
             if(numBlock ==2)
-                return this.sprites[8];
+                return this.sprites[6+i];
             if(numBlock ==3)
-               return this.sprites[16];
+               return this.sprites[12+i];
             if(numBlock ==4)
-                return this.sprites[24];
+                return this.sprites[18+i];
             if(numBlock ==5)
-                return this.sprites[28];
+                return this.sprites[24+i];
             if(numBlock ==6)
-                return this.sprites[32];
+                if(i==4)
+                    return this.sprites[46];
+                else
+                    return this.sprites[45];
             if(numBlock ==7)
-                return this.sprites[1];
+                if(i==3)
+                    return this.sprites[36];
+                else return this.sprites[36+i];
             if(numBlock ==8)
-                return this.sprites[15];
-            if(numBlock == 9)
-                return this.sprites[29];
+                return this.sprites[30+i];
+            if(numBlock == 9){
+                if(i==2 || i==3 || i==4)
+                    return this.sprites[0];
+                else
+                    return this.sprites[42+i];
+            }
             else
             return null;
         }
@@ -141,7 +153,7 @@ public class BlockStyle {
         private void loadImage() {
                 BufferedImage bigImg= null;
                 try{
-                    bigImg = ImageIO.read(new File(getFileLocation()+"\\source\\LupSalad_BlocksMisc.png"));
+                    bigImg = ImageIO.read(new File(getFileLocation()+"\\source\\BlockSprites.png"));
                     logoImg = ImageIO.read(new File(getFileLocation()+"\\source\\logo.png")); 
                     levelImg = ImageIO.read(new File(getFileLocation()+"\\source\\level.png"));  
                 }catch (IOException | URISyntaxException ex) {
@@ -150,8 +162,8 @@ public class BlockStyle {
 
                 final int width =24;
                 final int height = 24;
-                final int rows = 5;
-                final int cols = 7;
+                final int rows = 8;
+                final int cols = 6;
                 sprites = new BufferedImage[rows * cols];
 
                 for (int i = 0; i < rows; i++)

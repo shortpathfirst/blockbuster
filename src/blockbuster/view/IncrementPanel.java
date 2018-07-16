@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package blockbuster.view;
+import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
 
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -70,10 +72,15 @@ public class IncrementPanel extends JPanel {
             g2d.draw(this.block);
             g2d.setColor(oldColor);
     }
-    private void drawCells(Graphics2D g2d){
-        for(int j=0; j<15; j++)
-            this.drawBlockAtCell(g2d,j,Model.getInstance().getIncrementBlock(j));
-    }
+     private void drawBlocks(Graphics2D g2d) { 
+           for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) {
+                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(Model.getInstance().getIncrementBlock(j));
+                    if(sprite != null)
+                        g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN), (int) this.uX, (int)this.uY, this);
+                    else
+                        this.drawBlockAtCell(g2d,j,Model.getInstance().getIncrementBlock(j));
+           } 
+        }
     //---------------------------------------------------------------
     // PUBLIC INSTANCE METHODS
     //---------------------------------------------------------------
@@ -96,7 +103,9 @@ public class IncrementPanel extends JPanel {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D)g;
             this.paintGrid(g2d);
-            this.drawCells(g2d);	
+            drawBlocks(g2d);
+//            for(int j=0; j<ControllerForView.getInstance().getNumColumnsOfBoard(); j++)
+//                this.drawBlockAtCell(g2d,j,Model.getInstance().getIncrementBlock(j));
     }//end paint
     
     

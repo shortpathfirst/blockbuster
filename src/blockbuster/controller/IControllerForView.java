@@ -18,7 +18,7 @@ public interface IControllerForView {
     public void openNewGameWindow();
     
     public void closeNewGameWindow();
-    
+    public void openHowToPlayWindow();
     public void openMainGUI();
     public void openOptionWindow();
     
@@ -49,4 +49,5 @@ public interface IControllerForView {
     public void nextIncrementLine();
     public int getLineLeft();
     public boolean isGameOver();
+
 }

@@ -5,14 +5,18 @@
  */
 package blockbuster.utils;
 
+import blockbuster.model.Model;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -88,15 +92,88 @@ public class Config {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Config.class").toURI());
 		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
-		System.out.println("configFile: " + configFile.toString());
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();;
+//		System.out.println("configFile: " + configFile.toString());
 		return configFile.toString();
 	}
 
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
-
+        private int[][] board;
+        private int level;
+        private int score;
+        private int lineLeft;
+        
+        public void saveGame(){
+            this.board = Model.getInstance().getboardArray();
+            this.level=Model.getInstance().getLevel();
+            this.score=Model.getInstance().getScore();
+            this.lineLeft=Model.getInstance().getLineLeft();
+            
+            for(int i=0; i<board.length;i++){
+                    String row="";
+                    for(int j=0; j<board[0].length;j++){
+                        row+=""+board[i][j];
+                    }   
+                    saveProperty(""+i,row);
+            }
+            saveProperty("Level",""+level);
+            saveProperty("Score",""+score);
+            saveProperty("LineLeft",""+lineLeft);
+        }
+        public void setVolume(int volume){
+            if(volume == 0)
+                saveProperty("isVolumeOn","false");
+            else
+                saveProperty("isVolumeOn","true");
+            
+            saveProperty("Volume",""+volume);
+        }
+        public void setEffects(int volume){
+            if(volume == 0)
+                saveProperty("EffectOn","false");
+            else
+                saveProperty("EffectOn","true");
+            
+            saveProperty("Effects",""+volume);
+        }
+        public int getSoundVolume() {
+            return Integer.parseInt(this.properties.getProperty("Volume"));
+	}
+        public int getEffectsVolume() {
+		return Integer.parseInt(this.properties.getProperty("EffectsVolume"));
+	}
+        public boolean isVolumeOn() {
+		return this.properties.getProperty("isVolumeOn").toLowerCase().equals("true");
+	}
+        public boolean isEndLevelAnimationOn() {
+		return this.properties.getProperty("isEndLevelAnimationOn").toLowerCase().equals("true");
+	}
+        public int getBlockStyle() {
+		return Integer.parseInt(this.properties.getProperty("BlockStyle"));
+	}
+        private void saveProperty(String name,String value){
+            FileOutputStream fos=null;
+                try {
+                    fos = new FileOutputStream(this.getConfigFile());
+                    
+                    this.properties.setProperty(name,value);
+                    this.properties.store(fos, "");
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Error");
+                } catch (URISyntaxException | IOException ex) {
+                    System.out.println("Error");
+                }
+                finally{
+                    try{
+                    fos.close();
+                    }catch(IOException ex){
+                        
+                    }
+                    
+                }
+        }
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------

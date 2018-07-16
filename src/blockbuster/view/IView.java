@@ -20,7 +20,7 @@ public interface IView {
 //        public void openScoreBoardWindow(); //ADD
 //
 //        public void closeScoreBoardWindow(); //ADD
-        
+        public void openHowToPlayWindow();
 	public void openMainGUI();
 	
 	public void updateScoreLabel(int score);

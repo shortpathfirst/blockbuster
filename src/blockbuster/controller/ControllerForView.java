@@ -49,7 +49,9 @@ public class ControllerForView implements IControllerForView{
 	public void closeNewGameWindow() {
 		View.getInstance().closeNewGameWindow();
 	}
-
+        public void openHowToPlayWindow(){
+            View.getInstance().openHowToPlayWindow();
+        }
 	public void openMainGUI() {
 		closeNewGameWindow();
 		View.getInstance().openMainGUI();
@@ -89,31 +91,21 @@ public class ControllerForView implements IControllerForView{
         }
         
         public void nextIncrementLine() {
-            
-            if (!Model.getInstance().isLevelCompleted()){
-                if(Model.getInstance().isIncrementLineFull())
+            if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
                         View.getInstance().gameOverEvent();
-                        Model.getInstance().initGame();
+//                        Model.getInstance().initGame();
                     }else{
                         Model.getInstance().pushIncrement();
                         Model.getInstance().updateLine();
+                        View.getInstance().updateLineLabel(getLineLeft());
                     }
-                else {
-                        Model.getInstance().incrementLine();
-                        View.getInstance().updateLineLabel(Model.getInstance().getLineLeft());
-                }
             }
-            else {//next level
+            else if(Model.getInstance().isLevelCompleted()) {//next level
                 View.getInstance().nextLevelEvent();
-                View.getInstance().nextLevelAnimation();                        // ANIMATION TO DO
-//                //Animation 1
-//                
-//                Model.getInstance().incrementLine();
-//                Model.getInstance().pushIncrement();
-//
-//                //end animation
-            }
+                View.getInstance().nextLevelAnimation();                        
+            }else 
+                    Model.getInstance().incrementLine();
 	} // end method next()
         public boolean isGameOver(){
             return !Model.getInstance().islastRowEmpty();
@@ -124,6 +116,7 @@ public class ControllerForView implements IControllerForView{
 
         public void remove(int i,int j,int blockType) { 
                 if(blockType != 0 && !isGameOver()){
+                    if(blockType==6){}
                     if(blockType==7)
                         Model.getInstance().removeColor(i,j);
                     if(blockType==8)
@@ -131,20 +124,19 @@ public class ControllerForView implements IControllerForView{
                     if(blockType==9)
                         Model.getInstance().removeSquare(i, j);
                     else
-                        Model.getInstance().setVisitedBlocks(i,j,blockType); //(start position , blocktype)
+                        Model.getInstance().setVisitedBlocks(i,j,blockType);
                     
                     
                     if(Model.getInstance().getVisitedNum() >=3){
                         Model.getInstance().removeVisitedBlocks();
+                        Model.getInstance().addScore();
                         View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
                     }
+                    Model.getInstance().resetVisited();
                 }
-              
-                    
-                
-                
-//		Model.getInstance().removeColor(blockType);
+
 	}
+
         //---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------
