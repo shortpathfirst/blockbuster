@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -152,6 +150,9 @@ public class Config {
 	}
         public int getBlockStyle() {
 		return Integer.parseInt(this.properties.getProperty("BlockStyle"));
+	}
+        public void setBlockStyle(int i) {
+		saveProperty("BlockStyle",""+i);
 	}
         private void saveProperty(String name,String value){
             FileOutputStream fos=null;

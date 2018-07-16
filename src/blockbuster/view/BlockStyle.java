@@ -106,6 +106,9 @@ public class BlockStyle {
         }
         public BufferedImage getBlockSprite(int numBlock){
             int i = Config.getInstance().getBlockStyle();
+            return getBlockSprite(numBlock,i);
+        }
+        public BufferedImage getBlockSprite(int numBlock,int i){
             if(numBlock ==1)
                 return this.sprites[0+i];
             if(numBlock ==2)

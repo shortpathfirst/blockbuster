@@ -11,12 +11,16 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -55,6 +59,7 @@ public class HowToPlayWindow extends JFrame{
 
         
         initPage1();
+        initPage2();
         mainpanel.setLayout(new java.awt.CardLayout());
         
         mainpanel.add(jpanePage1, "card1");
@@ -114,56 +119,89 @@ public class HowToPlayWindow extends JFrame{
             card.show(mainpanel, "card3");
     }   
     private void initPage1(){
-        this.jpanePage1.setLayout(new BorderLayout(300,100));
-        this.jpanePage1.setPreferredSize(new Dimension(500,500));
+        this.jpanePage1.setLayout(new BorderLayout(100,100));
+        this.jpanePage1.setPreferredSize(new Dimension(1200,400));
         this.jpanePage1.setBackground(Color.ORANGE);
         JPanel content = new JPanel();
         content.setBackground(Color.ORANGE);
-        content.setLayout(new GridLayout(0,3));
         
-        
-        JLabel imgLabel1 = new JLabel();
+       
         JLabel titleLabel1 = new JLabel("The goal");
-        JLabel textLabel1 = new JLabel("Collapse the rising blocks to get as many points as possible");
+        JLabel textLabel1 = new JLabel("<html>Collapse the rising blocks to get "
+                                          + "<br> as many points as possible</html>");
         
-        JLabel imgLabel2 = new JLabel();
+
         JLabel titleLabel2 = new JLabel("How to Play");
-        JLabel textLabel2 = new JLabel("<html>Score points by clickin on like-colored blocks that are grouped in clusters of three or more(stacked in any direction)."
+        JLabel textLabel2 = new JLabel("<html>Score points by clickin on like-colored blocks that are grouped "
+                                            + "<br> in clusters of three or more(stacked in any direction)."
                                             +"<br> The blocks will explode and collapse onto any blocks below them</html>");
         
-        JLabel imgLabel3 = new JLabel();
+        
         JLabel titleLabel3 = new JLabel("Levels");
-        JLabel textLabel3 = new JLabel("<html>To move to the next level you must first clear the number of lines of the blocks displayed. "
+        JLabel textLabel3 = new JLabel("<html>To move to the next level you must first clear "
+                                    + "<br> the number of lines of the blocks displayed. "
                                      +"<br> Each level speeds up, you have to be quick!</html>");
         
         titleLabel1.setFont(new Font("Verdana",1,20));
         titleLabel2.setFont(new Font("Verdana",1,20));
         titleLabel3.setFont(new Font("Verdana",1,20));
         
-        Image img = BlockStyle.getInstance().getBlockSprite(1);
-        imgLabel1.setIcon(new ImageIcon(img));
-        imgLabel2.setIcon(new ImageIcon(img));
-        imgLabel3.setIcon(new ImageIcon(img));
         
-//        imgLabel.setIcon(new ImageIcon(img));
-//        content.add(imgLabel);
-        content.add(imgLabel1);
-        content.add(titleLabel1);
-        content.add(textLabel1);
-        
-        content.add(imgLabel2);
-        content.add(titleLabel2);
-        content.add(textLabel2);
-        
-        content.add(imgLabel3);
-        content.add(titleLabel3);
-        content.add(textLabel3);
+         GroupLayout layout = new GroupLayout(content);
+        content.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+           layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                     .addComponent(titleLabel1)
+                     .addComponent(textLabel1))
+                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                     .addComponent(titleLabel2)
+                     .addComponent(textLabel2))
+                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                     .addComponent(titleLabel3)
+                     .addComponent(textLabel3))
+        );
+        layout.setVerticalGroup(
+           layout.createSequentialGroup()
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                   .addComponent(titleLabel1)
+                   .addComponent(titleLabel2)
+                    .addComponent(titleLabel3))
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                      .addComponent(textLabel1)
+                      .addComponent(textLabel2)
+                      .addComponent(textLabel3))
+        );
         jpanePage1.add(content);
 
     }
     private void initPage2(){
-        JPanel content = new JPanel();
-        content.setLayout(new GridLayout(0,2));
-        Image img = BlockStyle.getInstance().getBlockSprite(1);
+        JPanel blockPane = new JPanel();
+        blockPane.setLayout(new GridLayout(0,2));
+        JLabel b1 = new JLabel("There are 5 normal colored blocks");
+        
+        for(int b=1; b<=9; b++){
+            JPanel block1 = new JPanel();
+            for (int i=0; i<=5; ++i) {
+                JLabel l = new JLabel();
+                l.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(b,i)));
+                block1.add(l);
+            }
+            JLabel lab = new JLabel(""+b);
+            lab.setFont(new Font("Verdana",Font.PLAIN,20));
+            blockPane.add(lab);
+            blockPane.add(block1);
+        }
+         jpanePage2.setLayout(new GridLayout(0,2));
+         jpanePage2.add(blockPane);
+         JLabel description = new JLabel("Block from 1 to 5 are simple block to remove if 3 or more");
+         jpanePage2.add(description);
+         
     }
+        
+        
 }
+

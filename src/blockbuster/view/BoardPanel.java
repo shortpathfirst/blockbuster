@@ -5,7 +5,6 @@
  */
 package blockbuster.view;
 import java.awt.Dimension;
-import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
