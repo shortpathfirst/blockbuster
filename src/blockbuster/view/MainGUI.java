@@ -272,7 +272,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
             this.timer.start();
             this.bcMusic.start();
-            
+            this.boardPanel.StopAnimation();
 //            swapPanel(this.boardPanel,this.animationPanel);
         }
         

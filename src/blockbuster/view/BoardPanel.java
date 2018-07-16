@@ -192,8 +192,8 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         
 @Override
     public void actionPerformed(ActionEvent e) {
-//        clearAnimation();
-        Animation1();
+        clearAnimation();
+//        Animation1();
         this.repaint();
     }
 private void clearAnimation(){
@@ -204,20 +204,14 @@ private void clearAnimation(){
             j=0;
             i++;
         }else
-            this.t.stop();
-            this.endAnimation = false;    
+            StopAnimation();  
 }
-private void Animation1(){
-    
-    
-        if(j<this.board[0].length-1){
-            this.board[i][j] = 1;
-             j++;
-             for(int k=j; k>=0;k--)
-                 this.board[i][j] = 1;
-        }
-            this.t.stop();
-            this.endAnimation = false;    
-        
-}
+    private void Animation1(){
+
+        //to do
+    }
+    public void StopAnimation(){
+        this.t.stop();
+        this.endAnimation = false;    
+    }
 }//end class
