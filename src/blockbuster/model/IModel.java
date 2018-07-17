@@ -40,7 +40,7 @@ public interface IModel {
         public void removeVisitedBlocks();
         public void nextLevel();
         public int getLevelDelay();
-
+        public int getIncrementedScore();
     public boolean islastRowEmpty();
     
     public void removeSquare(int i, int j);

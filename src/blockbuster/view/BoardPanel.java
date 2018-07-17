@@ -8,7 +8,9 @@ import java.awt.Dimension;
 import javax.swing.JPanel;
 import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
+import blockbuster.utils.Config;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -63,9 +65,9 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
                 //For endAnimation
                 this.t = new Timer(40, this);
                 endAnimation=false;
-                                    board= Model.getInstance().getboardArray();
-                    i=0;
-                    j=0;
+                board= Model.getInstance().getboardArray();
+                i=0;
+                j=0;
 	}//end constructor
 
         //--------------------------------------
@@ -86,9 +88,11 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 
 	public void mousePressed(MouseEvent e) {
             if(this.isEnabled()){
-		this.selectedCell = getSelectedCell(e.getX(), e.getY());  
-                ControllerForView.getInstance().remove(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
-                this.pos = new int[]{e.getX(),e.getY()};
+		this.selectedCell = getSelectedCell(e.getX(), e.getY()); 
+                if(selectedCell != 0){
+                    ControllerForView.getInstance().remove(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
+                    this.pos = new int[]{e.getX(),e.getY()};
+                }
             }
 	}
 
@@ -183,17 +187,19 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
                            drawBlockAtCell(g2d, i, j,board[i][j]);
                        } 
                 }            
-//                if(this.pos != null){
-//                    g2d.setFont(new Font("default", Font.BOLD, 16));
-////                    g2d.drawString("FUCK OFF",this.pos[0],this.pos[1]);
-//                }
+                if(this.pos != null && this.selectedCell!=0 &&Config.getInstance().isScoreLabelOn()){
+                    g2d.setFont(new Font("default", Font.BOLD, 16));
+                    g2d.drawString(""+Model.getInstance().getIncrementedScore(),this.pos[0],this.pos[1]);
+                }else{
+                    g2d.drawString("",0,0);
+                }
         }
        
         
 @Override
     public void actionPerformed(ActionEvent e) {
-        clearAnimation();
-//        Animation1();
+//        clearAnimation();
+        Animation1();
         this.repaint();
     }
 private void clearAnimation(){
@@ -207,11 +213,28 @@ private void clearAnimation(){
             StopAnimation();  
 }
     private void Animation1(){
-
+        while(board[i][j]!=0){
+            if(j<board[0].length-1)
+                 j++;
+            else {
+                j=0;
+                i++;
+            }
+        }
+        if(i<this.board.length-1){
+            board[i][j]=1;
+            if(j<board[0].length-1)
+            j++;
+            else j=0;
+        }else{
+            StopAnimation();
+        }
         //to do
     }
     public void StopAnimation(){
         this.t.stop();
+        i=0;
+        j=0;
         this.endAnimation = false;    
     }
 }//end class

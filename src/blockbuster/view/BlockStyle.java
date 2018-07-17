@@ -120,22 +120,13 @@ public class BlockStyle {
             if(numBlock ==5)
                 return this.sprites[24+i];
             if(numBlock ==6)
-                if(i==4)
-                    return this.sprites[46];
-                else
-                    return this.sprites[45];
+                return this.sprites[48+i];
             if(numBlock ==7)
-                if(i==3)
-                    return this.sprites[36];
-                else return this.sprites[36+i];
-            if(numBlock ==8)
                 return this.sprites[30+i];
-            if(numBlock == 9){
-                if(i==2 || i==3 || i==4)
-                    return this.sprites[0];
-                else
-                    return this.sprites[42+i];
-            }
+            if(numBlock ==8)
+                return this.sprites[36+i];
+            if(numBlock == 9)
+                return this.sprites[42+i];
             else
             return null;
         }
@@ -165,7 +156,7 @@ public class BlockStyle {
 
                 final int width =24;
                 final int height = 24;
-                final int rows = 8;
+                final int rows = 9;
                 final int cols = 6;
                 sprites = new BufferedImage[rows * cols];
 

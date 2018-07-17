@@ -258,6 +258,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         public void handleEndLevelButton(){
             this.boardPanel.remove(this.endLevelBut);
+            this.boardPanel.StopAnimation();
             this.boardPanel.setEnabled(true);
             
             this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
@@ -272,7 +273,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
             this.timer.start();
             this.bcMusic.start();
-            this.boardPanel.StopAnimation();
+            
 //            swapPanel(this.boardPanel,this.animationPanel);
         }
         
@@ -292,7 +293,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         
         public void endLevelAnimation(){ 
-            this.boardPanel.endAnimation = true && Config.getInstance().isEndLevelAnimationOn();
+            this.boardPanel.endAnimation = true;// && Config.getInstance().isEndLevelAnimationOn();
         }
 
 }//end class

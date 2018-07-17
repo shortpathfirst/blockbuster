@@ -10,6 +10,7 @@ import blockbuster.utils.Config;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -17,6 +18,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -30,26 +33,69 @@ import javax.swing.event.ChangeListener;
 public class Option extends JFrame{
     private JPanel volumePanel;
     private JPanel mainpanel;
-    
+    private JPanel radioPanel;
+    private JPanel effectPanel;
     public Option() {
         initComponents();
         
     }
     private void initComponents() {
-        mainpanel = new JPanel();
-        volumePanel = new JPanel();
+        this.mainpanel = new JPanel();
+        this.volumePanel = new JPanel();
         
         ReturnToStartWindows();
 //        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        volumePanel.setLayout(new BorderLayout());
-        volumePanel.setPreferredSize(new Dimension(400,400));
-        volumePanel=new Volume();
+        StyleMenu();
         
-        ////////
-            JRadioButton birdButton = new JRadioButton("Style 1");
-            birdButton.setActionCommand("Style 1");
-            birdButton.setSelected(true);
+        this.effectPanel = new JPanel();
+        JCheckBox effect1 = new JCheckBox();
+        effect1.setText("Score at block");
+        if(Config.getInstance().isScoreLabelOn())
+            effect1.setSelected(true);
+        else
+            effect1.setSelected(false);
+            
+        effect1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(effect1.isSelected())
+                                   Config.getInstance().setScoreLabel(true);
+                                else
+                                    Config.getInstance().setScoreLabel(false);
+			}
+		});
+        this.effectPanel.add(effect1);
+            
+            
+            
+            
+            
+            
+        this.volumePanel.setLayout(new BorderLayout());
+        this.volumePanel.setPreferredSize(new Dimension(400,400));
+        this.volumePanel=new Volume();
+        
+        this.mainpanel.setLayout(new GridLayout(0,1));
+        this.mainpanel.add(volumePanel); //set layout
+        this.mainpanel.add(radioPanel);
+        this.mainpanel.add(effectPanel);
+        this.getContentPane();
+        this.add(mainpanel);
+        
+        pack();
+    }
+        private void ReturnToStartWindows(){                                     
+               this.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        ControllerForView.getInstance().openStartWindow();
+                    }
+                  });
+        }
+      
+     private void StyleMenu(){
+        JRadioButton birdButton = new JRadioButton("Style 1");
+        birdButton.setActionCommand("Style 1");
+        birdButton.setSelected(true);
 
         JRadioButton catButton = new JRadioButton("Style 2");
         catButton.setActionCommand("Style 2");
@@ -106,30 +152,32 @@ public class Option extends JFrame{
                               Config.getInstance().setBlockStyle(4);
 			}
 		});
-        JPanel radioPanel = new JPanel(new GridLayout(0, 2));
-        radioPanel.add(birdButton);
-        radioPanel.add(catButton);
-        radioPanel.add(dogButton);
-        radioPanel.add(rabbitButton);
-        radioPanel.add(pigButton);
-        ///////
-        mainpanel.setLayout(new GridLayout(0,1));
-        mainpanel.add(volumePanel); //set layout
-        mainpanel.add(radioPanel);
-        this.getContentPane();
-        this.add(mainpanel);
         
-        pack();
-    }
-        private void ReturnToStartWindows(){                                     
-               this.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        ControllerForView.getInstance().openStartWindow();
-                    }
-                  });
-        }
-      
+        
+        JLabel block0 = new JLabel();
+        block0.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 0)));
+        JLabel block1 = new JLabel();
+        block1.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 1)));
+        JLabel block2 = new JLabel();
+        block2.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 2)));
+        JLabel block3 = new JLabel();
+        block3.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 3)));
+        JLabel block4 = new JLabel();
+        block4.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 4)));
+        
+        radioPanel = new JPanel(new GridLayout(0, 2));
+        
+        radioPanel.add(birdButton);
+        radioPanel.add(block0);
+        radioPanel.add(catButton);
+        radioPanel.add(block1);
+        radioPanel.add(dogButton);
+        radioPanel.add(block2);
+        radioPanel.add(rabbitButton);
+        radioPanel.add(block3);
+        radioPanel.add(pigButton);
+        radioPanel.add(block4);
+     }
 
     
      private class Volume extends JPanel{    //inner class chiamata all'interno  

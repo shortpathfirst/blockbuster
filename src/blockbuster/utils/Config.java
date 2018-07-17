@@ -136,6 +136,9 @@ public class Config {
             
             saveProperty("Effects",""+volume);
         }
+        public void setScoreLabel(boolean value){
+                saveProperty("isScoreLabelOn",""+value);
+        }
         public int getSoundVolume() {
             return Integer.parseInt(this.properties.getProperty("Volume"));
 	}
@@ -148,6 +151,9 @@ public class Config {
         public boolean isEndLevelAnimationOn() {
 		return this.properties.getProperty("isEndLevelAnimationOn").toLowerCase().equals("true");
 	}
+        public boolean isScoreLabelOn(){
+            return this.properties.getProperty("isScoreLabelOn").toLowerCase().equals("true");
+        }
         public int getBlockStyle() {
 		return Integer.parseInt(this.properties.getProperty("BlockStyle"));
 	}

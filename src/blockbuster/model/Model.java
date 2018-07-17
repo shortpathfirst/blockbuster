@@ -81,8 +81,15 @@ public class Model implements IModel {
 	}
         public void addScore() {
 		this.score += numVisitedBlocks*5; //con proporzionalità
+                this.incrementedScore=numVisitedBlocks*5;
 	}
         
+        
+        private int incrementedScore;
+        public int getIncrementedScore(){ //controller //return the last incremented score
+            return this.incrementedScore; //move here numvisted*5
+        }
+                
         public void initGame() {
                 this.score = 0;
                 this.level=0;
@@ -224,24 +231,7 @@ public class Model implements IModel {
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
             }
-                numVisitedBlocks = 3;                                            //da modificare
-//            if(i>0)
-//               if(j>0) 
-//                    this.visitedArray[i-1][j-1] = true; //left corner
-//               else if(j<this.boardArray[0].length) 
-//                    this.visitedArray[i-1][j+1] = true; //right corner
-//               else this.visitedArray[i-1][j] = true; //bottom
-//            if(i<this.boardArray.length)
-//                if(j>0) 
-//                    this.visitedArray[i+1][j-1] = true; //left corner
-//               else if(j<this.boardArray[0].length) 
-//                    this.visitedArray[i+1][j+1] = true; //right corner
-//               else this.visitedArray[i+1][j] = true; //top
-//            if(j>0)
-//                this.visitedArray[i][j-1] = true;
-//            if(j<this.boardArray[0].length)
-//                this.visitedArray[i][j+1] = true;
-            
+                numVisitedBlocks = 3;                                            //da modificare     
         }
         public void paintSquare(int i, int j){
             int ranColor=new Random().nextInt(3)+1;
@@ -249,11 +239,11 @@ public class Model implements IModel {
                     ranColor=new Random().nextInt(5)+1;;
              removeSquare(i,j);
              for (int row = 0;row<this.boardArray.length; row++)
-			for (int columns = 0; columns < this.boardArray[0].length; columns++){
-				if(this.visitedArray[i][j]=true)
-                                    this.boardArray[i][j]=ranColor;
+			for (int column = 0; column < this.boardArray[0].length; column++){
+				if(this.visitedArray[row][column]==true && this.boardArray[row][column]!= 0)
+                                    this.boardArray[row][column]=ranColor;
                         }
-             resetVisited();
+             numVisitedBlocks = 0;
         }
     //end for remove
 
