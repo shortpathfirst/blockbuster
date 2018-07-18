@@ -47,7 +47,17 @@ public class SoundPlayer implements Runnable
     }
     public void start(){
         if(clip != null && !clip.isRunning())
-            clip.start();
+//            clip.start();
+            if (Config.getInstance().isVolumeOn()) {
+            FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float volume = (Config.getInstance().getSoundVolume()/100.0f);
+            if (volume < 0f || volume > 1f)
+                 throw new IllegalArgumentException("Volume not valid: " + volume);
+            control.setValue(20f * (float) Math.log10(volume));
+            if(backgroundLocation.equals(fileLocation)) 
+                clip.loop(-1);
+            else  clip.start();
+        }
     }
     public void run()
     {
@@ -71,17 +81,17 @@ public class SoundPlayer implements Runnable
             new File(fileName));
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
-
-        if (Config.getInstance().isVolumeOn()) {
-            FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float volume = (Config.getInstance().getSoundVolume()/100.0f);
-            if (volume < 0f || volume > 1f)
-                 throw new IllegalArgumentException("Volume not valid: " + volume);
-            control.setValue(20f * (float) Math.log10(volume));
-            if(gameoverLocation.equals(fileLocation)) 
-            clip.start();
-            else clip.loop(-1);
-        }
+        start();
+//        if (Config.getInstance().isVolumeOn()) {
+//            FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//            float volume = (Config.getInstance().getSoundVolume()/100.0f);
+//            if (volume < 0f || volume > 1f)
+//                 throw new IllegalArgumentException("Volume not valid: " + volume);
+//            control.setValue(20f * (float) Math.log10(volume));
+//            if(gameoverLocation.equals(fileLocation)) 
+//            clip.start();
+//            else clip.loop(-1);
+//        }
         
     }
     public String getFileLocation() throws URISyntaxException{

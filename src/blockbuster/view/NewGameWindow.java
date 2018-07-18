@@ -33,7 +33,7 @@ public class NewGameWindow extends JFrame {
 		this.jbutStartGame = new JButton("Start");
 		this.jbutStartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				handleStartGameEvent(jtfName.getText());
+				handleStartGameEvent();
 			}
 		});
 
@@ -68,9 +68,8 @@ public class NewGameWindow extends JFrame {
 		this.pack();
 	} // end constructor
 
-	private void handleStartGameEvent(String playerName) {
-		//System.out.println("Event start game");
-		ControllerForView.getInstance().setPlayerName(playerName);
+	private void handleStartGameEvent() {
+		ControllerForView.getInstance().setPlayerName(this.jtfName.getText());
                 ControllerForView.getInstance().closeNewGameWindow();
 		ControllerForView.getInstance().openMainGUI();
 	}

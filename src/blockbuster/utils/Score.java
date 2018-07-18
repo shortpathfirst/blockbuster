@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
@@ -91,7 +92,7 @@ public class Score {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Score.class").toURI());
 		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 		
                 System.out.println("configFile: " + configFile.toString());
 		
@@ -131,7 +132,28 @@ public class Score {
             return scores;
         }
         public void setPlayerScore(String player,int score){
-            this.properties.setProperty(player,""+score);
+           this.saveProperty(player,""+score);
+        }
+        private void saveProperty(String name,String value){
+            FileOutputStream fos=null;
+                try {
+                    fos = new FileOutputStream(this.getConfigFile());
+                    
+                    this.properties.setProperty(name,value);
+                    this.properties.store(fos, "");
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Error");
+                } catch (URISyntaxException | IOException ex) {
+                    System.out.println("Error");
+                }
+                finally{
+                    try{
+                    fos.close();
+                    }catch(IOException ex){
+                        
+                    }
+                    
+                }
         }
 	//---------------------------------------------------------------
 	// STATIC METHODS

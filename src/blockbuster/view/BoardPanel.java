@@ -187,7 +187,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
                            drawBlockAtCell(g2d, i, j,board[i][j]);
                        } 
                 }            
-                if(this.pos != null && this.selectedCell!=0 &&Config.getInstance().isScoreLabelOn()){
+                if(this.pos != null && this.selectedCell!=0 && Config.getInstance().isScoreLabelOn()){
                     g2d.setFont(new Font("default", Font.BOLD, 16));
                     g2d.drawString(""+Model.getInstance().getIncrementedScore(),this.pos[0],this.pos[1]);
                 }else{
@@ -198,8 +198,8 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         
 @Override
     public void actionPerformed(ActionEvent e) {
-//        clearAnimation();
-        Animation1();
+        clearAnimation();
+//        Animation1();
         this.repaint();
     }
 private void clearAnimation(){

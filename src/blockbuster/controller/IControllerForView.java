@@ -29,7 +29,7 @@ public interface IControllerForView {
     
     public void loadPreviouslySavedGame(String configFile);
     
-    public int getNumColumnsOfBoard(); // Do i lost?
+    public int getNumColumnsOfBoard(); 
 
     public int getNumRowsOfBoard();
 
@@ -40,14 +40,14 @@ public interface IControllerForView {
     public String getScore();
    
     public void initGame();
-    ///////////////////
-    public boolean isEmptyCell(int i, int j); // To compact() //da rimuovere insieme al model forse
+
+    public boolean isEmptyCell(int i, int j);
     
-    //TO DO
-    //Click -> If adiacent() remove() compact()
+    public int getIncrementDelay();
     public void remove(int i,int j,int blockType);
     public void nextIncrementLine();
     public int getLineLeft();
     public boolean isGameOver();
-
+    public int getLevel();
+    public boolean isLevelCompleted();
 }

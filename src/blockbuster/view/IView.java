@@ -17,14 +17,15 @@ public interface IView {
 	public void openNewGameWindow(); // Menu incorporato applicazione (repaint)
 	public void closeNewGameWindow();
         public void openOptionWindow();
-//        public void openScoreBoardWindow(); //ADD
-//
-//        public void closeScoreBoardWindow(); //ADD
+        public void openScoreBoardWindow();
+        public void closeScoreBoardWindow();
+        
         public void openHowToPlayWindow();
 	public void openMainGUI();
 	
 	public void updateScoreLabel(int score);
 	public void updateLineLabel(int lines);
+        public void updatePlayerName(String name);
 	public void gameOverEvent();
         public void nextLevelEvent();
         public void nextLevelAnimation();

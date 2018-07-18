@@ -98,46 +98,50 @@ public class Config {
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
-        private int[][] board;
-        private int level;
-        private int score;
-        private int lineLeft;
         
         public void saveGame(){
-            this.board = Model.getInstance().getboardArray();
-            this.level=Model.getInstance().getLevel();
-            this.score=Model.getInstance().getScore();
-            this.lineLeft=Model.getInstance().getLineLeft();
+            int[][] board = Model.getInstance().getboardArray(); //CONTROLLER!!!
+            int level=Model.getInstance().getLevel();
+            int score=Model.getInstance().getScore();
+            int lineLeft=Model.getInstance().getLineLeft();
+            String playerName = Model.getInstance().getPlayerName();
             
             for(int i=0; i<board.length;i++){
                     String row="";
                     for(int j=0; j<board[0].length;j++){
                         row+=""+board[i][j];
                     }   
-                    saveProperty(""+i,row);
+                    saveProperty(""+i,row,"");
             }
-            saveProperty("Level",""+level);
-            saveProperty("Score",""+score);
-            saveProperty("LineLeft",""+lineLeft);
+            saveProperty("PlayerName",playerName,"");
+            saveProperty("Level",""+level,"");
+            saveProperty("Score",""+score,"");
+            saveProperty("LineLeft",""+lineLeft,"");
         }
         public void setVolume(int volume){
             if(volume == 0)
-                saveProperty("isVolumeOn","false");
+                saveProperty("isVolumeOn","false","");
             else
-                saveProperty("isVolumeOn","true");
+                saveProperty("isVolumeOn","true","");
             
-            saveProperty("Volume",""+volume);
+            saveProperty("Volume",""+volume,"");
         }
         public void setEffects(int volume){
             if(volume == 0)
-                saveProperty("EffectOn","false");
+                saveProperty("EffectOn","false","");
             else
-                saveProperty("EffectOn","true");
+                saveProperty("EffectOn","true","");
             
-            saveProperty("Effects",""+volume);
+            saveProperty("Effects",""+volume,"");
         }
         public void setScoreLabel(boolean value){
-                saveProperty("isScoreLabelOn",""+value);
+                saveProperty("isScoreLabelOn",""+value,"");
+        }
+        public void setPlayerName(String value){
+                saveProperty("PlayerName",""+value,"");
+        }
+        public String getPlayerName(String value){
+                return this.properties.getProperty(value,"Unknown");
         }
         public int getSoundVolume() {
             return Integer.parseInt(this.properties.getProperty("Volume"));
@@ -158,15 +162,21 @@ public class Config {
 		return Integer.parseInt(this.properties.getProperty("BlockStyle"));
 	}
         public void setBlockStyle(int i) {
-		saveProperty("BlockStyle",""+i);
+		saveProperty("BlockStyle",""+i,"Block Style");
 	}
-        private void saveProperty(String name,String value){
+        public String getGameOptionColor() { //in hex
+		return "#"+ this.properties.getProperty("gameOptionColor");
+	}
+        public String getGameBackgroundColor() { //in hex
+		return "#"+this.properties.getProperty("gameBackgroundColor");
+	}
+        private void saveProperty(String name,String value,String Comment){
             FileOutputStream fos=null;
                 try {
                     fos = new FileOutputStream(this.getConfigFile());
                     
                     this.properties.setProperty(name,value);
-                    this.properties.store(fos, "");
+                    this.properties.store(fos, Comment);
                 } catch (FileNotFoundException ex) {
                     System.out.println("Error");
                 } catch (URISyntaxException | IOException ex) {

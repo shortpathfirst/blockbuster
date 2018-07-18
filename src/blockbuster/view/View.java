@@ -26,6 +26,7 @@ public class View implements IView{
 	protected MainGUI mainGUI = null;
         protected Option optionWindow = null;
         protected HowToPlayWindow HowToPlayWindow= null;
+        protected ScoreBoardWindow ScoreBoardWindow = null;
 
 	private View() {
 		//TO-DO
@@ -99,11 +100,30 @@ public class View implements IView{
 			}
 		});
         }
+        public void openScoreBoardWindow(){
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (ScoreBoardWindow == null)
+					ScoreBoardWindow  = new ScoreBoardWindow();
+				ScoreBoardWindow.setVisible(true);
+			}
+		});
+        }
+        public void closeScoreBoardWindow(){
+            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+                            //to do
+			}
+		});
+        }
 	public void updateScoreLabel(int score) {
 		this.mainGUI.updateScoreLabel(score);
 	}
 	public void updateLineLabel(int lines){
             this.mainGUI.updateLineLabel(lines);
+        }
+        public void updatePlayerName(String name){
+            this.mainGUI.updatePlayerName(name);
         }
 
 	public void gameOverEvent() {

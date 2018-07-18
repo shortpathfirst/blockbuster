@@ -88,32 +88,32 @@ public class StartWindow extends JFrame {
         this.jbutScoreboard.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
         this.jbutOption.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
                 
-        this.jbutGamemode1.addActionListener(new ActionListener() {                       //add actionlisteners
+        this.jbutGamemode1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                                     handleGamemode1Event();
                                 }
         });
-        this.jbutGamemode2.addActionListener(new ActionListener() {                       //add actionlisteners
+        this.jbutGamemode2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                                     handleGamemode2Event();
                                 }
         });
-        this.jbutHowToPlay.addActionListener(new ActionListener() {                       //add actionlisteners
+        this.jbutHowToPlay.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                                     handleHowToPlayEvent();
                                 }
         });
-        this.jbutOption.addActionListener(new ActionListener() {                       //add actionlisteners
+        this.jbutOption.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                                     handleOptionEvent();
                                 }
         });
-        this.jbutScoreboard.addActionListener(new ActionListener() {                       //add actionlisteners
+        this.jbutScoreboard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                                    //To do
+                                    handleScoreBoardEvent();
                                 }
         });
-        this.jbutExit.addActionListener(new ActionListener() {                       //add actionlisteners
+        this.jbutExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                                     handleExitEvent();
                                 }
@@ -152,8 +152,8 @@ public class StartWindow extends JFrame {
         private void handleOptionEvent() {
 		new Option().setVisible(true);
 	}
-        private void handleScoreboardEvent() {
-//		new OptionFrame().setVisible(true);
+        private void handleScoreBoardEvent() {
+                new ScoreBoardWindow().setVisible(true);
 	}
         private void handleExitEvent() {
 		this.setVisible(false);

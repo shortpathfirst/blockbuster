@@ -5,7 +5,7 @@
  */
 package blockbuster.model;
 
-import blockbuster.view.View;
+import blockbuster.utils.Config;
 import java.util.*;
 
 
@@ -316,7 +316,7 @@ public class Model implements IModel {
             int lines = getLinesOfLevel()-this.incLine.getLineNumber();
             return lines;
         }
-        public int getLevelDelay(){//add to config ore incrementPanel
+        public int getIncrementlDelay(){
              if(this.level==0 || this.level==1 || this.level==2)
                  return 30;
              else if(this.level==3)

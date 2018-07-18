@@ -39,7 +39,7 @@ public interface IModel {
         public int getLineLeft();
         public void removeVisitedBlocks();
         public void nextLevel();
-        public int getLevelDelay();
+        public int getIncrementlDelay();
         public int getIncrementedScore();
     public boolean islastRowEmpty();
     

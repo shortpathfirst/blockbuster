@@ -7,6 +7,9 @@ package blockbuster.controller;
 
 import blockbuster.view.View;
 import blockbuster.model.Model;                                                   //CONTROLLER FOR MODEL
+import blockbuster.utils.Config;
+import blockbuster.utils.Score;
+import blockbuster.utils.SoundPlayer;
 import java.util.Random;
 /**
  *
@@ -68,15 +71,24 @@ public class ControllerForView implements IControllerForView{
 	public String getPlayerName() {
 		return Model.getInstance().getPlayerName();
 	}
-
+        public int getLevel() {
+		return Model.getInstance().getLevel();
+	}
+        public boolean isLevelCompleted() {
+		return Model.getInstance().isLevelCompleted(); // find usage e fai qua la condizione
+	}
 	public void setPlayerName(String playerName) {
 		Model.getInstance().setPlayerName(playerName);
+                Config.getInstance().setPlayerName(playerName);
+                View.getInstance().updatePlayerName(playerName);
 	}
 
 	public String getScore() {
 		return String.valueOf(Model.getInstance().getScore());
 	}
-
+        public int getIncrementDelay(){
+            return Model.getInstance().getIncrementlDelay();
+        }
 
 	public void initGame() {
 		Model.getInstance().initGame();
@@ -94,6 +106,7 @@ public class ControllerForView implements IControllerForView{
             if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
                         View.getInstance().gameOverEvent();
+                        Score.getInstance().setPlayerScore("andrea", 0);
 //                        Model.getInstance().initGame();
                     }else{
                         Model.getInstance().pushIncrement();
@@ -117,8 +130,11 @@ public class ControllerForView implements IControllerForView{
         public void remove(int i,int j,int blockType) { 
                 if(blockType != 0 && !isGameOver()){
                     if(blockType==6){}
-                    if(blockType==7)
-                        Model.getInstance().removeColor(i,j);
+                    if(blockType==7){
+                            Model.getInstance().removeColor(i,j);
+                            SoundPlayer s= new SoundPlayer("bubble");
+                            s.play();
+                        }
                     if(blockType==8)
                         Model.getInstance().paintSquare(i, j);
                     if(blockType==9)
@@ -131,6 +147,8 @@ public class ControllerForView implements IControllerForView{
                         Model.getInstance().removeVisitedBlocks();
                         Model.getInstance().addScore();
                         View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
+                        SoundPlayer s= new SoundPlayer("bubble");
+                        s.play();
                     }
                     Model.getInstance().resetVisited();
                 }

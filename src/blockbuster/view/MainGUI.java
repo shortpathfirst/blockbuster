@@ -7,7 +7,6 @@ package blockbuster.view;
 
 import blockbuster.controller.ControllerForModel;
 import blockbuster.controller.ControllerForView;
-import blockbuster.model.Model;
 import blockbuster.utils.Config;
 import blockbuster.utils.SoundPlayer;
 import java.awt.BorderLayout;
@@ -71,7 +70,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         public MainGUI() {
 		super("BlockBuster");
 		this.createGUI();
-                this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
+                this.timer = new Timer(ControllerForView.getInstance().getIncrementDelay(), this);
 		this.isGameStarted = false;
 		this.isGameRunning = false;
 	}
@@ -81,14 +80,14 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
                         stopGame();
-//                        StopMusic();
                     }
                   });
         }
         private void createGUI() {
 		this.addComponentListener(this);
-                ReturnToStartWindows();
-              //this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                
+                ReturnToStartWindows();//this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+              
 		this.setPreferredSize(new Dimension(WINDOW_PREFERRED_WIDTH, WINDOW_PREFERRED_HEIGHT));
                 
                 this.setGamePanel();
@@ -98,6 +97,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		contPane.setLayout(new BorderLayout());
 		contPane.add(this.optionPanel);
                 contPane.add(this.gamePanel, BorderLayout.EAST);
+                
                 this.bcMusic=new SoundPlayer("bcMusic");
                 
                 Image img = BlockStyle.getInstance().getButtonIcon();
@@ -111,14 +111,14 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.gamePanel=new JPanel();
                 this.incrementPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
                 this.boardPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
-//                this.gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
+                this.boardPanel.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20)); 
                 this.gamePanel.setLayout(new BorderLayout());
                 this.gamePanel.add(boardPanel,BorderLayout.CENTER);
                 this.gamePanel.add(incrementPanel,BorderLayout.PAGE_END);
         }
         private void setOptionPanel() {
 		this.optionPanel = new JPanel();
-		this.optionPanel.setBackground(Color.decode("#fdb94d"));
+		this.optionPanel.setBackground(Color.decode(Config.getInstance().getGameOptionColor())); //Color.decode("#fdb94d")
 		this.optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
 		this.optionPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
 
@@ -228,22 +228,23 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.incrementPanel.repaint();
 	}
         public void updateScoreLabel(int score) {
-//            if(cofig == true) add label with increment
-            this.playerScoreLab.setText(String.valueOf(score));
+                this.playerScoreLab.setText(String.valueOf(score));
 	}
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
 	}
+        public void updatePlayerName(String name) {
+		this.playerNameLab.setText(name);
+	}
         public void createEndLevelButton(){
             this.endLevelBut = new JButton();
-            this.endLevelBut.setText("LEVEL "+Model.getInstance().getLevel()+" COMPLETED");
+            this.endLevelBut.setText("LEVEL "+ControllerForView.getInstance().getLevel()+" COMPLETED");
             this.endLevelBut.setFont(new Font("Arial", Font.BOLD, 15));
             this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
             this.endLevelBut.setVerticalTextPosition(JButton.BOTTOM);
             this.endLevelBut.setBackground(Color.WHITE);
             Image img = BlockStyle.getInstance().getEndLevelImage();
             this.endLevelBut.setIcon(new ImageIcon(img));
-
             this.endLevelBut.setPreferredSize(new Dimension(220,150));
             this.endLevelBut.setMaximumSize(new Dimension(220,150));
             this.endLevelBut.addActionListener(new ActionListener() {
@@ -252,7 +253,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			}
 		});
 
-            this.boardPanel.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20)); 
+            
             this.startPauseBut.setEnabled(false);
             this.boardPanel.add(endLevelBut);
         }
@@ -270,11 +271,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             ControllerForModel.getInstance().nextLevel();                         //controller for model  
             this.isGameStarted = true;
             this.isGameRunning = true;
-            this.timer = new Timer(Model.getInstance().getLevelDelay(), this);
+            this.timer = new Timer(ControllerForView.getInstance().getIncrementDelay(), this);
             this.timer.start();
             this.bcMusic.start();
-            
-//            swapPanel(this.boardPanel,this.animationPanel);
         }
         
         public void stopGame(){
@@ -283,7 +282,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.boardPanel.setEnabled(false);
             this.startPauseBut.setText(START_BUTTON_LABEL);
             this.menuBut.setEnabled(true);
-            if(!Model.getInstance().isLevelCompleted())                         /// to controller
+            if(!ControllerForView.getInstance().isLevelCompleted())                         
                 this.bcMusic.pause(); 
         }
         
