@@ -122,6 +122,9 @@ public class View implements IView{
 	public void updateLineLabel(int lines){
             this.mainGUI.updateLineLabel(lines);
         }
+        public void updateLineLabel(){
+            this.mainGUI.updateLineLabel();
+        }
         public void updatePlayerName(String name){
             this.mainGUI.updatePlayerName(name);
         }

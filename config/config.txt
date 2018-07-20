@@ -1,9 +1,9 @@
 #
-#Wed Jul 18 16:03:36 CEST 2018
-Score=855
+#Fri Jul 20 16:20:31 CEST 2018
+Score=0
 isVolumeOn=true
 gameOptionColor=fdb94d
-Level=1
+Level=0
 EffectsOn=true
 19=000000000000000
 18=000000000000000
@@ -28,8 +28,8 @@ PlayerName=Unknown
 5=000000000000000
 4=000000000000000
 3=000000000000000
-LineLeft=0
 2=000000000000000
+LineLeft=21
 1=000000000000000
-isScoreLabelOn=false
 0=000000000000000
+isScoreLabelOn=false

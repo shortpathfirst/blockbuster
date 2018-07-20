@@ -10,7 +10,6 @@ import blockbuster.model.Model;                                                 
 import blockbuster.utils.Config;
 import blockbuster.utils.Score;
 import blockbuster.utils.SoundPlayer;
-import java.util.Random;
 /**
  *
  * @author Andrea
@@ -20,7 +19,6 @@ public class ControllerForView implements IControllerForView{
     	//---------------------------------------------------------------
 	// STATIC FIELDS
 	//---------------------------------------------------------------
-	//private final static int SCORE_FACTOR = 10;
 	private static ControllerForView instance = null;
 
 	private ControllerForView() {
@@ -48,6 +46,13 @@ public class ControllerForView implements IControllerForView{
 	public void loadPreviouslySavedGame(String file) {
 		//TO-DO
 	}
+         public void openScoreBoardWindow(){
+             View.getInstance().openScoreBoardWindow();
+         }
+
+        public void closeScoreBoardWindow(){
+            View.getInstance().closeScoreBoardWindow();
+        }
 
 	public void closeNewGameWindow() {
 		View.getInstance().closeNewGameWindow();
@@ -80,7 +85,7 @@ public class ControllerForView implements IControllerForView{
 	public void setPlayerName(String playerName) {
 		Model.getInstance().setPlayerName(playerName);
                 Config.getInstance().setPlayerName(playerName);
-                View.getInstance().updatePlayerName(playerName);
+//                     View.getInstance().updatePlayerName(playerName);
 	}
 
 	public String getScore() {
@@ -89,7 +94,12 @@ public class ControllerForView implements IControllerForView{
         public int getIncrementDelay(){
             return Model.getInstance().getIncrementlDelay();
         }
-
+        public boolean isLevelMode(){
+            return Model.getInstance().isLevelMode();
+        }
+        public void setLevelMode(boolean state){
+            Model.getInstance().setLevelMode(state);
+        }
 	public void initGame() {
 		Model.getInstance().initGame();
 	}
@@ -105,9 +115,9 @@ public class ControllerForView implements IControllerForView{
         public void nextIncrementLine() {
             if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
+                        Model.getInstance().initGame();
                         View.getInstance().gameOverEvent();
-                        Score.getInstance().setPlayerScore("andrea", 0);
-//                        Model.getInstance().initGame();
+                        Score.getInstance().setPlayerScore(Model.getInstance().getPlayerName(), Model.getInstance().getScore());
                     }else{
                         Model.getInstance().pushIncrement();
                         Model.getInstance().updateLine();

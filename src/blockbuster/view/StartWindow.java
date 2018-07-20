@@ -137,13 +137,21 @@ public class StartWindow extends JFrame {
 
 	private void handleGamemode1Event() {//System.out.println("Event: load a previously saved game");
 		ControllerForView.getInstance().closeStartWindow();
-                if(ControllerForView.getInstance().isGameOver())
-                    ControllerForView.getInstance().initGame(); 
-                ControllerForView.getInstance().openMainGUI();                   // openNewGameWindow();        FOR PLAYER NAME
+                ControllerForView.getInstance().openNewGameWindow();
+                if(ControllerForView.getInstance().isGameOver() || !ControllerForView.getInstance().isLevelMode()){
+                    ControllerForView.getInstance().initGame();  //START OVER
+                    ControllerForView.getInstance().setLevelMode(true);
+                    //set player and score
+                }
+                //openMainGui (playername)
 	}
         private void handleGamemode2Event() {//System.out.println("Event: load a previously saved game");
 		ControllerForView.getInstance().closeStartWindow();
 		ControllerForView.getInstance().openNewGameWindow();
+                if(ControllerForView.getInstance().isGameOver()||ControllerForView.getInstance().isLevelMode()){
+                    ControllerForView.getInstance().initGame(); //set player and score
+                    ControllerForView.getInstance().setLevelMode(false);
+                }
 	}
 	private void handleHowToPlayEvent() {
                 ControllerForView.getInstance().closeStartWindow();

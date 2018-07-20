@@ -80,6 +80,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
                         stopGame();
+                        bcMusic.pause();
                     }
                   });
         }
@@ -117,16 +118,19 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.gamePanel.add(incrementPanel,BorderLayout.PAGE_END);
         }
         private void setOptionPanel() {
-		this.optionPanel = new JPanel();
+		this.optionPanel = new JPanel();//new backgroundPanel(); togli default bg su exeption
 		this.optionPanel.setBackground(Color.decode(Config.getInstance().getGameOptionColor())); //Color.decode("#fdb94d")
 		this.optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.Y_AXIS));
-		this.optionPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30)); 
+		this.optionPanel.setBorder(BorderFactory.createEmptyBorder(200, 30, 20, 30)); 
 
 		this.playerNamePrefixLab = new JLabel("Player Name");
 		this.playerNameLab = new JLabel(ControllerForView.getInstance().getPlayerName());    //Config
 		this.playerScorePrefixLab = new JLabel("Score");
 		this.playerScoreLab = new JLabel(ControllerForView.getInstance().getScore());       //Config
-                this.linesLeftPrefixLab= new JLabel("Line Left");
+                if(ControllerForView.getInstance().isLevelMode())
+                    this.linesLeftPrefixLab=new JLabel("Line Left");
+                else 
+                    this.linesLeftPrefixLab= new JLabel("Line number");
                 this.linesLeftLab = new JLabel(""+ControllerForView.getInstance().getLineLeft());      //Config
 		this.startPauseBut = new JButton("Start");
 		this.startPauseBut.addActionListener(new ActionListener() {
@@ -189,6 +193,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.boardPanel.requestFocusInWindow();
 			this.timer.start();
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
+                         View.getInstance().updateLineLabel(); //it's here. cancel in view
 			this.menuBut.setEnabled(false);
                         this.boardPanel.setEnabled(true);
                         this.boardPanel.setVisible(true);
@@ -232,7 +237,14 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	}
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
+                
 	}
+         public void updateLineLabel(){
+             if(ControllerForView.getInstance().isLevelMode()) 
+                    this.linesLeftPrefixLab.setText("Line Left");
+                else 
+                    this.linesLeftPrefixLab.setText("Line number");
+         }
         public void updatePlayerName(String name) {
 		this.playerNameLab.setText(name);
 	}
@@ -273,7 +285,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.isGameRunning = true;
             this.timer = new Timer(ControllerForView.getInstance().getIncrementDelay(), this);
             this.timer.start();
-            this.bcMusic.start();
+//            this.bcMusic.start();
         }
         
         public void stopGame(){
@@ -292,7 +304,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         
         public void endLevelAnimation(){ 
-            this.boardPanel.endAnimation = true;// && Config.getInstance().isEndLevelAnimationOn();
+            this.boardPanel.endAnimation = true && Config.getInstance().isEndLevelAnimationOn();
         }
 
 }//end class

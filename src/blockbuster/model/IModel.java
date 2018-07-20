@@ -41,8 +41,9 @@ public interface IModel {
         public void nextLevel();
         public int getIncrementlDelay();
         public int getIncrementedScore();
-    public boolean islastRowEmpty();
-    
-    public void removeSquare(int i, int j);
-    public void paintSquare(int i, int j);
+        public boolean islastRowEmpty();
+        public boolean isLevelMode();
+        public void setLevelMode(boolean state);
+        public void removeSquare(int i, int j);
+        public void paintSquare(int i, int j);
 }

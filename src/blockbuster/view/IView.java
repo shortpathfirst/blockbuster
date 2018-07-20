@@ -22,7 +22,7 @@ public interface IView {
         
         public void openHowToPlayWindow();
 	public void openMainGUI();
-	
+	public void updateLineLabel();
 	public void updateScoreLabel(int score);
 	public void updateLineLabel(int lines);
         public void updatePlayerName(String name);

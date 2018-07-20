@@ -6,6 +6,7 @@
 package blockbuster.model;
 
 import blockbuster.utils.Config;
+import blockbuster.utils.SoundPlayer;
 import java.util.*;
 
 
@@ -83,7 +84,15 @@ public class Model implements IModel {
 		this.score += numVisitedBlocks*5; //con proporzionalità
                 this.incrementedScore=numVisitedBlocks*5;
 	}
-        
+        public boolean isLevelMode(){
+            return this.level != -1;
+        }
+        public void setLevelMode(boolean state){
+            if(state == false)
+                this.level=-1;
+            else
+                this.level=0;
+        }
         
         private int incrementedScore;
         public int getIncrementedScore(){ //controller //return the last incremented score
@@ -92,13 +101,17 @@ public class Model implements IModel {
                 
         public void initGame() {
                 this.score = 0;
-                this.level=0;
+                if(this.isLevelMode())
+                    this.level=0;
+                else
+                    this.level=-1;
                 this.numVisitedBlocks = 0;
                 if (this.playerName == null)
                         this.playerName = "Unknown";
                 this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
                 this.incLine = new IncrementLine();
                 this.incLine.setLineNumber(0);
+                new SoundPlayer("bcMusic");//////////////new instance///////////
         }
     	public boolean isEmptyCell(int i, int j) { ////da rimuovere se non usato
 		boolean isEmptyCell = false;
@@ -181,7 +194,7 @@ public class Model implements IModel {
         }
         public void removeColor(int i, int j){
             int ranColor=new Random().nextInt(3)+1;
-                if(this.level>=6)
+                if(this.level>=6 || this.isLevelMode())
                     ranColor=new Random().nextInt(5)+1;;
                 this.visitedArray[i][j] = true;
                 for (int column = 0; column < this.boardArray[0].length; column++)
@@ -235,7 +248,7 @@ public class Model implements IModel {
         }
         public void paintSquare(int i, int j){
             int ranColor=new Random().nextInt(3)+1;
-                if(this.level>=6)
+                if(this.level>=6 || this.isLevelMode())
                     ranColor=new Random().nextInt(5)+1;;
              removeSquare(i,j);
              for (int row = 0;row<this.boardArray.length; row++)
@@ -313,7 +326,10 @@ public class Model implements IModel {
             else return 70;
         }
         public int getLineLeft(){
-            int lines = getLinesOfLevel()-this.incLine.getLineNumber();
+            int lines;
+            if(this.isLevelMode())
+                lines = getLinesOfLevel()-this.incLine.getLineNumber();
+            else lines=this.incLine.getLineNumber()+1;
             return lines;
         }
         public int getIncrementlDelay(){

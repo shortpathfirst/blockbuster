@@ -23,9 +23,9 @@ public interface IControllerForView {
     public void openOptionWindow();
     
     
-//    public void openScoreBoardWindow(); //ADD
-//
-//    public void closeScoreBoardWindow(); //ADD
+    public void openScoreBoardWindow(); 
+
+    public void closeScoreBoardWindow(); 
     
     public void loadPreviouslySavedGame(String configFile);
     
@@ -34,6 +34,8 @@ public interface IControllerForView {
     public int getNumRowsOfBoard();
 
     public String getPlayerName();
+    public boolean isLevelMode();
+    public void setLevelMode(boolean state);
 
     public void setPlayerName(String playerName);
 

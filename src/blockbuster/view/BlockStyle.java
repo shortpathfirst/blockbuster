@@ -41,7 +41,12 @@ public class BlockStyle {
         private Image levelImg;
         private BlockStyle(){
            //Costruttore
-           loadImage();
+//           try{
+             loadImage();
+//           }catch(NullPointerException npe){
+//               
+//           }
+              
         }
         private Color ColorSettings() {
 //		try {
@@ -144,7 +149,7 @@ public class BlockStyle {
             levelImg.getScaledInstance(130, -1, Image.SCALE_SMOOTH);
             return levelImg;
         }
-        private void loadImage() {
+        private void loadImage() {//throws NullPointerException  {
                 BufferedImage bigImg= null;
                 try{
                     bigImg = ImageIO.read(new File(getFileLocation()+"\\source\\BlockSprites.png"));
