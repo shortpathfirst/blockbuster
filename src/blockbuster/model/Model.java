@@ -248,7 +248,7 @@ public class Model implements IModel {
         }
         public void paintSquare(int i, int j){
             int ranColor=new Random().nextInt(3)+1;
-                if(this.level>=6 || this.isLevelMode())
+                if(this.level>=6 || !this.isLevelMode())
                     ranColor=new Random().nextInt(5)+1;;
              removeSquare(i,j);
              for (int row = 0;row<this.boardArray.length; row++)
