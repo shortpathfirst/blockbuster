@@ -70,7 +70,7 @@ public class NewGameWindow extends JFrame {
 
 	private void handleStartGameEvent() {
 		ControllerForView.getInstance().setPlayerName(this.jtfName.getText());
-                ControllerForView.getInstance().closeNewGameWindow();
+//                ControllerForView.getInstance().closeNewGameWindow();
 		ControllerForView.getInstance().openMainGUI();
 	}
 

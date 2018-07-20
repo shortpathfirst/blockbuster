@@ -35,6 +35,9 @@ public class Option extends JFrame{
     private JPanel mainpanel;
     private JPanel radioPanel;
     private JPanel effectPanel;
+    
+    private JCheckBox effect1;
+    private JCheckBox effect2;
     public Option() {
         initComponents();
         
@@ -48,22 +51,12 @@ public class Option extends JFrame{
         StyleMenu();
         
         this.effectPanel = new JPanel();
-        JCheckBox effect1 = new JCheckBox();
-        effect1.setText("Score at block");
-        if(Config.getInstance().isScoreLabelOn())
-            effect1.setSelected(true);
-        else
-            effect1.setSelected(false);
-            
-        effect1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(effect1.isSelected())
-                                   Config.getInstance().setScoreLabel(true);
-                                else
-                                    Config.getInstance().setScoreLabel(false);
-			}
-		});
+        effect1 = new JCheckBox();
+        setEffect1();
+        effect2 = new JCheckBox();
+        setEffect2();
         this.effectPanel.add(effect1);
+        this.effectPanel.add(effect2);
             
             
             
@@ -178,7 +171,38 @@ public class Option extends JFrame{
         radioPanel.add(pigButton);
         radioPanel.add(block4);
      }
-
+    private void setEffect1(){
+        effect1.setText("Score at block");
+        if(Config.getInstance().isScoreLabelOn())
+            effect1.setSelected(true);
+        else
+            effect1.setSelected(false);
+            
+        effect1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(effect1.isSelected())
+                                   Config.getInstance().setScoreLabel(true);
+                                else
+                                    Config.getInstance().setScoreLabel(false);
+			}
+		});
+    }
+      private void setEffect2(){
+        effect2.setText("End Level Animation");
+        if(Config.getInstance().isEndLevelAnimationOn())
+            effect2.setSelected(true);
+        else
+            effect2.setSelected(false);
+            
+        effect2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(effect2.isSelected())
+                                   Config.getInstance().setEndLevelAnimation(true);
+                                else
+                                    Config.getInstance().setEndLevelAnimation(false);
+			}
+		});
+    }
     
      private class Volume extends JPanel{    //inner class chiamata all'interno  
          private int volumeValue;

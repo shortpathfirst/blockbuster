@@ -15,9 +15,9 @@ public interface IControllerForView {
     
     public void closeStartWindow();
     
-    public void openNewGameWindow();
-    
-    public void closeNewGameWindow();
+//    public void openNewGameWindow();
+//    
+//    public void closeNewGameWindow();
     public void openHowToPlayWindow();
     public void openMainGUI();
     public void openOptionWindow();

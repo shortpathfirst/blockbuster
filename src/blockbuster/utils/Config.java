@@ -164,6 +164,9 @@ public class Config {
         public void setBlockStyle(int i) {
 		saveProperty("BlockStyle",""+i,"Block Style");
 	}
+        public void setEndLevelAnimation(boolean value){
+            saveProperty("isEndLevelAnimationOn",""+value,"");
+        }
         public String getGameOptionColor() { //in hex
 		return "#"+ this.properties.getProperty("gameOptionColor");
 	}

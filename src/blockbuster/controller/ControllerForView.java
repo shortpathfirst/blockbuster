@@ -37,12 +37,12 @@ public class ControllerForView implements IControllerForView{
 	public void closeStartWindow() {
 		View.getInstance().closeStartWindow();
 	}
-	public void openNewGameWindow() {
-            if(Model.getInstance().getScore()==0)
-		View.getInstance().openNewGameWindow();
-            else
-                View.getInstance().openMainGUI();                               //set new instance
-	}
+//	public void openNewGameWindow() {
+//            if(Model.getInstance().getScore()==0)
+//		View.getInstance().openNewGameWindow();
+//            else
+//                View.getInstance().openMainGUI();                               //set new instance
+//	}
 	public void loadPreviouslySavedGame(String file) {
 		//TO-DO
 	}
@@ -54,14 +54,14 @@ public class ControllerForView implements IControllerForView{
             View.getInstance().closeScoreBoardWindow();
         }
 
-	public void closeNewGameWindow() {
-		View.getInstance().closeNewGameWindow();
-	}
+//	public void closeNewGameWindow() {
+//		View.getInstance().closeNewGameWindow();
+//	}
         public void openHowToPlayWindow(){
             View.getInstance().openHowToPlayWindow();
         }
 	public void openMainGUI() {
-		closeNewGameWindow();
+//		closeNewGameWindow();
 		View.getInstance().openMainGUI();
 	}
 
@@ -115,8 +115,8 @@ public class ControllerForView implements IControllerForView{
         public void nextIncrementLine() {
             if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
-                        Model.getInstance().initGame();
                         View.getInstance().gameOverEvent();
+                        Model.getInstance().initGame();
                         Score.getInstance().setPlayerScore(Model.getInstance().getPlayerName(), Model.getInstance().getScore());
                     }else{
                         Model.getInstance().pushIncrement();
@@ -126,7 +126,8 @@ public class ControllerForView implements IControllerForView{
             }
             else if(Model.getInstance().isLevelCompleted()) {//next level
                 View.getInstance().nextLevelEvent();
-                View.getInstance().nextLevelAnimation();                        
+                if(Config.getInstance().isEndLevelAnimationOn())
+                     View.getInstance().nextLevelAnimation();                        
             }else 
                     Model.getInstance().incrementLine();
 	} // end method next()
@@ -138,7 +139,7 @@ public class ControllerForView implements IControllerForView{
 	//---------------------------------------------------------------
 
         public void remove(int i,int j,int blockType) { 
-                if(blockType != 0 && !isGameOver()){
+//                if(blockType != 0){
                     if(blockType==6){}
                     if(blockType==7){
                             Model.getInstance().removeColor(i,j);
@@ -161,7 +162,7 @@ public class ControllerForView implements IControllerForView{
                         s.play();
                     }
                     Model.getInstance().resetVisited();
-                }
+//                }
 
 	}
 

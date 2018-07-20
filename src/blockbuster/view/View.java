@@ -53,25 +53,25 @@ public class View implements IView{
 			}
 		});
 	}
-        
-	public void openNewGameWindow() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (newGameWindow == null)
-					newGameWindow = new NewGameWindow();
-				newGameWindow.setVisible(true);
-			}
-		});
-	}
-
-	public void closeNewGameWindow() {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				if (newGameWindow != null)
-					newGameWindow.setVisible(false);
-			}
-		});
-	}
+//        
+//	public void openNewGameWindow() {
+//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				if (newGameWindow == null)
+//					newGameWindow = new NewGameWindow();
+//				newGameWindow.setVisible(true);
+//			}
+//		});
+//	}
+//
+//	public void closeNewGameWindow() {
+//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				if (newGameWindow != null)
+//					newGameWindow.setVisible(false);
+//			}
+//		});
+//	}
 
 	public void openMainGUI() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

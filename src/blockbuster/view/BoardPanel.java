@@ -39,7 +39,6 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 	// INSTANCE ATTRIBUTES
 	//---------------------------------------------------------------
 
-	private boolean isHighlighted;                                            //able/disable keyboard imput
 	private double uX;
 	private double uY;
 	private Line2D.Double line;
@@ -55,13 +54,12 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         private int j;
 	public BoardPanel() {
 		super();
-                this.isHighlighted = true;                                      //Controller.getvalue() se ha input attiva altrimenti toglie
 		this.line = new Line2D.Double();
 		this.block = new Rectangle2D.Double();
                 this.selectedCell = -1;
 		this.setBackground(Color.BLACK);    //ColorSettings.getInstance().getColorBackgroundBoard()
-		//this.addKeyListener(this);
                 addMouseListener(this);   
+                
                 //For endAnimation
                 this.t = new Timer(40, this);
                 endAnimation=false;
@@ -88,9 +86,11 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 
 	public void mousePressed(MouseEvent e) {
             if(this.isEnabled()){
-		this.selectedCell = getSelectedCell(e.getX(), e.getY()); 
-                if(selectedCell != 0){
-                    ControllerForView.getInstance().remove(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(e.getY())-1,getColumnIndex(e.getX()),selectedCell);
+                int row= getRowIndex(e.getY());
+                int column =getColumnIndex(e.getX()); 
+		this.selectedCell = Model.getInstance().getBoardBlock(row,column);
+                if( this.selectedCell != 0){ 
+                    ControllerForView.getInstance().remove(row,column,selectedCell);
                     this.pos = new int[]{e.getX(),e.getY()};
                 }
             }
@@ -105,15 +105,12 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         private int getRowIndex(int y) {// [20,0] out index
 		int i = -1;
                 i = (int)((double)(y - Y_MARGIN) / this.uY);
-		return i;
+		return ControllerForView.getInstance().getNumRowsOfBoard()-i-1;
 	}
 	private int getColumnIndex(int x) {// [0,15] out index
 		int j = -1;
                 j = (int)((double)(x - X_MARGIN) / this.uX);
 		return j;
-	}
-        private int getSelectedCell(int x, int y) {
-                return Model.getInstance().getBoardBlock(ControllerForView.getInstance().getNumRowsOfBoard()-getRowIndex(y)-1, getColumnIndex(x));                 // controller...
 	}
         
         public void paintGrid(Graphics2D g2d) {

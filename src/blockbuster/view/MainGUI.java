@@ -193,7 +193,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			this.boardPanel.requestFocusInWindow();
 			this.timer.start();
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
-                         View.getInstance().updateLineLabel(); //it's here. cancel in view
 			this.menuBut.setEnabled(false);
                         this.boardPanel.setEnabled(true);
                         this.boardPanel.setVisible(true);
