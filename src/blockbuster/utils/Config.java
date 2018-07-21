@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+
 /**
  *
  * @author Andrea
@@ -43,6 +44,7 @@ public class Config {
 			String configFile = getConfigFile();
 			BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "ISO-8859-1"));
 			this.properties = new Properties();
+                        
 			this.properties.load(buffRead);
 		}
 		catch(URISyntaxException urise) {
@@ -100,11 +102,19 @@ public class Config {
 	//---------------------------------------------------------------
         
         public void saveGame(){
-            int[][] board = Model.getInstance().getboardArray(); //CONTROLLER!!!
+            int[][] board = Model.getInstance().getboardArray(); //controller!!
             int level=Model.getInstance().getLevel();
             int score=Model.getInstance().getScore();
             int lineLeft=Model.getInstance().getLineLeft();
             String playerName = Model.getInstance().getPlayerName();
+            
+            saveProperty("PlayerName",playerName,"");
+            if(level<0)
+                saveProperty("Level","Unlimited","");
+            else
+                saveProperty("Level",""+level,"");
+            saveProperty("Score",""+score,"");
+            saveProperty("LineLeft",""+lineLeft,"");
             
             for(int i=0; i<board.length;i++){
                     String row="";
@@ -113,10 +123,7 @@ public class Config {
                     }   
                     saveProperty(""+i,row,"");
             }
-            saveProperty("PlayerName",playerName,"");
-            saveProperty("Level",""+level,"");
-            saveProperty("Score",""+score,"");
-            saveProperty("LineLeft",""+lineLeft,"");
+            
         }
         public void setVolume(int volume){
             if(volume == 0)
@@ -181,9 +188,9 @@ public class Config {
                     this.properties.setProperty(name,value);
                     this.properties.store(fos, Comment);
                 } catch (FileNotFoundException ex) {
-                    System.out.println("Error");
+                    ex.printStackTrace();
                 } catch (URISyntaxException | IOException ex) {
-                    System.out.println("Error");
+                    ex.printStackTrace();
                 }
                 finally{
                     try{

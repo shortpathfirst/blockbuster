@@ -141,8 +141,6 @@ public class StartWindow extends JFrame {
                 if(ControllerForView.getInstance().isGameOver() || !ControllerForView.getInstance().isLevelMode()){
                     ControllerForView.getInstance().initGame();  //START OVER
                     ControllerForView.getInstance().setLevelMode(true);
-                    View.getInstance().updateLineLabel();
-                    View.getInstance().updateLineLabel(ControllerForView.getInstance().getLineLeft());
                     //set player and score
                 }
                 //openMainGui (playername)
@@ -153,8 +151,6 @@ public class StartWindow extends JFrame {
                 if(ControllerForView.getInstance().isGameOver()||ControllerForView.getInstance().isLevelMode()){
                     ControllerForView.getInstance().initGame(); //set player and score
                     ControllerForView.getInstance().setLevelMode(false);
-                    View.getInstance().updateLineLabel();
-                    View.getInstance().updateLineLabel(ControllerForView.getInstance().getLineLeft());
                 }
 	}
 	private void handleHowToPlayEvent() {

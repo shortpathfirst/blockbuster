@@ -5,6 +5,7 @@
  */
 package blockbuster.utils;
 
+import blockbuster.controller.ControllerForView;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,9 +15,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.TreeSet;
 
 /**
  *
@@ -47,14 +51,8 @@ public class Score {
 			this.properties = new Properties();
 			this.properties.load(buffRead);
 		}
-		catch(URISyntaxException urise) {
-			urise.printStackTrace();
-		}
-		catch(FileNotFoundException fnfe) {
-			fnfe.printStackTrace();
-		}
-		catch(IOException ioe) {
-			ioe.printStackTrace();
+		catch(URISyntaxException | IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 
@@ -102,37 +100,56 @@ public class Score {
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
-        public int getPlayerScore(String p){
-            String name="";
-            int value = 0;
-            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
-                name = (String)e.nextElement();
-                try{
-                    value = Integer.parseInt(this.properties.getProperty(name).trim());
-                }catch (NumberFormatException num) {
-                     value=0;
-                     setPlayerScore(name,0);
+//        public int getPlayerScore(String p,boolean levelmode){
+//            String name="";
+//            int value = 0;
+//            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
+//                name = (String)e.nextElement();
+//                try{
+//                    value = Integer.parseInt(this.properties.getProperty(name).trim());
+//                }catch (NumberFormatException num) {
+//                     setPlayerScore(name,0,levelmode);
+//                }
+//                if(name.equals(p))
+//                    return value;
+//            }
+//            return -1;
+//        }
+//        public List<String> getPlayers(){
+//            List<String> players = new ArrayList();
+//            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
+//                players.add((String)e.nextElement());
+//            }
+//            return players;
+//        }
+//        public List<String> getScores(){ //return player not score
+//            List<String> scores = new ArrayList();
+//            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
+//                scores.add((String)e.nextElement());
+//            }
+//            return scores;
+//        }
+        public HashMap<String, String> getPlayerScores(){// split , 2 integer
+            	HashMap<String, String> mapPlayerToScore = new HashMap<String, String>();
+                for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements();){
+                        String name = (String)e.nextElement();
+			mapPlayerToScore.put(name, this.properties.getProperty(name));
+                }
+                return mapPlayerToScore;
+        }
+        public void setPlayerScore(String player,int score,boolean levelmode){
+            String[] p = null;
+            if(this.properties.containsKey(player)){
+                    p = this.properties.getProperty(player).split(",");
+                if(levelmode){
+                    if(p[0].trim().isEmpty() || (score >  Integer.parseInt(p[0].trim())) )
+                        this.saveProperty(player,""+score+","+p[1]);   
+                }
+                else{
+                      if(p[1].trim().isEmpty() || (score >  Integer.parseInt(p[1].trim())) )
+                        this.saveProperty(player,""+p[0]+","+score);   
                 }
             }
-            if(name.equals(p)) return value;
-            else return -1;
-        }
-        public List<String> getPlayers(){
-            List<String> players = new ArrayList();
-            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
-                players.add((String)e.nextElement());
-            }
-            return players;
-        }
-        public List<String> getScores(){
-            List<String> scores = new ArrayList();
-            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
-                scores.add((String)e.nextElement());
-            }
-            return scores;
-        }
-        public void setPlayerScore(String player,int score){
-           this.saveProperty(player,""+score);
         }
         private void saveProperty(String name,String value){
             FileOutputStream fos=null;
@@ -148,7 +165,7 @@ public class Score {
                 }
                 finally{
                     try{
-                    fos.close();
+                        fos.close();
                     }catch(IOException ex){
                         
                     }

@@ -5,6 +5,7 @@
  */
 package blockbuster.view;
 
+import blockbuster.controller.ControllerForView;
 import blockbuster.utils.SoundPlayer;
 import javax.swing.JOptionPane;
 
@@ -79,6 +80,9 @@ public class View implements IView{
 				if (mainGUI == null)
 					mainGUI = new MainGUI();
 				mainGUI.setVisible(true);
+                                updateLineLabel();
+                                updateScoreLabel(0);
+                                updateLineLabel(ControllerForView.getInstance().getLineLeft());
 			}
 		});
 	}

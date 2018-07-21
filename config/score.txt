@@ -1,5 +1,7 @@
 #
-#Fri Jul 20 22:50:33 CEST 2018
-andrea=1225
-Unknown=0
-bibui=130
+#Sat Jul 21 15:00:49 CEST 2018
+b=20, 
+a=10, 
+Unknown=1630,425
+d=12, 
+c=30, 

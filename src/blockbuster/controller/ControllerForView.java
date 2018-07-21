@@ -116,8 +116,8 @@ public class ControllerForView implements IControllerForView{
             if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
                         View.getInstance().gameOverEvent();
+                        Score.getInstance().setPlayerScore(Model.getInstance().getPlayerName(), Model.getInstance().getScore(),Model.getInstance().isLevelMode());
                         Model.getInstance().initGame();
-                        Score.getInstance().setPlayerScore(Model.getInstance().getPlayerName(), Model.getInstance().getScore());
                     }else{
                         Model.getInstance().pushIncrement();
                         Model.getInstance().updateLine();
@@ -143,8 +143,7 @@ public class ControllerForView implements IControllerForView{
                     if(blockType==6){}
                     if(blockType==7){
                             Model.getInstance().removeColor(i,j);
-                            SoundPlayer s= new SoundPlayer("bubble");
-                            s.play();
+                            new SoundPlayer("bubble").play();
                         }
                     if(blockType==8)
                         Model.getInstance().paintSquare(i, j);
@@ -158,8 +157,7 @@ public class ControllerForView implements IControllerForView{
                         Model.getInstance().removeVisitedBlocks();
                         Model.getInstance().addScore();
                         View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
-                        SoundPlayer s= new SoundPlayer("bubble");
-                        s.play();
+                        new SoundPlayer("bubble").play();
                     }
                     Model.getInstance().resetVisited();
 //                }
