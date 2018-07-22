@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -84,49 +85,18 @@ public class ScoreBoardWindow extends JFrame{
                 scoreBoardPane = new JPanel();
                 scoreBoardPane.setLayout(new GridLayout(0,3));
                 
-                HashMap<String, String> map = Score.getInstance().getPlayerScores();
-                for(int i=0; i<=10; i++){
-                        double max = Double.NEGATIVE_INFINITY;
-                        String key="";
-                        for(Map.Entry<String, String> entry : map.entrySet()) {
-                            String[] s = entry.getValue().split(",");
-                                if (Integer.parseInt(s[0].trim()) > max){ 
-                                    max = Integer.parseInt(s[0].trim());
-                                    key = entry.getKey();
-                                }
-                        }
-                        JLabel index = new JLabel(" "+(i+1)+".");
-                        JLabel name = new JLabel(key);
-                        JLabel score = new JLabel(""+max);
-                        map.remove(key);
-                        if(max >Double.NEGATIVE_INFINITY){
-                            scoreBoardPane.add(index);
-                            scoreBoardPane.add(name);
-                            scoreBoardPane.add(score);
-                        }
-                }
+                 scoreBoardPane.add(new JLabel("Level Mode"));
+                scoreBoardPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+                scoreBoardPane.add(new JSeparator(SwingConstants.HORIZONTAL));
                 
-                 HashMap<String, String> map2 = Score.getInstance().getPlayerScores();
-                for(int i=0; i<=10; i++){
-                        double max = Double.NEGATIVE_INFINITY;
-                        String key="";
-                        for(Map.Entry<String, String> entry : map2.entrySet()) {
-                            String[] s = entry.getValue().split(",");
-                                if (!s[1].trim().isEmpty() && Integer.parseInt(s[1].trim()) > max){ 
-                                    max = Integer.parseInt(s[1].trim());
-                                    key = entry.getKey();
-                                }   
-                        }
-                        JLabel index = new JLabel(" "+(i+1)+".");
-                        JLabel name = new JLabel(key);
-                        JLabel score = new JLabel(""+max);
-                        map2.remove(key);
-                        if(max >Double.NEGATIVE_INFINITY){
-                            scoreBoardPane.add(index);
-                            scoreBoardPane.add(name);
-                            scoreBoardPane.add(score);
-                        }
-                }
+                setScoreBoard(0);//level mode
+                
+                scoreBoardPane.add(new JLabel("Unlimited Mode"));
+                scoreBoardPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+                scoreBoardPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+                
+                setScoreBoard(1);//unlimited mode
+
                 Container contPane = this.getContentPane();
                 JPanel container = new JPanel();
                 container.setLayout(new BorderLayout());
@@ -148,6 +118,29 @@ public class ScoreBoardWindow extends JFrame{
             int reply = JOptionPane.showConfirmDialog(null, "Do you want to confirm?", "Confirm", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 ControllerForView.getInstance().setPlayerName(this.jtfName.getText());
+            }
+        }
+        private void setScoreBoard(int mode){
+            HashMap<String, String> map = Score.getInstance().getPlayerScores();
+            for(int i=0; i<=10; i++){
+                int max =-1;
+                String key="";
+                for(Map.Entry<String, String> entry : map.entrySet()) {
+                    String[] s = entry.getValue().split(",");
+                    if (!s[mode].trim().isEmpty() && Integer.parseInt(s[mode].trim()) > max){ 
+                        max = Integer.parseInt(s[mode].trim());
+                        key = entry.getKey();
+                    }
+                }
+                JLabel index = new JLabel(" "+(i+1)+".");
+                JLabel name = new JLabel(key);
+                JLabel score = new JLabel(""+max);
+                map.remove(key);
+                if(max >-1){
+                    scoreBoardPane.add(index);
+                    scoreBoardPane.add(name);
+                    scoreBoardPane.add(score);
+                }
             }
         }
     }

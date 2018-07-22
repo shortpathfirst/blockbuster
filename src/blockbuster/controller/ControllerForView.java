@@ -84,12 +84,12 @@ public class ControllerForView implements IControllerForView{
 	}
 	public void setPlayerName(String playerName) {
 		Model.getInstance().setPlayerName(playerName);
-                Config.getInstance().setPlayerName(playerName);
+//                Config.getInstance().setPlayerName(playerName);
 //                     View.getInstance().updatePlayerName(playerName);
 	}
 
-	public String getScore() {
-		return String.valueOf(Model.getInstance().getScore());
+	public int getScore(){
+		return Model.getInstance().getScore();
 	}
         public int getIncrementDelay(){
             return Model.getInstance().getIncrementlDelay();
@@ -103,20 +103,24 @@ public class ControllerForView implements IControllerForView{
 	public void initGame() {
 		Model.getInstance().initGame();
 	}
-
-	public boolean isEmptyCell(int i, int j) {
-		return Model.getInstance().isEmptyCell(i, j);
+        public int getIncrementedScore() {
+		return Model.getInstance().getIncrementedScore();
 	}
-
+//        public int[][] getboardArray(){
+//            return Model.getInstance().getBoardArray();
+//        }
         public int getLineLeft(){
             return Model.getInstance().getLineLeft();
         }
-        
+        public int getBoardBlock(int i,int j){
+            return Model.getInstance().getBoardBlock(i, j);
+        }
         public void nextIncrementLine() {
             if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
                         View.getInstance().gameOverEvent();
                         Score.getInstance().setPlayerScore(Model.getInstance().getPlayerName(), Model.getInstance().getScore(),Model.getInstance().isLevelMode());
+                        Config.getInstance().removeSavedGame();
                         Model.getInstance().initGame();
                     }else{
                         Model.getInstance().pushIncrement();
@@ -148,7 +152,7 @@ public class ControllerForView implements IControllerForView{
                     if(blockType==8)
                         Model.getInstance().paintSquare(i, j);
                     if(blockType==9)
-                        Model.getInstance().removeSquare(i, j);
+                        Model.getInstance().setVisitedSquare(i, j);
                     else
                         Model.getInstance().setVisitedBlocks(i,j,blockType);
                     

@@ -1,6 +1,7 @@
 package blockbuster.view;
 
 
+import blockbuster.controller.ControllerForModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Container;
@@ -9,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import blockbuster.controller.ControllerForView;
+import blockbuster.utils.Config;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
@@ -133,25 +135,36 @@ public class StartWindow extends JFrame {
         this.img.add(Box.createVerticalGlue());
             
             pack();
-	} // end constructor
-
-	private void handleGamemode1Event() {//System.out.println("Event: load a previously saved game");
-		ControllerForView.getInstance().closeStartWindow();
-                ControllerForView.getInstance().openMainGUI();
-                if(ControllerForView.getInstance().isGameOver() || !ControllerForView.getInstance().isLevelMode()){
-                    ControllerForView.getInstance().initGame();  //START OVER
-                    ControllerForView.getInstance().setLevelMode(true);
-                    //set player and score
-                }
-                //openMainGui (playername)
 	}
-        private void handleGamemode2Event() {//System.out.println("Event: load a previously saved game");
+
+	private void handleGamemode1Event() {
 		ControllerForView.getInstance().closeStartWindow();
                 ControllerForView.getInstance().openMainGUI();
-                if(ControllerForView.getInstance().isGameOver()||ControllerForView.getInstance().isLevelMode()){
-                    ControllerForView.getInstance().initGame(); //set player and score
-                    ControllerForView.getInstance().setLevelMode(false);
+                
+                if(ControllerForView.getInstance().isGameOver() || !ControllerForView.getInstance().isLevelMode()){
+                    ControllerForView.getInstance().setLevelMode(true);
+                    ControllerForView.getInstance().initGame();
                 }
+                
+                if(!Config.getInstance().getPlayerName().equals("") && Config.getInstance().getLevel() != -1){
+                ControllerForModel.getInstance().loadGame();
+                ControllerForView.getInstance().setLevelMode(true);
+                }
+                
+	}
+        private void handleGamemode2Event() {
+		ControllerForView.getInstance().closeStartWindow();
+                ControllerForView.getInstance().openMainGUI();
+                
+                if(ControllerForView.getInstance().isGameOver()||ControllerForView.getInstance().isLevelMode()){
+                    ControllerForView.getInstance().setLevelMode(false);
+                    ControllerForView.getInstance().initGame();
+                }
+                if(!Config.getInstance().getPlayerName().equals("")&& Config.getInstance().getLevel() == -1){
+                    ControllerForView.getInstance().setLevelMode(false);
+                    ControllerForModel.getInstance().loadGame();
+                }
+                
 	}
 	private void handleHowToPlayEvent() {
                 ControllerForView.getInstance().closeStartWindow();

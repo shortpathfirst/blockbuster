@@ -50,8 +50,7 @@ public class IncrementLine {
             int REMOVER_BLOCK = 7; //Sceglie colore a caso(presente in tavola) e rimuove 
             int REPAINT_BLOCK = 8; //Colora i vicini 3x3
             int REMOVE_SQUARE = 9;// Rimuove 3x3
-            boolean levelMode;// = Model.getInstance().isLevelMode();
-            levelMode = level != -1;
+            boolean levelMode = level != -1;
             int randNormalBlock=new Random().nextInt(3)+1;
             if(level>6 || !levelMode)
                 randNormalBlock=new Random().nextInt(5)+1;

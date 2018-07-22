@@ -13,15 +13,13 @@ public interface IModel {
         public int getNumColumnsOfBoard();
         public int getNumRowsOfBoard();
         public int getLevel();
-        public int[][] getboardArray();
         public String getPlayerName();
-        
+        public void loadGame();
         public void setPlayerName(String playerName);
         
         public int getScore();
         
         public void addScore();
-        public boolean isEmptyCell(int i, int j); //da rimuovere forse
         public void setVisitedBlocks(int i, int j, int blockType);
         public void removeColor(int i, int j);
         public int getIncrementBlock(int index);
@@ -44,6 +42,6 @@ public interface IModel {
         public boolean islastRowEmpty();
         public boolean isLevelMode();
         public void setLevelMode(boolean state);
-        public void removeSquare(int i, int j);
+        public void setVisitedSquare(int i, int j);
         public void paintSquare(int i, int j);
 }

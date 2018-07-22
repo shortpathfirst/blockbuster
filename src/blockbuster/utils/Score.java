@@ -129,7 +129,7 @@ public class Score {
 //            }
 //            return scores;
 //        }
-        public HashMap<String, String> getPlayerScores(){// split , 2 integer
+        public HashMap<String, String> getPlayerScores(){
             	HashMap<String, String> mapPlayerToScore = new HashMap<String, String>();
                 for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements();){
                         String name = (String)e.nextElement();

@@ -57,12 +57,7 @@ public class Option extends JFrame{
         setEffect2();
         this.effectPanel.add(effect1);
         this.effectPanel.add(effect2);
-            
-            
-            
-            
-            
-            
+
         this.volumePanel.setLayout(new BorderLayout());
         this.volumePanel.setPreferredSize(new Dimension(400,400));
         this.volumePanel=new Volume();

@@ -6,7 +6,6 @@
 package blockbuster.view;
 
 import blockbuster.utils.Config;
-import blockbuster.utils.SoundPlayer;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -28,64 +27,20 @@ public class BlockStyle {
 	// INSTANCE ATTRIBUTE
 	//---------------------------------------------------------------
 	private Color colorGridLineBoard;
-	private Color colorBlock1;
-        private Color colorBlock2;
-        private Color colorBlock3;
-        private Color colorBlock4;
-        private Color colorSpecialBlock;
-        
-        private Color colorBoardLine;  //For highlight
-        
         private BufferedImage[] sprites;
         private Image logoImg;
         private Image levelImg;
-        private BlockStyle(){
-           //Costruttore
-//           try{
-             loadImage();
-//           }catch(NullPointerException npe){
-//               
-//           }
-              
+        
+        private BlockStyle(){//Vedi colorSetting
+             loadImage();  
         }
-        private Color ColorSettings() {
-//		try {
-//			this.setColorBackgroundBoard();
-//			this.setColorBackgroundTimer();
-//			this.setColorOfBlock1();
-//			this.setColorOfBlock2();
-//                        this.setColorOfBlock3();
-//                        this.setColorOfBlock4();
-//                        this.setColorOfSpecialBlock();
-//		}
-//		catch(NoSuchFieldException nsfe) {
-//			nsfe.printStackTrace();
-//		}
-//		catch(IllegalAccessException iae) {
-//			iae.printStackTrace();
-//		}
-            return Color.cyan;
-        }
-                                                                                 //Manca il set color
-//        private Color getColorOfBlock1() {
-//                return this.colorBlock1;
-//	}
-//        private Color getColorOfBlock2() {
-//                return this.colorBlock2;
-//	}
-//        private Color getColorOfBlock3() {
-//                return this.colorBlock3;
-//	}
-//        private Color getColorOfBlock4() {
-//                return this.colorBlock4;
-//	}
+
         public Color getGridColor() {
-            if(this.colorGridLineBoard== null){
-//                this.colorGridLineBoard = Config.getInstance()
+            if(this.colorGridLineBoard== null)
                   this.colorGridLineBoard = Color.LIGHT_GRAY;
-            }
-                return this.colorGridLineBoard;
+            return this.colorGridLineBoard;
 	}
+
         public Color getBlockColor(int numBlock) { 
             
             if(numBlock ==1)

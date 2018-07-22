@@ -21,18 +21,18 @@ public class Model implements IModel {
     private final static int DEFAULT_NUM_ROWS = 20;
     private final static int DEFAULT_NUM_COLUMNS = 15;
     
-    //DEFINE GAME PIECES INDEX
-    private final static int EMPTY_CELL = 0;
-    private final static int BLUE_BLOCK = 1;
-    private final static int GREEN_BLOCK = 2;
-    private final static int RED_BLOCK = 3;
-    
-    private final static int YELLOW_BLOCK = 4;
-    private final static int PURPLE_BLOCK = 5;
-    //BLOCCHI SPECIALI
-    private final static int BLACK_BLOCK = 6; // Non rimovibile
-    private final static int REMOVER_BLOCK = 7; //Sceglie colore a caso(presente in tavola) e rimuove 
-    private final static int REPAINT_BLOCK = 8; //Colora i vicini 3x3
+//    //DEFINE GAME PIECES INDEX
+//    private final static int EMPTY_CELL = 0;
+//    private final static int BLUE_BLOCK = 1;
+//    private final static int GREEN_BLOCK = 2;
+//    private final static int RED_BLOCK = 3;
+//    
+//    private final static int YELLOW_BLOCK = 4;
+//    private final static int PURPLE_BLOCK = 5;
+//    //BLOCCHI SPECIALI
+//    private final static int BLACK_BLOCK = 6; // Non rimovibile
+//    private final static int REMOVER_BLOCK = 7; //Sceglie colore a caso(presente in tavola) e rimuove 
+//    private final static int REPAINT_BLOCK = 8; //Colora i vicini 3x3
                    
     //---------------------------------------------------------------
     // INSTANCE ATTRIBUTES
@@ -43,7 +43,9 @@ public class Model implements IModel {
     private boolean[][] visitedArray;
     private int level;
     private IncrementLine incLine;
-
+    private int incrementedScore;
+    private int numVisitedBlocks;
+    
     private Model() {
             this.boardArray = new int[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
@@ -53,12 +55,15 @@ public class Model implements IModel {
     // PRIVATEINSTANCE METHODS
     //---------------------------------------------------------------
     
-    private void initBoardArray(int rows, int columns) {//Modificato da jtetris
+    private void initBoardArray(int rows, int columns) {
+            this.boardArray = new int[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < columns; j++){
-				this.boardArray[i][j] = EMPTY_CELL;
-                                this.visitedArray[i][j] = false; //andrebbe per ogni istanza di rimozione
+//                            this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j); //default int = 0
+                            this.boardArray[i][j] = 0; //EMPTY_CELL
+                            this.visitedArray[i][j] = false; 
                         }
+        
 	}
     //---------------------------------------------------------------
     // PUBLIC INSTANCE METHODS
@@ -81,10 +86,10 @@ public class Model implements IModel {
 		return this.score;
 	}
         public void addScore() {
-		this.score += numVisitedBlocks*5; //con proporzionalità
-                this.incrementedScore=numVisitedBlocks*5;
+                this.score += getIncrementedScore(); 
 	}
         public boolean isLevelMode(){
+            System.out.println(""+(this.level != -1));
             return this.level != -1;
         }
         public void setLevelMode(boolean state){
@@ -94,34 +99,38 @@ public class Model implements IModel {
                 this.level=0;
         }
         
-        private int incrementedScore;
-        public int getIncrementedScore(){ //controller //return the last incremented score
-            return this.incrementedScore; //move here numvisted*5
+        public int getIncrementedScore(){ 
+            return this.incrementedScore =(int)(numVisitedBlocks*Math.log(numVisitedBlocks)/Math.log(2));
         }
                 
         public void initGame() {
-                this.score = 0;
-                if(this.isLevelMode())
-                    this.level=0;
-                else
-                    this.level=-1;
-                this.numVisitedBlocks = 0;
-                if (this.playerName == null)
-                        this.playerName = "Unknown";
-                this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
-                this.incLine = new IncrementLine();
-                this.incLine.setLineNumber(0);
-                new SoundPlayer("bcMusic");//////////////new instance///////////
+            this.score = 0;
+            if(this.isLevelMode())
+                this.level=0;
+            else
+                this.level=-1;
+            if (this.playerName == null)
+                    this.playerName = "Unknown";
+            this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
+            this.numVisitedBlocks = 0;
+            this.incLine = new IncrementLine();
+            this.incLine.setLineNumber(0);
+//            if(!Config.getInstance().getPlayerName().equals(""))
+//                    loadGame();
+            new SoundPlayer("bcMusic");
         }
-    	public boolean isEmptyCell(int i, int j) { ////da rimuovere se non usato
-		boolean isEmptyCell = false;
-		if ((0 <= i) && (i < DEFAULT_NUM_ROWS) && (0 <= j) && (j < DEFAULT_NUM_COLUMNS) && (this.boardArray[i][j] == EMPTY_CELL))
-			isEmptyCell = true;
-		return isEmptyCell;
-	}
+        public void loadGame(){
+            this.score =  Config.getInstance().getScore();
+            this.playerName = Config.getInstance().getPlayerName(); // non è possibile iniziare nuovo giocatore fino al completamento vecchie partite (menu -> save) oppure (save btn)
+            this.incLine.setLineNumber(Config.getInstance().getLineLeft());
+            this.level = Config.getInstance().getLevel();
+            for (int i = 0; i < this.boardArray.length; i++)
+			for (int j = 0; j < this.boardArray[0].length; j++){
+                            this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j); //default int = 0
+//                            this.visitedArray[i][j] = false; 
+                        }
+        }
         
-        //se colonna si svuota chiamo metodo per avvicinare le colonne
-        private int numVisitedBlocks;
         public void setVisitedBlocks(int i, int j, int blockType) {
             numVisitedBlocks++;
                     this.visitedArray[i][j] = true;
@@ -152,8 +161,8 @@ public class Model implements IModel {
                             this.boardArray[i][j]=0;
                     }
              }
-            TrimRows();
-         }//end method
+            trimColumns();
+         }
        public void resetVisited(){
             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];                                         
             this.numVisitedBlocks = 0;
@@ -161,20 +170,20 @@ public class Model implements IModel {
         public int getVisitedNum(){
             return this.numVisitedBlocks;
         }
-        private void TrimRows(){
+        private void trimColumns(){
                 for (int j =1; j < this.boardArray[0].length/2; j++){//prima colonna sempre vuota
                     if(this.boardArray[0][j]==0){
-                        RemoveRightColumn(j);
+                        removeRightColumn(j);
                     }
                 }
                 for (int j = this.boardArray[0].length-2; j >= this.boardArray[0].length/2; j--){//ultima colonna sempre
                     if(this.boardArray[0][j]==0){
-                        RemoveLeftColumn(j);
+                        removeLeftColumn(j);
                     }
                 }
                 
         }
-        private void RemoveRightColumn(int indexOfColumn){
+        private void removeRightColumn(int indexOfColumn){
                 for (int j = indexOfColumn; j >= 0; j--){
                     for(int i = 0; i<this.boardArray.length; i++){
                         if(j!=0)
@@ -183,7 +192,7 @@ public class Model implements IModel {
                     }
                 }
         }
-        private void RemoveLeftColumn(int indexOfColumn){
+        private void removeLeftColumn(int indexOfColumn){
                 for (int j = indexOfColumn; j < this.boardArray[0].length; j++)
                     for(int i = 0; i<this.boardArray.length; i++){
                         if (j < this.boardArray[0].length - 1)
@@ -194,17 +203,17 @@ public class Model implements IModel {
         }
         public void removeColor(int i, int j){
             int ranColor=new Random().nextInt(3)+1;
-                if(this.level>=6 || this.isLevelMode())
+                if(this.level>=6 || !this.isLevelMode())
                     ranColor=new Random().nextInt(5)+1;;
                 this.visitedArray[i][j] = true;
                 for (int column = 0; column < this.boardArray[0].length; column++)
                      for (int row = 0; row < this.boardArray.length; row++)
-                            if(this.boardArray[row][column]==ranColor)
+                            if(this.boardArray[row][column]==ranColor){
                                 this.visitedArray[row][column] = true;
-                        
-                numVisitedBlocks =3; //rimuove sempre
+                                numVisitedBlocks++;
+                            }
         } 
-        public void removeSquare(int i, int j){
+        public void setVisitedSquare(int i, int j){
             this.visitedArray[i][j] = true;
             if(i>0 && j>0 && j<this.boardArray[0].length-1){ //non arriva mai al top (game over)
                 this.visitedArray[i+1][j-1] = true; //left up corner
@@ -217,40 +226,45 @@ public class Model implements IModel {
                 this.visitedArray[i-1][j-1] = true; //left bottom corner
                 this.visitedArray[i-1][j] = true; //bottom
                 this.visitedArray[i-1][j+1] = true; //right bottom corner
+                numVisitedBlocks = 8; 
             }else if(j==0 && i>0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i+1][j+1] = true; //right up corner
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i-1][j] = true; //bottom
                 this.visitedArray[i-1][j+1] = true; //right bottom corner
+                numVisitedBlocks = 5; 
             }else if(j==this.boardArray[0].length && i>0){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i-1][j-1] = true; //left bottom corner
                 this.visitedArray[i-1][j] = true; //bottom
+                numVisitedBlocks = 5; 
             }else if(j==0 && i ==0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
+                numVisitedBlocks = 3; 
             }else if(j==this.boardArray[0].length && i==0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i+1][j-1] = true; //left up corner
+                numVisitedBlocks = 3; 
             }else if(i==0 && j>0){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
+                numVisitedBlocks = 5; 
             }
-                numVisitedBlocks = 3;                                            //da modificare     
         }
         public void paintSquare(int i, int j){
             int ranColor=new Random().nextInt(3)+1;
                 if(this.level>=6 || !this.isLevelMode())
                     ranColor=new Random().nextInt(5)+1;;
-             removeSquare(i,j);
+             setVisitedSquare(i,j);
              for (int row = 0;row<this.boardArray.length; row++)
 			for (int column = 0; column < this.boardArray[0].length; column++){
 				if(this.visitedArray[row][column]==true && this.boardArray[row][column]!= 0)
@@ -258,7 +272,6 @@ public class Model implements IModel {
                         }
              numVisitedBlocks = 0;
         }
-    //end for remove
 
          public int getLevel(){ 
             return this.level;
@@ -295,10 +308,6 @@ public class Model implements IModel {
                 return this.boardArray[i][j];
            else return 0;
         }
-        public int[][] getboardArray(){
-            return this.boardArray;
-        }
-        
         public boolean isLevelCompleted(){
             return getLineLeft() ==0; 
         }
@@ -362,10 +371,7 @@ public class Model implements IModel {
         private int getGameOverIndex(){
             return this.boardArray.length-1;
         }
-        
-        
-        
-    
+
         //---------------------------------------------------------------
 	// STATIC FIELDS
 	//---------------------------------------------------------------

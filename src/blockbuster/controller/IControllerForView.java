@@ -39,11 +39,10 @@ public interface IControllerForView {
 
     public void setPlayerName(String playerName);
 
-    public String getScore();
+    public int getScore();
    
     public void initGame();
 
-    public boolean isEmptyCell(int i, int j);
     
     public int getIncrementDelay();
     public void remove(int i,int j,int blockType);
@@ -52,4 +51,7 @@ public interface IControllerForView {
     public boolean isGameOver();
     public int getLevel();
     public boolean isLevelCompleted();
+    public int getIncrementedScore();
+//    public int[][] getboardArray();
+    public int getBoardBlock(int i,int j);
 }

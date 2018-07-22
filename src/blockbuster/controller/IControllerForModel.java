@@ -11,5 +11,6 @@ package blockbuster.controller;
  */
 public interface IControllerForModel {
         public void nextLevel();
+        public void loadGame();
 }
 

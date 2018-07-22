@@ -5,6 +5,7 @@
  */
 package blockbuster.utils;
 
+import blockbuster.controller.ControllerForView;
 import blockbuster.model.Model;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -102,28 +105,73 @@ public class Config {
 	//---------------------------------------------------------------
         
         public void saveGame(){
-            int[][] board = Model.getInstance().getboardArray(); //controller!!
-            int level=Model.getInstance().getLevel();
-            int score=Model.getInstance().getScore();
-            int lineLeft=Model.getInstance().getLineLeft();
-            String playerName = Model.getInstance().getPlayerName();
+            int level=ControllerForView.getInstance().getLevel();
+            int score=ControllerForView.getInstance().getScore();
+            int lineLeft=ControllerForView.getInstance().getLineLeft();
+            String playerName = ControllerForView.getInstance().getPlayerName();
             
             saveProperty("PlayerName",playerName,"");
             if(level<0)
-                saveProperty("Level","Unlimited","");
+                saveProperty("Level","-1","");
             else
                 saveProperty("Level",""+level,"");
             saveProperty("Score",""+score,"");
             saveProperty("LineLeft",""+lineLeft,"");
-            
-            for(int i=0; i<board.length;i++){
+            String board="";
+            for(int i=0; i<ControllerForView.getInstance().getNumRowsOfBoard();i++){
                     String row="";
-                    for(int j=0; j<board[0].length;j++){
-                        row+=""+board[i][j];
+                    for(int j=0; j<ControllerForView.getInstance().getNumColumnsOfBoard();j++){
+                        row+=""+ControllerForView.getInstance().getBoardBlock(i, j);
                     }   
-                    saveProperty(""+i,row,"");
+                    board+=row+",";
+//                    saveProperty(""+i,row,"");
             }
             
+            saveProperty("Board",board,"");
+            
+        }
+        public void removeSavedGame(){
+//            for(int i=0; i<ControllerForView.getInstance().getNumRowsOfBoard();i++)
+//                this.properties.remove(""+i);
+//            this.properties.remove("Board");
+//            this.properties.remove("PlayerName");
+//            this.properties.remove("Level");
+//            this.properties.remove("Score");
+//            this.properties.remove("LineLeft");
+            saveProperty("Board","","");
+            saveProperty("Level","","");
+            saveProperty("Score","","");
+            saveProperty("LineLeft","","");
+            saveProperty("PlayerName","","");
+                                    
+        }
+        public String getPlayerName(){
+            return this.properties.getProperty("PlayerName");
+        }
+        public int getLevel(){//nullpointerex
+            return Integer.parseInt(this.properties.getProperty("Level"));
+        }
+        public int getScore(){
+            return Integer.parseInt(this.properties.getProperty("Score"));
+        }
+        public int getLineLeft(){
+            return Integer.parseInt(this.properties.getProperty("LineLeft"));
+        }
+//        public int[][] getBoard(){
+//            int[][] board = new int[ControllerForView.getInstance().getNumRowsOfBoard()][ControllerForView.getInstance().getNumColumnsOfBoard()];
+//            for(int i=0; i<ControllerForView.getInstance().getNumRowsOfBoard(); i++)
+//                for(int j=0; j<ControllerForView.getInstance().getNumColumnsOfBoard(); j++)
+//                    board[i][j]=this.properties.getProperty(""+i).charAt(j) - '0';
+//            if(board[0][ControllerForView.getInstance().getNumColumnsOfBoard()/2]==0)
+//                return null;
+//            return board;
+//        }
+        public int getBoardBlock(int i,int j){
+//            return this.properties.getProperty(""+i).charAt(j) - '0';
+              String[] s =this.properties.getProperty("Board").split(",");
+              if(i<s.length && j<s[0].length())
+              return s[i].charAt(j)-'0';
+              else return 0;
         }
         public void setVolume(int volume){
             if(volume == 0)
@@ -143,12 +191,6 @@ public class Config {
         }
         public void setScoreLabel(boolean value){
                 saveProperty("isScoreLabelOn",""+value,"");
-        }
-        public void setPlayerName(String value){
-                saveProperty("PlayerName",""+value,"");
-        }
-        public String getPlayerName(String value){
-                return this.properties.getProperty(value,"Unknown");
         }
         public int getSoundVolume() {
             return Integer.parseInt(this.properties.getProperty("Volume"));

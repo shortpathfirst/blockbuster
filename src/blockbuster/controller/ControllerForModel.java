@@ -22,6 +22,10 @@ public class ControllerForModel implements IControllerForModel {
             Model.getInstance().nextLevel();
             ControllerForView.getInstance().nextIncrementLine();
         }
+        public void loadGame(){
+            Model.getInstance().loadGame();
+        }
+        //remove?
 	public static IControllerForModel getInstance() {
 		if (instance == null)
 			instance = new ControllerForModel();

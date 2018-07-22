@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.MouseListener;
+import java.sql.Time;
 import javax.swing.Timer;
 
 /**
@@ -48,7 +49,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         private int[] pos;
         //Variable for animation
         private Timer t;
-        public boolean endAnimation;
+        private boolean endAnimation;
         private int[][] board;
         private int i;
         private int j;
@@ -58,16 +59,19 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 		this.block = new Rectangle2D.Double();
                 this.selectedCell = -1;
 		this.setBackground(Color.BLACK);    //ColorSettings.getInstance().getColorBackgroundBoard()
-                addMouseListener(this);   
-                
-                //For endAnimation
-                this.t = new Timer(40, this);
-                endAnimation=false;
-                board= Model.getInstance().getboardArray();
-                i=0;
-                j=0;
+                this.setEnabled(false);
+                addMouseListener(this);     
 	}//end constructor
-
+        public void initEndAnimation(){
+                this.t = new Timer(40, this);
+                this.board = new int[ControllerForView.getInstance().getNumRowsOfBoard()][ControllerForView.getInstance().getNumColumnsOfBoard()];
+                for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
+                       for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++)
+                           this.board[i][j] = ControllerForView.getInstance().getBoardBlock(i, j);     
+                this.endAnimation=true;
+                this.i=0;
+                this.j=0;
+        }
         //--------------------------------------
 	// java.awt.event.MouseListener methods
 	//--------------------------------------
@@ -88,34 +92,32 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
             if(this.isEnabled()){
                 int row= getRowIndex(e.getY());
                 int column =getColumnIndex(e.getX()); 
-		this.selectedCell = Model.getInstance().getBoardBlock(row,column);
+		this.selectedCell = ControllerForView.getInstance().getBoardBlock(row,column);
                 if( this.selectedCell != 0){ 
                     ControllerForView.getInstance().remove(row,column,selectedCell);
                     this.pos = new int[]{e.getX(),e.getY()};
                 }
             }
 	}
-
 	public void mouseReleased(MouseEvent e)  {
 		// do nothing
 	}
 	//---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
-        private int getRowIndex(int y) {// [20,0] out index
+        private int getRowIndex(int y) {
 		int i = -1;
                 i = (int)((double)(y - Y_MARGIN) / this.uY);
 		return ControllerForView.getInstance().getNumRowsOfBoard()-i-1;
 	}
-	private int getColumnIndex(int x) {// [0,15] out index
+	private int getColumnIndex(int x) {
 		int j = -1;
                 j = (int)((double)(x - X_MARGIN) / this.uX);
 		return j;
 	}
         
         public void paintGrid(Graphics2D g2d) {
-		Color oldColor = g2d.getColor();                                //to change block style
-//		g2d.setColor(Color.GRAY);
+		Color oldColor = g2d.getColor();
 
 		int numColumns = ControllerForView.getInstance().getNumColumnsOfBoard();
 		int numRows = ControllerForView.getInstance().getNumRowsOfBoard();
@@ -137,9 +139,9 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 		g2d.setColor(oldColor);
 	} // end method paintGrid()
         
-        public void drawBlockAtCell(Graphics2D g2d, int i, int j, int pieceNumber) { //piacename --> value (0,1,2..special)
+        public void drawBlockAtCell(Graphics2D g2d, int i, int j, int blockNumber) { 
                 Color oldColor = g2d.getColor();
-                g2d.setColor(BlockStyle.getInstance().getBlockColor(pieceNumber)); //each piace a color
+                g2d.setColor(BlockStyle.getInstance().getBlockColor(blockNumber));
                 this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
                 g2d.fill(this.block);
                 g2d.setColor(BlockStyle.getInstance().getGridColor()); 
@@ -150,11 +152,11 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         private void drawBlocks(Graphics2D g2d) { 
            for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
                 for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++){
-                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(Model.getInstance().getBoardBlock(i, j));
+                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(ControllerForView.getInstance().getBoardBlock(i, j));
                     if(sprite != null)
                         g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN+this.uY *(ControllerForView.getInstance().getNumRowsOfBoard() -1- i)), (int) this.uX, (int)this.uY, this);
                     else
-                        this.drawBlockAtCell(g2d,i,j,Model.getInstance().getBoardBlock(i,j));
+                        this.drawBlockAtCell(g2d,i,j,ControllerForView.getInstance().getBoardBlock(i,j));
                 }      
         }
         
@@ -177,7 +179,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 		Graphics2D g2d = (Graphics2D)g;
 		paintGrid(g2d);  
                 this.drawBlocks(g2d); 
-                if(this.endAnimation == true){ //move to method
+                if(this.endAnimation == true){
                     this.t.start();
                     for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
                        for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++){
@@ -186,7 +188,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
                 }            
                 if(this.pos != null && this.selectedCell!=0 && Config.getInstance().isScoreLabelOn()){
                     g2d.setFont(new Font("default", Font.BOLD, 16));
-                    g2d.drawString(""+Model.getInstance().getIncrementedScore(),this.pos[0],this.pos[1]);
+                    g2d.drawString(""+ControllerForView.getInstance().getIncrementedScore(),this.pos[0],this.pos[1]);
                 }else{
                     g2d.drawString("",0,0);
                 }
@@ -223,10 +225,8 @@ private void clearAnimation(){
             if(j<board[0].length-1)
             j++;
             else j=0;
-        }else{
+        }else
             StopAnimation();
-        }
-        //to do
     }
     public void StopAnimation(){
         this.t.stop();

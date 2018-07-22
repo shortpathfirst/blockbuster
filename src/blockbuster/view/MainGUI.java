@@ -126,7 +126,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.playerNamePrefixLab = new JLabel("Player Name");
 		this.playerNameLab = new JLabel(ControllerForView.getInstance().getPlayerName());    //Config
 		this.playerScorePrefixLab = new JLabel("Score");
-		this.playerScoreLab = new JLabel(ControllerForView.getInstance().getScore());       //Config
+		this.playerScoreLab = new JLabel(""+ControllerForView.getInstance().getScore());       //Config
                 if(ControllerForView.getInstance().isLevelMode())
                     this.linesLeftPrefixLab=new JLabel("Line Left");
                 else 
@@ -181,7 +181,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 if (!this.isGameStarted) {
 			this.isGameStarted = true;
 			this.isGameRunning = true;
-			ControllerForView.getInstance().initGame();
+//			ControllerForView.getInstance().initGame();
 			this.boardPanel.requestFocusInWindow();
                         this.boardPanel.setEnabled(true);
 			this.startPauseBut.setText(PAUSE_BUTTON_LABEL);
@@ -303,7 +303,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         }
         
         public void endLevelAnimation(){ 
-            this.boardPanel.endAnimation = true && Config.getInstance().isEndLevelAnimationOn();
+            this.boardPanel.initEndAnimation();
         }
 
 }//end class
