@@ -142,30 +142,33 @@ public class ControllerForView implements IControllerForView{
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
 
-        public void remove(int i,int j,int blockType) { 
-//                if(blockType != 0){
-                    if(blockType==6){}
-                    if(blockType==7){
-                            Model.getInstance().removeColor(i,j);
-                            new SoundPlayer("bubble").play();
-                        }
-                    if(blockType==8)
-                        Model.getInstance().paintSquare(i, j);
-                    if(blockType==9)
-                        Model.getInstance().setVisitedSquare(i, j);
-                    else
-                        Model.getInstance().setVisitedBlocks(i,j,blockType);
-                    
-                    
-                    if(Model.getInstance().getVisitedNum() >=3){
-                        Model.getInstance().removeVisitedBlocks();
-                        Model.getInstance().addScore();
-                        View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
-                        new SoundPlayer("bubble").play();
-                    }
-                    Model.getInstance().resetVisited();
-//                }
+        public int remove(int i,int j,int blockType) { 
+                if(blockType==6){
+                    new SoundPlayer("anvil").play();
+                }
+                if(blockType==7){
+                    Model.getInstance().removeColor(i,j);
+                    new SoundPlayer("bubble").play();
+                }
+                if(blockType==8)
+                    Model.getInstance().paintSquare(i, j);
+                if(blockType==9)
+                    Model.getInstance().setVisitedSquare(i, j);
+                else
+                    Model.getInstance().setVisitedBlocks(i,j,blockType);
 
+
+                if(Model.getInstance().getVisitedNum() >=3){
+                    Model.getInstance().removeVisitedBlocks();
+                    Model.getInstance().addScore();
+                    View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
+                    if(Config.getInstance().isBlockEffectOn())
+                        new SoundPlayer("bubble").play();
+                }
+                int score=Model.getInstance().getIncrementedScore();
+                Model.getInstance().resetVisited();
+                return score;
+                  
 	}
 
         //---------------------------------------------------------------

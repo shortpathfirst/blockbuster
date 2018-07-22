@@ -89,7 +89,6 @@ public class Model implements IModel {
                 this.score += getIncrementedScore(); 
 	}
         public boolean isLevelMode(){
-            System.out.println(""+(this.level != -1));
             return this.level != -1;
         }
         public void setLevelMode(boolean state){
@@ -311,7 +310,7 @@ public class Model implements IModel {
         public boolean isLevelCompleted(){
             return getLineLeft() ==0; 
         }
-        private int getLinesOfLevel(){//setlineleft in incrementline e metti su config
+        private int getLinesOfLevel(){
             if(this.level==0)
                 return 21;
             else if(this.level==1)

@@ -38,6 +38,7 @@ public class Option extends JFrame{
     
     private JCheckBox effect1;
     private JCheckBox effect2;
+    private JCheckBox effect3;
     public Option() {
         initComponents();
         
@@ -55,9 +56,11 @@ public class Option extends JFrame{
         setEffect1();
         effect2 = new JCheckBox();
         setEffect2();
+        effect3 = new JCheckBox();
+        setEffect3();
         this.effectPanel.add(effect1);
         this.effectPanel.add(effect2);
-
+        this.effectPanel.add(effect3);
         this.volumePanel.setLayout(new BorderLayout());
         this.volumePanel.setPreferredSize(new Dimension(400,400));
         this.volumePanel=new Volume();
@@ -198,6 +201,22 @@ public class Option extends JFrame{
 			}
 		});
     }
+        private void setEffect3(){
+            effect3.setText("Sound at Block");
+            if(Config.getInstance().isBlockEffectOn())
+                effect3.setSelected(true);
+            else
+                effect3.setSelected(false);
+
+            effect3.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                    if(effect3.isSelected())
+                                       Config.getInstance().setBlockEffectOn(true);
+                                    else
+                                        Config.getInstance().setBlockEffectOn(false);
+                            }
+                    });
+        }
     
      private class Volume extends JPanel{    //inner class chiamata all'interno  
          private int volumeValue;

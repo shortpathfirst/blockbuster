@@ -45,7 +45,7 @@ public interface IControllerForView {
 
     
     public int getIncrementDelay();
-    public void remove(int i,int j,int blockType);
+    public int remove(int i,int j,int blockType);
     public void nextIncrementLine();
     public int getLineLeft();
     public boolean isGameOver();

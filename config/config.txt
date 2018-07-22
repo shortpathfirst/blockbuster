@@ -1,16 +1,17 @@
 #
-#Sun Jul 22 17:47:42 CEST 2018
+#Sun Jul 22 22:04:37 CEST 2018
 Score=
 isEndLevelAnimationOn=true
 gameOptionColor=fdb94d
 PlayerName=
-BlockStyle=4
-isScoreLabelOn=false
+BlockStyle=2
+isScoreLabelOn=true
 Board=
 EffectsVolume=50
+isBlockEffectOn=true
 Volume=6
 EffectsOn=true
 isVolumeOn=true
-LineLeft=
 Level=
+LineLeft=
 gameBackgroundColor=null

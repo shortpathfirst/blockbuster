@@ -6,7 +6,6 @@
 package blockbuster.utils;
 
 import blockbuster.controller.ControllerForView;
-import blockbuster.model.Model;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 
@@ -198,9 +195,15 @@ public class Config {
         public int getEffectsVolume() {
 		return Integer.parseInt(this.properties.getProperty("EffectsVolume"));
 	}
+         public void setBlockEffectOn(boolean value){
+                saveProperty("isBlockEffectOn",""+value,"");
+        }
         public boolean isVolumeOn() {
 		return this.properties.getProperty("isVolumeOn").toLowerCase().equals("true");
 	}
+        public boolean isBlockEffectOn(){
+            return this.properties.getProperty("isBlockEffectOn").toLowerCase().equals("true");
+        }
         public boolean isEndLevelAnimationOn() {
 		return this.properties.getProperty("isEndLevelAnimationOn").toLowerCase().equals("true");
 	}

@@ -7,7 +7,6 @@ package blockbuster.view;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import blockbuster.controller.ControllerForView;
-import blockbuster.model.Model;
 import blockbuster.utils.Config;
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +19,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.MouseListener;
-import java.sql.Time;
 import javax.swing.Timer;
 
 /**
@@ -47,6 +45,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         
         private int selectedCell;
         private int[] pos;
+        private int scored;
         //Variable for animation
         private Timer t;
         private boolean endAnimation;
@@ -58,6 +57,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 		this.line = new Line2D.Double();
 		this.block = new Rectangle2D.Double();
                 this.selectedCell = -1;
+                this.scored = 0;
 		this.setBackground(Color.BLACK);    //ColorSettings.getInstance().getColorBackgroundBoard()
                 this.setEnabled(false);
                 addMouseListener(this);     
@@ -94,8 +94,8 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
                 int column =getColumnIndex(e.getX()); 
 		this.selectedCell = ControllerForView.getInstance().getBoardBlock(row,column);
                 if( this.selectedCell != 0){ 
-                    ControllerForView.getInstance().remove(row,column,selectedCell);
                     this.pos = new int[]{e.getX(),e.getY()};
+                    this.scored=ControllerForView.getInstance().remove(row,column,selectedCell);
                 }
             }
 	}
@@ -186,9 +186,9 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
                            drawBlockAtCell(g2d, i, j,board[i][j]);
                        } 
                 }            
-                if(this.pos != null && this.selectedCell!=0 && Config.getInstance().isScoreLabelOn()){
+                if(this.pos != null && this.selectedCell!=0 && this.scored!=0 && Config.getInstance().isScoreLabelOn()){
                     g2d.setFont(new Font("default", Font.BOLD, 16));
-                    g2d.drawString(""+ControllerForView.getInstance().getIncrementedScore(),this.pos[0],this.pos[1]);
+                    g2d.drawString(""+this.scored,this.pos[0],this.pos[1]);
                 }else{
                     g2d.drawString("",0,0);
                 }
