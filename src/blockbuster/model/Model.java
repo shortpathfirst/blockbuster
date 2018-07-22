@@ -20,30 +20,17 @@ public class Model implements IModel {
     //---------------------------------------------------------------
     private final static int DEFAULT_NUM_ROWS = 20;
     private final static int DEFAULT_NUM_COLUMNS = 15;
-    
-//    //DEFINE GAME PIECES INDEX
-//    private final static int EMPTY_CELL = 0;
-//    private final static int BLUE_BLOCK = 1;
-//    private final static int GREEN_BLOCK = 2;
-//    private final static int RED_BLOCK = 3;
-//    
-//    private final static int YELLOW_BLOCK = 4;
-//    private final static int PURPLE_BLOCK = 5;
-//    //BLOCCHI SPECIALI
-//    private final static int BLACK_BLOCK = 6; // Non rimovibile
-//    private final static int REMOVER_BLOCK = 7; //Sceglie colore a caso(presente in tavola) e rimuove 
-//    private final static int REPAINT_BLOCK = 8; //Colora i vicini 3x3
-                   
+
     //---------------------------------------------------------------
     // INSTANCE ATTRIBUTES
     //---------------------------------------------------------------
     private int score;
+    private int incrementedScore;
     private String playerName;
     private int[][] boardArray;
     private boolean[][] visitedArray;
     private int level;
     private IncrementLine incLine;
-    private int incrementedScore;
     private int numVisitedBlocks;
     
     private Model() {
@@ -52,14 +39,13 @@ public class Model implements IModel {
             this.initGame();
     }
     //---------------------------------------------------------------
-    // PRIVATEINSTANCE METHODS
+    // PRIVATE INSTANCE METHODS
     //---------------------------------------------------------------
     
     private void initBoardArray(int rows, int columns) {
             this.boardArray = new int[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < columns; j++){
-//                            this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j); //default int = 0
                             this.boardArray[i][j] = 0; //EMPTY_CELL
                             this.visitedArray[i][j] = false; 
                         }
@@ -71,63 +57,94 @@ public class Model implements IModel {
         public int getNumColumnsOfBoard() {
                 return this.boardArray[0].length;
         }
-
         public int getNumRowsOfBoard() {
                 return this.boardArray.length;
         }
-
-        public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
         public String getPlayerName() {
 		return this.playerName;
 	}
         public int getScore() {
 		return this.score;
 	}
-        public void addScore() {
-                this.score += getIncrementedScore(); 
-	}
-        public boolean isLevelMode(){
-            return this.level != -1;
+        public int getVisitedBlockNumber(){
+            return this.numVisitedBlocks;
         }
+        public int getIncrementedScore(){ 
+            return this.incrementedScore =(int)(numVisitedBlocks*Math.log(numVisitedBlocks)/Math.log(2));
+        }
+        public int getLevel(){ 
+            return this.level;
+        }
+        public int getLineLeft(){
+            int lines;
+            if(this.isLevelMode())
+                lines = getLinesOfLevel()-this.incLine.getLineNumber();
+            else lines=this.incLine.getLineNumber()+1;
+            return lines;
+        }
+        public int getIncrementBlock(int index){
+            return this.incLine.getBlockAt(index);
+        }
+        public int getBoardBlock(int i,int j){
+           if(i<this.boardArray.length && j<this.boardArray[0].length)
+                return this.boardArray[i][j];
+           else return 0;
+        }
+        public int getIncrementlDelay(){
+             if(this.level==0 || this.level==1 || this.level==2)
+                 return 30;
+             else if(this.level==3)
+                return 120;
+            if(this.level==4)
+                return 120;
+            if(this.level==5)
+                return 100;
+            if(this.level==6)
+                return 100;
+            if(this.level==7)
+                return 80;
+            if(this.level==8)
+                return 80;
+            if(this.level==9)
+                return 50;
+            else return 30;
+        }
+        public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
         public void setLevelMode(boolean state){
             if(state == false)
                 this.level=-1;
             else
                 this.level=0;
         }
+        public void addScore() {
+            this.score += getIncrementedScore(); 
+	}
         
-        public int getIncrementedScore(){ 
-            return this.incrementedScore =(int)(numVisitedBlocks*Math.log(numVisitedBlocks)/Math.log(2));
-        }
-                
         public void initGame() {
             this.score = 0;
             if(this.isLevelMode())
                 this.level=0;
             else
                 this.level=-1;
+            
             if (this.playerName == null)
                     this.playerName = "Unknown";
             this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
             this.numVisitedBlocks = 0;
             this.incLine = new IncrementLine();
             this.incLine.setLineNumber(0);
-//            if(!Config.getInstance().getPlayerName().equals(""))
-//                    loadGame();
             new SoundPlayer("bcMusic");
         }
         public void loadGame(){
             this.score =  Config.getInstance().getScore();
-            this.playerName = Config.getInstance().getPlayerName(); // non è possibile iniziare nuovo giocatore fino al completamento vecchie partite (menu -> save) oppure (save btn)
+            this.playerName = Config.getInstance().getPlayerName(); 
             this.incLine.setLineNumber(Config.getInstance().getLineLeft());
             this.level = Config.getInstance().getLevel();
             for (int i = 0; i < this.boardArray.length; i++)
-			for (int j = 0; j < this.boardArray[0].length; j++){
-                            this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j); //default int = 0
-//                            this.visitedArray[i][j] = false; 
-                        }
+                for (int j = 0; j < this.boardArray[0].length; j++)
+                    this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j);
         }
         
         public void setVisitedBlocks(int i, int j, int blockType) {
@@ -160,15 +177,13 @@ public class Model implements IModel {
                             this.boardArray[i][j]=0;
                     }
              }
-            trimColumns();
+            this.trimColumns();
          }
        public void resetVisited(){
             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];                                         
             this.numVisitedBlocks = 0;
         }
-        public int getVisitedNum(){
-            return this.numVisitedBlocks;
-        }
+        
         private void trimColumns(){
                 for (int j =1; j < this.boardArray[0].length/2; j++){//prima colonna sempre vuota
                     if(this.boardArray[0][j]==0){
@@ -272,25 +287,19 @@ public class Model implements IModel {
              numVisitedBlocks = 0;
         }
 
-         public int getLevel(){ 
-            return this.level;
-        }
          public void nextLevel(){
-             this.incLine.setLineNumber(0);                                     //Line loader not inclin=VIEW
+             this.incLine.setLineNumber(0);
              this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
              this.level++;
          }
         
-        public boolean isIncrementLineFull(){
-            return this.incLine.isIncrementLineFull();
-        }
         public void updateLine(){
             this.incLine.updateLine();
         }
-        public void incrementLine(){
+        public void addIncrementBlock(){
             this.incLine.addBlock(this.level);
         }
-        public void pushIncrement(){//check game over and level completed (incrementLine left)
+        public void pushIncrement(){
            	for (int i = this.boardArray.length-2; i>=0; i--)
 			for (int j = 0; j < this.boardArray[i].length; j++){
                             this.boardArray[i+1][j] = this.boardArray[i][j];
@@ -299,67 +308,40 @@ public class Model implements IModel {
                     this.boardArray[0][j] = this.incLine.getBlockAt(j);
                 }
         }
-        public int getIncrementBlock(int index){
-            return this.incLine.getBlockAt(index);
+
+        private int getLinesOfLevel(){
+            if(this.level==0)
+                return 20;
+            else if(this.level==1)
+                return 25;
+            else if(this.level==2)
+                return 30;
+            else if(this.level==3)
+                return 40;
+            else if(this.level==4)
+                return 45;
+            else if(this.level==5)
+                return 50;
+            else if(this.level==6)
+                return 60;
+            else if(this.level==7)
+                return 65;
+            else if(this.level==8)
+                return 70;
+            else if(this.level==9)
+                return 75;
+            else return 80;
         }
-        public int getBoardBlock(int i,int j){
-           if(i<this.boardArray.length && j<this.boardArray[0].length)
-                return this.boardArray[i][j];
-           else return 0;
+        
+        public boolean isLevelMode(){
+            return this.level != -1;
+        }
+        public boolean isIncrementLineFull(){
+            return this.incLine.isIncrementLineFull();
         }
         public boolean isLevelCompleted(){
             return getLineLeft() ==0; 
         }
-        private int getLinesOfLevel(){
-            if(this.level==0)
-                return 21;
-            else if(this.level==1)
-                return 20;
-            else if(this.level==2)
-                return 25;
-            else if(this.level==3)
-                return 30;
-            else if(this.level==4)
-                return 35;
-            else if(this.level==5)
-                return 40;
-            else if(this.level==6)
-                return 45;
-            else if(this.level==7)
-                return 50;
-            else if(this.level==8)
-                return 55;
-            else if(this.level==9)
-                return 60;
-            else return 70;
-        }
-        public int getLineLeft(){
-            int lines;
-            if(this.isLevelMode())
-                lines = getLinesOfLevel()-this.incLine.getLineNumber();
-            else lines=this.incLine.getLineNumber()+1;
-            return lines;
-        }
-        public int getIncrementlDelay(){
-             if(this.level==0 || this.level==1 || this.level==2)
-                 return 30;
-             else if(this.level==3)
-                return 120;
-            if(this.level==4)
-                return 120;
-            if(this.level==5)
-                return 100;
-            if(this.level==6)
-                return 100;
-            if(this.level==7)
-                return 80;
-            if(this.level==8)
-                return 80;
-            if(this.level==9)
-                return 50;
-            else return 30;
-        }
-        
         public boolean islastRowEmpty(){
             for(int j=0; j<this.boardArray[0].length;j++){
                 if(this.boardArray[getGameOverIndex()][j]!= 0)

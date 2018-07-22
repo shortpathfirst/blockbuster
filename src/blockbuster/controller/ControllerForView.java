@@ -21,10 +21,8 @@ public class ControllerForView implements IControllerForView{
 	//---------------------------------------------------------------
 	private static ControllerForView instance = null;
 
-	private ControllerForView() {
-		//to-do
-	}
-
+	private ControllerForView() {}
+        
         //---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
@@ -37,84 +35,84 @@ public class ControllerForView implements IControllerForView{
 	public void closeStartWindow() {
 		View.getInstance().closeStartWindow();
 	}
-//	public void openNewGameWindow() {
-//            if(Model.getInstance().getScore()==0)
-//		View.getInstance().openNewGameWindow();
-//            else
-//                View.getInstance().openMainGUI();                               //set new instance
-//	}
-	public void loadPreviouslySavedGame(String file) {
-		//TO-DO
-	}
          public void openScoreBoardWindow(){
-             View.getInstance().openScoreBoardWindow();
-         }
-
-        public void closeScoreBoardWindow(){
-            View.getInstance().closeScoreBoardWindow();
+                View.getInstance().openScoreBoardWindow();
         }
-
-//	public void closeNewGameWindow() {
-//		View.getInstance().closeNewGameWindow();
-//	}
+        public void closeScoreBoardWindow(){
+                View.getInstance().closeScoreBoardWindow();
+        }
         public void openHowToPlayWindow(){
-            View.getInstance().openHowToPlayWindow();
+                View.getInstance().openHowToPlayWindow();
         }
 	public void openMainGUI() {
-//		closeNewGameWindow();
-		View.getInstance().openMainGUI();
+                View.getInstance().openMainGUI();
 	}
-
+        public void closeMainGUI(){
+                View.getInstance().closeMainGUI();
+        }
+        public void initGame() {
+		Model.getInstance().initGame();
+	}
+        
 	public int getNumColumnsOfBoard() {
 		return Model.getInstance().getNumColumnsOfBoard();
 	}
-
+        
 	public int getNumRowsOfBoard() {
 		return Model.getInstance().getNumRowsOfBoard();
 	}
-
-	public String getPlayerName() {
-		return Model.getInstance().getPlayerName();
-	}
-        public int getLevel() {
-		return Model.getInstance().getLevel();
-	}
-        public boolean isLevelCompleted() {
-		return Model.getInstance().isLevelCompleted(); // find usage e fai qua la condizione
-	}
-	public void setPlayerName(String playerName) {
-		Model.getInstance().setPlayerName(playerName);
-//                Config.getInstance().setPlayerName(playerName);
-//                     View.getInstance().updatePlayerName(playerName);
-	}
-
-	public int getScore(){
-		return Model.getInstance().getScore();
-	}
-        public int getIncrementDelay(){
-            return Model.getInstance().getIncrementlDelay();
-        }
+        
         public boolean isLevelMode(){
             return Model.getInstance().isLevelMode();
         }
+        
         public void setLevelMode(boolean state){
             Model.getInstance().setLevelMode(state);
         }
-	public void initGame() {
-		Model.getInstance().initGame();
+        
+        public void setPlayerName(String playerName) {
+		Model.getInstance().setPlayerName(playerName);
 	}
-        public int getIncrementedScore() {
-		return Model.getInstance().getIncrementedScore();
+        
+	public String getPlayerName() {
+		return Model.getInstance().getPlayerName();
 	}
-//        public int[][] getboardArray(){
-//            return Model.getInstance().getBoardArray();
-//        }
+        
+        public int getLevel() {
+		return Model.getInstance().getLevel();
+	}
+        
+        public int getScore(){
+		return Model.getInstance().getScore();
+	}
+        
         public int getLineLeft(){
             return Model.getInstance().getLineLeft();
         }
+        
+        public int getIncrementedScore() {
+		return Model.getInstance().getIncrementedScore();
+	}
+        
+        public int getIncrementDelay(){
+            return Model.getInstance().getIncrementlDelay();
+        }
+
+        public int getIncrementBlock(int j){
+            return Model.getInstance().getIncrementBlock(j);
+        }
+        
         public int getBoardBlock(int i,int j){
             return Model.getInstance().getBoardBlock(i, j);
         }
+        
+        public boolean isLevelCompleted() {
+		return Model.getInstance().isLevelCompleted();
+	}
+	public boolean isGameOver(){
+            return !Model.getInstance().islastRowEmpty();
+        }
+        
         public void nextIncrementLine() {
             if(Model.getInstance().isIncrementLineFull()){
                     if (isGameOver()){
@@ -128,19 +126,13 @@ public class ControllerForView implements IControllerForView{
                         View.getInstance().updateLineLabel(getLineLeft());
                     }
             }
-            else if(Model.getInstance().isLevelCompleted()) {//next level
+            else if(Model.getInstance().isLevelCompleted()) {
                 View.getInstance().nextLevelEvent();
                 if(Config.getInstance().isEndLevelAnimationOn())
                      View.getInstance().nextLevelAnimation();                        
             }else 
-                    Model.getInstance().incrementLine();
-	} // end method next()
-        public boolean isGameOver(){
-            return !Model.getInstance().islastRowEmpty();
-        }
-        //---------------------------------------------------------------
-	// PRIVATE INSTANCE METHODS
-	//---------------------------------------------------------------
+                    Model.getInstance().addIncrementBlock();
+	} 
 
         public int remove(int i,int j,int blockType) { 
                 if(blockType==6){
@@ -158,7 +150,7 @@ public class ControllerForView implements IControllerForView{
                     Model.getInstance().setVisitedBlocks(i,j,blockType);
 
 
-                if(Model.getInstance().getVisitedNum() >=3){
+                if(Model.getInstance().getVisitedBlockNumber() >=3){
                     Model.getInstance().removeVisitedBlocks();
                     Model.getInstance().addScore();
                     View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 

@@ -12,46 +12,39 @@ package blockbuster.controller;
 public interface IControllerForView {
     
     public void openStartWindow();
-    
     public void closeStartWindow();
     
-//    public void openNewGameWindow();
-//    
-//    public void closeNewGameWindow();
     public void openHowToPlayWindow();
     public void openMainGUI();
+    public void closeMainGUI();
     public void openOptionWindow();
     
-    
     public void openScoreBoardWindow(); 
+    public void closeScoreBoardWindow();
 
-    public void closeScoreBoardWindow(); 
-    
-    public void loadPreviouslySavedGame(String configFile);
+    public void initGame();
     
     public int getNumColumnsOfBoard(); 
-
     public int getNumRowsOfBoard();
 
-    public String getPlayerName();
     public boolean isLevelMode();
-    public void setLevelMode(boolean state);
-
-    public void setPlayerName(String playerName);
-
-    public int getScore();
-   
-    public void initGame();
-
     
-    public int getIncrementDelay();
-    public int remove(int i,int j,int blockType);
-    public void nextIncrementLine();
-    public int getLineLeft();
-    public boolean isGameOver();
+    public void setLevelMode(boolean state);
+    public void setPlayerName(String playerName);
+    
+    public String getPlayerName();
+    public int getScore();
     public int getLevel();
-    public boolean isLevelCompleted();
+    public int getLineLeft();
     public int getIncrementedScore();
-//    public int[][] getboardArray();
+    public int getIncrementDelay();
+    public int getIncrementBlock(int j);
     public int getBoardBlock(int i,int j);
+    
+    public void nextIncrementLine();
+    public int remove(int i,int j,int blockType);
+    public boolean isGameOver();
+    public boolean isLevelCompleted();
+    
+    
 }

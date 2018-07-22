@@ -177,8 +177,7 @@ public class StartWindow extends JFrame {
                 new ScoreBoardWindow().setVisible(true);
 	}
         private void handleExitEvent() {
-		this.setVisible(false);
-                System.exit(0);
+            View.getInstance().closeStartWindow();
 	}
        
 } // end class

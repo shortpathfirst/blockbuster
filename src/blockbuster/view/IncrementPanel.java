@@ -5,7 +5,6 @@
  */
 package blockbuster.view;
 import blockbuster.controller.ControllerForView;
-import blockbuster.model.Model;
 
 import javax.swing.JPanel;
 import java.awt.Dimension;
@@ -74,11 +73,11 @@ public class IncrementPanel extends JPanel {
     }
      private void drawBlocks(Graphics2D g2d) { 
            for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) {
-                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(Model.getInstance().getIncrementBlock(j));
+                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(ControllerForView.getInstance().getIncrementBlock(j));
                     if(sprite != null)
                         g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN), (int) this.uX, (int)this.uY, this);
                     else
-                        this.drawBlockAtCell(g2d,j,Model.getInstance().getIncrementBlock(j));
+                        this.drawBlockAtCell(g2d,j,ControllerForView.getInstance().getIncrementBlock(j));
            } 
         }
     //---------------------------------------------------------------
@@ -104,8 +103,6 @@ public class IncrementPanel extends JPanel {
             Graphics2D g2d = (Graphics2D)g;
             this.paintGrid(g2d);
             drawBlocks(g2d);
-//            for(int j=0; j<ControllerForView.getInstance().getNumColumnsOfBoard(); j++)
-//                this.drawBlockAtCell(g2d,j,Model.getInstance().getIncrementBlock(j));
     }//end paint
     
     

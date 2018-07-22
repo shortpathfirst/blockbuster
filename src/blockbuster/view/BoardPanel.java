@@ -14,18 +14,15 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.MouseListener;
-import javax.swing.Timer;
 
 /**
  *
  * @author Andrea
  */
-public class BoardPanel extends JPanel implements MouseListener,ActionListener{ //implements KeyListener 
+public class BoardPanel extends JPanel implements MouseListener{ 
     //---------------------------------------------------------------
     // STATIC CONSTANTS
     //---------------------------------------------------------------
@@ -45,33 +42,21 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
         
         private int selectedCell;
         private int[] pos;
-        private int scored;
-        //Variable for animation
-        private Timer t;
-        private boolean endAnimation;
-        private int[][] board;
-        private int i;
-        private int j;
+        private int scorePerformed;
+        
+        EndLevelAnimation endLevelAnimation;
+
 	public BoardPanel() {
 		super();
 		this.line = new Line2D.Double();
 		this.block = new Rectangle2D.Double();
                 this.selectedCell = -1;
-                this.scored = 0;
-		this.setBackground(Color.BLACK);    //ColorSettings.getInstance().getColorBackgroundBoard()
+                this.scorePerformed = 0;
+		this.setBackground(Color.BLACK);   
                 this.setEnabled(false);
                 addMouseListener(this);     
 	}//end constructor
-        public void initEndAnimation(){
-                this.t = new Timer(40, this);
-                this.board = new int[ControllerForView.getInstance().getNumRowsOfBoard()][ControllerForView.getInstance().getNumColumnsOfBoard()];
-                for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
-                       for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++)
-                           this.board[i][j] = ControllerForView.getInstance().getBoardBlock(i, j);     
-                this.endAnimation=true;
-                this.i=0;
-                this.j=0;
-        }
+        
         //--------------------------------------
 	// java.awt.event.MouseListener methods
 	//--------------------------------------
@@ -95,7 +80,7 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 		this.selectedCell = ControllerForView.getInstance().getBoardBlock(row,column);
                 if( this.selectedCell != 0){ 
                     this.pos = new int[]{e.getX(),e.getY()};
-                    this.scored=ControllerForView.getInstance().remove(row,column,selectedCell);
+                    this.scorePerformed=ControllerForView.getInstance().remove(row,column,selectedCell);
                 }
             }
 	}
@@ -179,59 +164,25 @@ public class BoardPanel extends JPanel implements MouseListener,ActionListener{ 
 		Graphics2D g2d = (Graphics2D)g;
 		paintGrid(g2d);  
                 this.drawBlocks(g2d); 
-                if(this.endAnimation == true){
-                    this.t.start();
+                if(this.endLevelAnimation!=null && this.endLevelAnimation.isAnimationOn()){
+                    endLevelAnimation.start();
                     for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
                        for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++){
-                           drawBlockAtCell(g2d, i, j,board[i][j]);
+                            drawBlockAtCell(g2d, i, j,endLevelAnimation.getBlock(i, j));
                        } 
                 }            
-                if(this.pos != null && this.selectedCell!=0 && this.scored!=0 && Config.getInstance().isScoreLabelOn()){
+                if(this.pos != null && this.selectedCell!=0 && this.scorePerformed>4 && Config.getInstance().isScoreLabelOn()){
                     g2d.setFont(new Font("default", Font.BOLD, 16));
-                    g2d.drawString(""+this.scored,this.pos[0],this.pos[1]);
-                }else{
-                    g2d.drawString("",0,0);
+                    g2d.drawString(""+this.scorePerformed,this.pos[0],this.pos[1]);
                 }
         }
-       
-        
-@Override
-    public void actionPerformed(ActionEvent e) {
-        clearAnimation();
-//        Animation1();
-        this.repaint();
-    }
-private void clearAnimation(){
-    this.board[i][j] = 0;
-        if(j<this.board[0].length-1){
-             j++;
-        }else if (i<this.board.length-1){
-            j=0;
-            i++;
-        }else
-            StopAnimation();  
-}
-    private void Animation1(){
-        while(board[i][j]!=0){
-            if(j<board[0].length-1)
-                 j++;
-            else {
-                j=0;
-                i++;
-            }
+       public void initEndAnimation(){
+            endLevelAnimation = new EndLevelAnimation();
         }
-        if(i<this.board.length-1){
-            board[i][j]=1;
-            if(j<board[0].length-1)
-            j++;
-            else j=0;
-        }else
-            StopAnimation();
-    }
-    public void StopAnimation(){
-        this.t.stop();
-        i=0;
-        j=0;
-        this.endAnimation = false;    
-    }
+        public void StopAnimation(){
+            this.endLevelAnimation.StopAnimation();
+        }
+        public void updateBoard(){
+            this.repaint();
+        }
 }//end class

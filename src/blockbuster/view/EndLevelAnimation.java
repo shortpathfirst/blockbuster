@@ -38,45 +38,50 @@ public class EndLevelAnimation implements ActionListener {
         public void start(){
             this.t.start();
         }
+        public void StopAnimation(){
+            this.t.stop();
+            i=0;
+            j=0;
+            this.endAnimation = false;    
+        }
+        public void actionPerformed(ActionEvent e) {
+            clearAnimation();
+            //fillAnimation();
+            View.getInstance().updateBoard();
+         }
         public int getBlock(int i,int j){
             return this.board[i][j];
         }
-        public void actionPerformed(ActionEvent e) {
-//        clearAnimation();
-//        Animation1();
-//             this.repaint(); tell board to repaint
-         }
-        private void clearAnimation(){
-    this.board[i][j] = 0;
-        if(j<this.board[0].length-1){
-             j++;
-        }else if (i<this.board.length-1){
-            j=0;
-            i++;
-        }else
-            StopAnimation();  
-}
-    private void Animation1(){
-        while(board[i][j]!=0){
-            if(j<board[0].length-1)
-                 j++;
-            else {
-                j=0;
-                i++;
-            }
+        public boolean isAnimationOn(){
+            return this.endAnimation;
         }
-        if(i<this.board.length-1){
-            board[i][j]=1;
-            if(j<board[0].length-1)
-            j++;
-            else j=0;
-        }else
-            StopAnimation();
-    }
-    public void StopAnimation(){
-        this.t.stop();
-        i=0;
-        j=0;
-        this.endAnimation = false;    
-    }
+        private void clearAnimation(){
+            this.board[i][j] = 0;
+                if(j<this.board[0].length-1){
+                     j++;
+                }else if (i<this.board.length-1){
+                    j=0;
+                    i++;
+                }else
+                    StopAnimation();  
+        }
+        private void fillAnimation(){
+            while(board[i][j]!=0){
+                if(j<board[0].length-1)
+                     j++;
+                else {
+                    j=0;
+                    i++;
+                }
+            }
+            if(i<this.board.length-1){
+                board[i][j]=1;
+                if(j<board[0].length-1)
+                j++;
+                else j=0;
+            }else
+                StopAnimation();
+        }
+  
+
 }

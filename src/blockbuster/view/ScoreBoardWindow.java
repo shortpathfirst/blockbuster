@@ -118,6 +118,7 @@ public class ScoreBoardWindow extends JFrame{
             int reply = JOptionPane.showConfirmDialog(null, "Do you want to confirm?", "Confirm", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 ControllerForView.getInstance().setPlayerName(this.jtfName.getText());
+                View.getInstance().closeScoreBoardWindow();
             }
         }
         private void setScoreBoard(int mode){

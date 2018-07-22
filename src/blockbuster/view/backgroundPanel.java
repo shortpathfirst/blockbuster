@@ -31,7 +31,7 @@ public class backgroundPanel extends JPanel{
         }catch(URISyntaxException urise) {
                 urise.printStackTrace();
                 this.setBackground(Color.ORANGE);
-        }catch(NullPointerException npe){  //should not be catch
+        }catch(NullPointerException npe){
                 System.out.println("Background Source not found");
                 this.setBackground(Color.ORANGE);
         }

@@ -5,7 +5,6 @@
  */
 package blockbuster.utils;
 
-import blockbuster.controller.ControllerForView;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,13 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
-import java.util.TreeSet;
 
 /**
  *

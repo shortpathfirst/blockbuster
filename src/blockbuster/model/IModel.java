@@ -12,36 +12,46 @@ package blockbuster.model;
 public interface IModel {
         public int getNumColumnsOfBoard();
         public int getNumRowsOfBoard();
-        public int getLevel();
+        
         public String getPlayerName();
-        public void loadGame();
-        public void setPlayerName(String playerName);
-        
+        public int getLevel();
         public int getScore();
-        
-        public void addScore();
-        public void setVisitedBlocks(int i, int j, int blockType);
-        public void removeColor(int i, int j);
+        public int getLineLeft();
+        public int getIncrementedScore();
         public int getIncrementBlock(int index);
-        
-        public void pushIncrement();
         public int getBoardBlock(int i,int j);
-        public int getVisitedNum();
+        public int getVisitedBlockNumber();
+        public int getIncrementlDelay();
+        
+        public void setPlayerName(String playerName);
+        public void setLevelMode(boolean state);
+        
+        public void setVisitedBlocks(int i, int j, int blockType);
+        public void setVisitedSquare(int i, int j);
+        public void removeColor(int i, int j);
+        public void removeVisitedBlocks();
+        public void paintSquare(int i, int j);
         public void resetVisited();
         
         public void initGame();
-        public void incrementLine();
+        public void loadGame();
+        
+        public void addScore();
+        public void addIncrementBlock();
+        
         public void updateLine();
+        
+        public void nextLevel();
+        
+        public void pushIncrement();
+
         public boolean isIncrementLineFull();
         public boolean isLevelCompleted();
-        public int getLineLeft();
-        public void removeVisitedBlocks();
-        public void nextLevel();
-        public int getIncrementlDelay();
-        public int getIncrementedScore();
         public boolean islastRowEmpty();
         public boolean isLevelMode();
-        public void setLevelMode(boolean state);
-        public void setVisitedSquare(int i, int j);
-        public void paintSquare(int i, int j);
+        
+        
+
+        
+        
 }

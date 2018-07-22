@@ -1,5 +1,5 @@
 #
-#Sun Jul 22 22:04:37 CEST 2018
+#Mon Jul 23 00:02:45 CEST 2018
 Score=
 isEndLevelAnimationOn=true
 gameOptionColor=fdb94d
@@ -12,6 +12,6 @@ isBlockEffectOn=true
 Volume=6
 EffectsOn=true
 isVolumeOn=true
-Level=
 LineLeft=
+Level=
 gameBackgroundColor=null

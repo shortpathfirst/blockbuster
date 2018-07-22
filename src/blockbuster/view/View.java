@@ -26,7 +26,7 @@ public class View implements IView{
 	protected MainGUI mainGUI = null;
         protected Option optionWindow = null;
         protected HowToPlayWindow HowToPlayWindow= null;
-        protected ScoreBoardWindow ScoreBoardWindow = null;
+        protected ScoreBoardWindow scoreBoardWindow = null;
 
 	private View() {
 		//TO-DO
@@ -50,6 +50,7 @@ public class View implements IView{
 			public void run() {
 				if (startWindow != null)
 					startWindow.setVisible(false);
+                                System.exit(0);
 			}
 		});
 	}
@@ -62,6 +63,14 @@ public class View implements IView{
                                 updateLineLabel();
                                 updateScoreLabel(0);
                                 updateLineLabel(ControllerForView.getInstance().getLineLeft());
+			}
+		});
+	}
+        public void closeMainGUI() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (mainGUI != null)
+					mainGUI.setVisible(false);
 			}
 		});
 	}
@@ -86,16 +95,17 @@ public class View implements IView{
         public void openScoreBoardWindow(){
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				if (ScoreBoardWindow == null)
-					ScoreBoardWindow  = new ScoreBoardWindow();
-				ScoreBoardWindow.setVisible(true);
+				if (scoreBoardWindow == null)
+					scoreBoardWindow  = new ScoreBoardWindow();
+				scoreBoardWindow.setVisible(true);
 			}
 		});
         }
         public void closeScoreBoardWindow(){
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-                            //to do
+                            if (scoreBoardWindow != null)
+                                    scoreBoardWindow.setVisible(false);
 			}
 		});
         }
@@ -110,6 +120,9 @@ public class View implements IView{
         }
         public void updatePlayerName(String name){
             this.mainGUI.updatePlayerName(name);
+        }
+        public void updateBoard(){
+            this.mainGUI.updateBoard();
         }
 
 	public void gameOverEvent() {

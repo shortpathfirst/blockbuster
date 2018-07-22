@@ -25,7 +25,7 @@ public class ControllerForModel implements IControllerForModel {
         public void loadGame(){
             Model.getInstance().loadGame();
         }
-        //remove?
+        
 	public static IControllerForModel getInstance() {
 		if (instance == null)
 			instance = new ControllerForModel();
