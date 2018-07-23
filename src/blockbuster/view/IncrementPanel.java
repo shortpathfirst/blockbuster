@@ -61,19 +61,19 @@ public class IncrementPanel extends JPanel {
     }
     private void drawBlockAtCell(Graphics2D g2d, int j, int blockNumber) { 
             Color oldColor = g2d.getColor();
-            Color c  =BlockStyle.getInstance().getBlockColor(blockNumber); //each piace a color
+            Color c  =imgSetting.getInstance().getBlockColor(blockNumber); //each piace a color
             g2d.setColor(c); 
 
             this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN, this.uX, this.uY);
 
             g2d.fill(this.block);
-            g2d.setColor(BlockStyle.getInstance().getGridColor());                  
+            g2d.setColor(imgSetting.getInstance().getGridColor());                  
             g2d.draw(this.block);
             g2d.setColor(oldColor);
     }
      private void drawBlocks(Graphics2D g2d) { 
            for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) {
-                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(ControllerForView.getInstance().getIncrementBlock(j));
+                    BufferedImage sprite = imgSetting.getInstance().getBlockSprite(ControllerForView.getInstance().getIncrementBlock(j));
                     if(sprite != null)
                         g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN), (int) this.uX, (int)this.uY, this);
                     else

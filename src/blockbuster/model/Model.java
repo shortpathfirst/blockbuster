@@ -5,6 +5,7 @@
  */
 package blockbuster.model;
 
+import blockbuster.controller.ControllerForView;
 import blockbuster.utils.Config;
 import blockbuster.utils.SoundPlayer;
 import java.util.*;
@@ -51,20 +52,46 @@ public class Model implements IModel {
                         }
         
 	}
+    private int getLinesOfLevel(){
+            if(this.level==0)
+                return 20;
+            else if(this.level==1)
+                return 25;
+            else if(this.level==2)
+                return 30;
+            else if(this.level==3)
+                return 40;
+            else if(this.level==4)
+                return 45;
+            else if(this.level==5)
+                return 50;
+            else if(this.level==6)
+                return 60;
+            else if(this.level==7)
+                return 65;
+            else if(this.level==8)
+                return 70;
+            else if(this.level==9)
+                return 75;
+            else return 80;
+        }
+        private int getGameOverIndex(){
+            return this.boardArray.length-1;
+        }
     //---------------------------------------------------------------
     // PUBLIC INSTANCE METHODS
     //---------------------------------------------------------------
         public int getNumColumnsOfBoard() {
-                return this.boardArray[0].length;
+            return this.boardArray[0].length;
         }
         public int getNumRowsOfBoard() {
-                return this.boardArray.length;
+            return this.boardArray.length;
         }
         public String getPlayerName() {
-		return this.playerName;
+            return this.playerName;
 	}
         public int getScore() {
-		return this.score;
+            return this.score;
 	}
         public int getVisitedBlockNumber(){
             return this.numVisitedBlocks;
@@ -92,22 +119,22 @@ public class Model implements IModel {
         }
         public int getIncrementlDelay(){
              if(this.level==0 || this.level==1 || this.level==2)
-                 return 30;
+                 return 60;
              else if(this.level==3)
-                return 120;
+                return 60;
             if(this.level==4)
-                return 120;
+                return 60;
             if(this.level==5)
-                return 100;
-            if(this.level==6)
-                return 100;
-            if(this.level==7)
-                return 80;
-            if(this.level==8)
-                return 80;
-            if(this.level==9)
                 return 50;
-            else return 30;
+            if(this.level==6)
+                return 45;
+            if(this.level==7)
+                return 40;
+            if(this.level==8)
+                return 35;
+            if(this.level==9)
+                return 30;
+            else return 20;
         }
         public void setPlayerName(String playerName) {
 		this.playerName = playerName;
@@ -140,8 +167,9 @@ public class Model implements IModel {
         public void loadGame(){
             this.score =  Config.getInstance().getScore();
             this.playerName = Config.getInstance().getPlayerName(); 
-            this.incLine.setLineNumber(Config.getInstance().getLineLeft());
             this.level = Config.getInstance().getLevel();
+            this.incLine.setLineNumber(this.getLinesOfLevel()-Config.getInstance().getLineLeft());
+            
             for (int i = 0; i < this.boardArray.length; i++)
                 for (int j = 0; j < this.boardArray[0].length; j++)
                     this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j);
@@ -248,7 +276,7 @@ public class Model implements IModel {
                 this.visitedArray[i-1][j] = true; //bottom
                 this.visitedArray[i-1][j+1] = true; //right bottom corner
                 numVisitedBlocks = 5; 
-            }else if(j==this.boardArray[0].length && i>0){
+            }else if(j==this.boardArray[0].length-1 && i>0){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
@@ -260,7 +288,7 @@ public class Model implements IModel {
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
                 numVisitedBlocks = 3; 
-            }else if(j==this.boardArray[0].length && i==0){
+            }else if(j==this.boardArray[0].length-1 && i==0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i+1][j-1] = true; //left up corner
@@ -287,7 +315,7 @@ public class Model implements IModel {
              numVisitedBlocks = 0;
         }
 
-         public void nextLevel(){
+        public void nextLevel(){
              this.incLine.setLineNumber(0);
              this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
              this.level++;
@@ -309,29 +337,6 @@ public class Model implements IModel {
                 }
         }
 
-        private int getLinesOfLevel(){
-            if(this.level==0)
-                return 20;
-            else if(this.level==1)
-                return 25;
-            else if(this.level==2)
-                return 30;
-            else if(this.level==3)
-                return 40;
-            else if(this.level==4)
-                return 45;
-            else if(this.level==5)
-                return 50;
-            else if(this.level==6)
-                return 60;
-            else if(this.level==7)
-                return 65;
-            else if(this.level==8)
-                return 70;
-            else if(this.level==9)
-                return 75;
-            else return 80;
-        }
         
         public boolean isLevelMode(){
             return this.level != -1;
@@ -349,9 +354,7 @@ public class Model implements IModel {
             }
             return true;
         }
-        private int getGameOverIndex(){
-            return this.boardArray.length-1;
-        }
+        
 
         //---------------------------------------------------------------
 	// STATIC FIELDS

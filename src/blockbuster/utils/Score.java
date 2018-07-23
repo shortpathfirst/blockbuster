@@ -84,46 +84,37 @@ public class Score {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Score.class").toURI());
-		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
 		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 		
                 System.out.println("configFile: " + configFile.toString());
 		
                 return configFile.toString();
 	}
-
+        private void saveProperty(String name,String value){
+            FileOutputStream fos=null;
+                try {
+                    fos = new FileOutputStream(this.getConfigFile());
+                    
+                    this.properties.setProperty(name,value);
+                    this.properties.store(fos, "");
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (URISyntaxException | IOException ex) {
+                   ex.printStackTrace();
+                }
+                finally{
+                    try{
+                        fos.close();
+                    }catch(IOException ex){
+                        
+                    }
+                    
+                }
+        }
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
-//        public int getPlayerScore(String p,boolean levelmode){
-//            String name="";
-//            int value = 0;
-//            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
-//                name = (String)e.nextElement();
-//                try{
-//                    value = Integer.parseInt(this.properties.getProperty(name).trim());
-//                }catch (NumberFormatException num) {
-//                     setPlayerScore(name,0,levelmode);
-//                }
-//                if(name.equals(p))
-//                    return value;
-//            }
-//            return -1;
-//        }
-//        public List<String> getPlayers(){
-//            List<String> players = new ArrayList();
-//            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
-//                players.add((String)e.nextElement());
-//            }
-//            return players;
-//        }
-//        public List<String> getScores(){ //return player not score
-//            List<String> scores = new ArrayList();
-//            for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements(); ) {
-//                scores.add((String)e.nextElement());
-//            }
-//            return scores;
-//        }
+
         public HashMap<String, String> getPlayerScores(){
             	HashMap<String, String> mapPlayerToScore = new HashMap<String, String>();
                 for (Enumeration<?> e = this.properties.propertyNames(); e.hasMoreElements();){
@@ -135,38 +126,17 @@ public class Score {
         public void setPlayerScore(String player,int score,boolean levelmode){
             String[] p = null;
             if(this.properties.containsKey(player)){
-                    p = this.properties.getProperty(player).split(",");
-                if(levelmode){
-                    if(p[0].trim().isEmpty() || (score >  Integer.parseInt(p[0].trim())) )
-                        this.saveProperty(player,""+score+","+p[1]);   
-                }
-                else{
-                      if(p[1].trim().isEmpty() || (score >  Integer.parseInt(p[1].trim())) )
+                p = this.properties.getProperty(player).split(",");
+                if(levelmode && (p[0].trim().isEmpty() || (score >  Integer.parseInt(p[0].trim())) ))
+                    this.saveProperty(player,""+score+","+p[1]);   
+                else if(p[1].trim().isEmpty() || (score >  Integer.parseInt(p[1].trim())) )
                         this.saveProperty(player,""+p[0]+","+score);   
-                }
-            }
+            }else if(levelmode)
+                    this.saveProperty(player,""+score+",");   
+                  else 
+                    this.saveProperty(player,","+score);    
         }
-        private void saveProperty(String name,String value){
-            FileOutputStream fos=null;
-                try {
-                    fos = new FileOutputStream(this.getConfigFile());
-                    
-                    this.properties.setProperty(name,value);
-                    this.properties.store(fos, "");
-                } catch (FileNotFoundException ex) {
-                    System.out.println("Error");
-                } catch (URISyntaxException | IOException ex) {
-                    System.out.println("Error");
-                }
-                finally{
-                    try{
-                        fos.close();
-                    }catch(IOException ex){
-                        
-                    }
-                    
-                }
-        }
+    
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------

@@ -20,6 +20,8 @@ import javax.sound.sampled.*;
 
 public class SoundPlayer implements Runnable 
 {
+    private final static boolean IS_DIST_VERSION = false;// this flag must be set to true when compiling for the dist version
+    
     private static SoundPlayer instance = null;
     private String relFileLocation;
     private final String gameoverLocation = "\\source\\gameover.wav";
@@ -28,7 +30,6 @@ public class SoundPlayer implements Runnable
     
     public SoundPlayer(String fileToPlay) {
             relFileLocation ="\\source\\"+fileToPlay+".wav";
-            instance=null;                                                      //initialized 1 time per object
     }
     
     public void run()
@@ -43,11 +44,8 @@ public class SoundPlayer implements Runnable
     
     public void play() 
     {  
-        if(instance==null){
-            Thread t = new Thread(this);
-            t.start();
-        }else
-            this.start();
+        Thread t = new Thread(this);
+        t.start();
     }
     public void pause(){
         if(clip != null)
@@ -82,7 +80,7 @@ public class SoundPlayer implements Runnable
         start();
     }
     
-    private final static boolean IS_DIST_VERSION = false;// this flag must be set to true when compiling for the dist version
+    
     
     private String getFileLocation() throws URISyntaxException{
         if (IS_DIST_VERSION)
@@ -108,4 +106,5 @@ public class SoundPlayer implements Runnable
 		homeDir = homeDir.substring(0, lastIndexOfSlash);
 		return homeDir;
 	}
+        
 }

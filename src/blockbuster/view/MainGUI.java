@@ -73,20 +73,22 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.isGameStarted = false;
 		this.isGameRunning = false;
 	}
-        private void ReturnToStartWindows(){
+        private void returnToStartWindows(){
                this.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         ControllerForView.getInstance().openStartWindow();
                         stopGame();
                         bcMusic.pause();
+                        if(!ControllerForView.getInstance().isGameOver())
+                            Config.getInstance().saveGame();
                     }
                   });
         }
         private void createGUI() {
 		this.addComponentListener(this);
                 
-                ReturnToStartWindows();//this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                returnToStartWindows();//this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
               
 		this.setPreferredSize(new Dimension(WINDOW_PREFERRED_WIDTH, WINDOW_PREFERRED_HEIGHT));
                 
@@ -100,7 +102,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 
                 this.bcMusic=new SoundPlayer("bcMusic");
                 
-                Image img = BlockStyle.getInstance().getButtonIcon();
+                Image img = imgSetting.getInstance().getButtonIcon();
                 this.setIconImage(img);    
                 
 		this.pack();    
@@ -234,7 +236,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 	}
          public void updateLineLabel(int lines) {
 		this.linesLeftLab.setText(String.valueOf(lines));
-                
 	}
         public void updateLineLabel(){
              if(ControllerForView.getInstance().isLevelMode()) 
@@ -245,6 +246,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
         public void updatePlayerName(String name) {
 		this.playerNameLab.setText(name);
 	}
+
         public void createEndLevelButton(){
             this.endLevelBut = new JButton();
             this.endLevelBut.setText("LEVEL "+ControllerForView.getInstance().getLevel()+" COMPLETED");
@@ -252,7 +254,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
             this.endLevelBut.setVerticalTextPosition(JButton.BOTTOM);
             this.endLevelBut.setBackground(Color.WHITE);
-            Image img = BlockStyle.getInstance().getEndLevelImage();
+            Image img = imgSetting.getInstance().getEndLevelImage();
             this.endLevelBut.setIcon(new ImageIcon(img));
             this.endLevelBut.setPreferredSize(new Dimension(220,150));
             this.endLevelBut.setMaximumSize(new Dimension(220,150));

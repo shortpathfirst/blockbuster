@@ -100,8 +100,8 @@ public class BoardPanel extends JPanel implements MouseListener{
                 j = (int)((double)(x - X_MARGIN) / this.uX);
 		return j;
 	}
-        
-        public void paintGrid(Graphics2D g2d) {
+
+        private void paintGrid(Graphics2D g2d) {
 		Color oldColor = g2d.getColor();
 
 		int numColumns = ControllerForView.getInstance().getNumColumnsOfBoard();
@@ -122,28 +122,28 @@ public class BoardPanel extends JPanel implements MouseListener{
 		}
 
 		g2d.setColor(oldColor);
-	} // end method paintGrid()
+	} 
         
-        public void drawBlockAtCell(Graphics2D g2d, int i, int j, int blockNumber) { 
-                Color oldColor = g2d.getColor();
-                g2d.setColor(BlockStyle.getInstance().getBlockColor(blockNumber));
-                this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
-                g2d.fill(this.block);
-                g2d.setColor(BlockStyle.getInstance().getGridColor()); 
-                g2d.draw(this.block);
-                g2d.setColor(oldColor);
-        }
-
         private void drawBlocks(Graphics2D g2d) { 
            for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
                 for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++){
-                    BufferedImage sprite = BlockStyle.getInstance().getBlockSprite(ControllerForView.getInstance().getBoardBlock(i, j));
+                    BufferedImage sprite = imgSetting.getInstance().getBlockSprite(ControllerForView.getInstance().getBoardBlock(i, j));
                     if(sprite != null)
                         g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN+this.uY *(ControllerForView.getInstance().getNumRowsOfBoard() -1- i)), (int) this.uX, (int)this.uY, this);
                     else
                         this.drawBlockAtCell(g2d,i,j,ControllerForView.getInstance().getBoardBlock(i,j));
                 }      
         }
+        private void drawBlockAtCell(Graphics2D g2d, int i, int j, int blockNumber) { 
+                Color oldColor = g2d.getColor();
+                g2d.setColor(imgSetting.getInstance().getBlockColor(blockNumber));
+                this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
+                g2d.fill(this.block);
+                g2d.setColor(imgSetting.getInstance().getGridColor()); 
+                g2d.draw(this.block);
+                g2d.setColor(oldColor);
+        }
+
         
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
@@ -162,7 +162,7 @@ public class BoardPanel extends JPanel implements MouseListener{
 		super.paintComponent(g);
                 
 		Graphics2D g2d = (Graphics2D)g;
-		paintGrid(g2d);  
+		this.paintGrid(g2d);  
                 this.drawBlocks(g2d); 
                 if(this.endLevelAnimation!=null && this.endLevelAnimation.isAnimationOn()){
                     endLevelAnimation.start();
@@ -171,7 +171,7 @@ public class BoardPanel extends JPanel implements MouseListener{
                             drawBlockAtCell(g2d, i, j,endLevelAnimation.getBlock(i, j));
                        } 
                 }            
-                if(this.pos != null && this.selectedCell!=0 && this.scorePerformed>4 && Config.getInstance().isScoreLabelOn()){
+                if(Config.getInstance().isScoreLabelOn() && this.pos != null && this.selectedCell!=0 && this.scorePerformed>4){
                     g2d.setFont(new Font("default", Font.BOLD, 16));
                     g2d.drawString(""+this.scorePerformed,this.pos[0],this.pos[1]);
                 }
@@ -180,7 +180,8 @@ public class BoardPanel extends JPanel implements MouseListener{
             endLevelAnimation = new EndLevelAnimation();
         }
         public void StopAnimation(){
-            this.endLevelAnimation.StopAnimation();
+            if(this.endLevelAnimation != null)
+                this.endLevelAnimation.StopAnimation();
         }
         public void updateBoard(){
             this.repaint();

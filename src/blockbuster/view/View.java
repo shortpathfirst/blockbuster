@@ -50,7 +50,6 @@ public class View implements IView{
 			public void run() {
 				if (startWindow != null)
 					startWindow.setVisible(false);
-                                System.exit(0);
 			}
 		});
 	}

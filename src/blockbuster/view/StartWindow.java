@@ -147,8 +147,7 @@ public class StartWindow extends JFrame {
                 }
                 
                 if(!Config.getInstance().getPlayerName().equals("") && Config.getInstance().getLevel() != -1){
-                ControllerForModel.getInstance().loadGame();
-                ControllerForView.getInstance().setLevelMode(true);
+                    ControllerForModel.getInstance().loadGame();
                 }
                 
 	}
@@ -178,6 +177,7 @@ public class StartWindow extends JFrame {
 	}
         private void handleExitEvent() {
             View.getInstance().closeStartWindow();
+            System.exit(0);
 	}
        
 } // end class

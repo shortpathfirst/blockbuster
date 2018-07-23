@@ -12,16 +12,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import javax.imageio.ImageIO;
 /**
  *
  * @author Andrea
  */
-public class BlockStyle {
+public class imgSetting {
         //---------------------------------------------------------------
 	// STATIC ATTRIBUTE
 	//---------------------------------------------------------------
-	private static BlockStyle instance = null;
+	private static imgSetting instance = null;
 
 	//---------------------------------------------------------------
 	// INSTANCE ATTRIBUTE
@@ -31,7 +32,7 @@ public class BlockStyle {
         private Image logoImg;
         private Image levelImg;
         
-        private BlockStyle(){//Vedi colorSetting
+        private imgSetting(){
              loadImage();  
         }
 
@@ -93,7 +94,7 @@ public class BlockStyle {
         public String getFileLocation() throws URISyntaxException{
             File configFile = null;
             File byteCodeFileOfThisClass;
-            byteCodeFileOfThisClass = new File(BlockStyle.class.getResource("BlockStyle.class").toURI());
+            byteCodeFileOfThisClass = new File(imgSetting.class.getResource("imgSetting.class").toURI());
             configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
         return configFile.toString();
     }
@@ -104,16 +105,27 @@ public class BlockStyle {
             levelImg.getScaledInstance(130, -1, Image.SCALE_SMOOTH);
             return levelImg;
         }
-        private void loadImage() {//throws NullPointerException  {
+
+        public String getImagePath(String name){ 
+            try {
+                return getFileLocation()+"\\source\\"+name;
+            } catch (URISyntaxException ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+
+
+        private void loadImage() {
                 BufferedImage bigImg= null;
                 try{
                     bigImg = ImageIO.read(new File(getFileLocation()+"\\source\\BlockSprites.png"));
                     logoImg = ImageIO.read(new File(getFileLocation()+"\\source\\logo.png")); 
-                    levelImg = ImageIO.read(new File(getFileLocation()+"\\source\\level.png"));  
+                    levelImg = ImageIO.read(new File(getFileLocation()+"\\source\\level.png"));
                 }catch (IOException | URISyntaxException ex) {
-                     System.out.println("Source not found");
+                    ex.printStackTrace();
+                    System.out.println("Source not found");
                 }
-
                 final int width =24;
                 final int height = 24;
                 final int rows = 9;
@@ -136,9 +148,9 @@ public class BlockStyle {
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------
-	public static BlockStyle getInstance() {
+	public static imgSetting getInstance() {
 		if (instance == null)
-			instance = new BlockStyle();
+			instance = new imgSetting();
 		return instance;
 	}
         

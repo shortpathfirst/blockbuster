@@ -6,6 +6,7 @@
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForView;
+import blockbuster.utils.Config;
 import blockbuster.utils.Score;
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -35,6 +36,7 @@ public class ScoreBoardWindow extends JFrame{
 	private JTextField jtfName;
         private JPanel playerPane;
         private JPanel scoreBoardPane;
+        
         public ScoreBoardWindow() {
             
 		super("Set Player");
@@ -115,33 +117,34 @@ public class ScoreBoardWindow extends JFrame{
                   });
         }
         private void handleSetNameEvent() {
-            int reply = JOptionPane.showConfirmDialog(null, "Do you want to confirm?", "Confirm", JOptionPane.YES_NO_OPTION);
+            int reply = JOptionPane.showConfirmDialog(null, "Do you want to confirm? It will erase previously saved game", "Confirm", JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
+                Config.getInstance().removeSavedGame();
                 ControllerForView.getInstance().setPlayerName(this.jtfName.getText());
                 View.getInstance().closeScoreBoardWindow();
             }
         }
         private void setScoreBoard(int mode){
             HashMap<String, String> map = Score.getInstance().getPlayerScores();
-            for(int i=0; i<=10; i++){
+            for(int i=0; i<=10; i++){ //Top 10
                 int max =-1;
                 String key="";
                 for(Map.Entry<String, String> entry : map.entrySet()) {
                     String[] s = entry.getValue().split(",");
-                    if (!s[mode].trim().isEmpty() && Integer.parseInt(s[mode].trim()) > max){ 
+                    if (!s[mode].trim().isEmpty() && Integer.parseInt(s[mode].trim()) > max){ //search max
                         max = Integer.parseInt(s[mode].trim());
                         key = entry.getKey();
                     }
                 }
-                JLabel index = new JLabel(" "+(i+1)+".");
-                JLabel name = new JLabel(key);
-                JLabel score = new JLabel(""+max);
-                map.remove(key);
                 if(max >-1){
+                    JLabel index = new JLabel(" "+(i+1)+".");
+                    JLabel name = new JLabel(key);
+                    JLabel score = new JLabel(""+max);
                     scoreBoardPane.add(index);
                     scoreBoardPane.add(name);
                     scoreBoardPane.add(score);
                 }
+                map.remove(key);
             }
         }
     }

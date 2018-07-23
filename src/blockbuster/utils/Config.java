@@ -44,7 +44,6 @@ public class Config {
 			String configFile = getConfigFile();
 			BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "ISO-8859-1"));
 			this.properties = new Properties();
-                        
 			this.properties.load(buffRead);
 		}
 		catch(URISyntaxException urise) {
@@ -91,15 +90,141 @@ public class Config {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Config.class").toURI());
-		//System.out.println("byteCodeFileOfThisClass: " + byteCodeFileOfThisClass);
 		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();;
-//		System.out.println("configFile: " + configFile.toString());
 		return configFile.toString();
 	}
 
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
+
+        public String getPlayerName(){
+            if(this.properties.getProperty("PlayerName")!=null)
+                return this.properties.getProperty("PlayerName");
+            else
+                return "";
+        }
+        public int getLevel(){
+            if(this.properties.getProperty("Level")!=null)
+                return Integer.parseInt(this.properties.getProperty("Level"));
+            else 
+                return 0;
+        }
+        public int getScore(){
+            if(this.properties.getProperty("Score")!=null)
+                return Integer.parseInt(this.properties.getProperty("Score"));
+            else 
+                return 0;
+        }
+        public int getLineLeft(){
+            if(this.properties.getProperty("LineLeft")!=null)
+                return Integer.parseInt(this.properties.getProperty("LineLeft"));
+            else 
+                return -1;
+            
+        }
+        public int getBoardBlock(int i,int j){
+              String[] s =this.properties.getProperty("Board").split(",");
+              if(i<s.length && j<s[0].length())
+              return s[i].charAt(j)-'0'; //-'0' convert to int
+              else return 0;
+        }
+        
+        public int getSoundVolume() {
+            if(this.properties.getProperty("Volume")!=null)
+                return Integer.parseInt(this.properties.getProperty("Volume"));
+            else{
+                saveProperty("Volume","0");
+                return 0;
+            }
+	}
+        public int getEffectsVolume() {
+            if(this.properties.getProperty("EffectsVolume")!=null)
+                return Integer.parseInt(this.properties.getProperty("EffectsVolume"));
+            else{
+                saveProperty("EffectsVolume","0");
+                return 0;
+            }
+	}
+        public int getBlockStyle() {
+            if(this.properties.getProperty("BlockStyle")!= null)
+		return Integer.parseInt(this.properties.getProperty("BlockStyle"));
+            else{
+                saveProperty("BlockStyle","0");
+                return 0;
+            }
+	}
+        public String getGameOptionColor() { //in hex
+            if(this.properties.getProperty("gameOptionColor")!=null)
+		return "#"+ this.properties.getProperty("gameOptionColor");
+            else{
+                saveProperty("gameOptionColor","fdb94d");
+                return "#fdb94d"; //default hex color
+            }
+	}
+        
+         public void setBlockEffectOn(boolean value){
+                saveProperty("isBlockEffectOn",""+value);
+        }
+        public void setVolume(int volume){
+            if(volume == 0)
+                saveProperty("isVolumeOn","false");
+            else
+                saveProperty("isVolumeOn","true");
+            
+            saveProperty("Volume",""+volume);
+        }
+        
+        public void setEffects(int volume){
+            if(volume == 0)
+                saveProperty("EffectOn","false");
+            else
+                saveProperty("EffectOn","true");
+            
+            saveProperty("EffectsVolume",""+volume);
+        }
+        
+        public void setScoreLabel(boolean value){
+                saveProperty("isScoreLabelOn",""+value);
+        }  
+        public void setBlockStyle(int i) {
+		saveProperty("BlockStyle",""+i);
+	}
+        public void setEndLevelAnimation(boolean value){
+            saveProperty("isEndLevelAnimationOn",""+value);
+        }
+        public boolean isVolumeOn() {
+            if(this.properties.getProperty("isVolumeOn")!=null)
+		return this.properties.getProperty("isVolumeOn").toLowerCase().equals("true");
+            else{
+                saveProperty("isVolumeOn","false");
+                return false;
+            }
+	}  
+        public boolean isBlockEffectOn(){
+            if(this.properties.getProperty("isBlockEffectOn")!=null)
+		return this.properties.getProperty("isBlockEffectOn").toLowerCase().equals("true");
+            else{
+                saveProperty("isBlockEffectOn","false");
+                return false;
+            }
+        }
+        public boolean isEndLevelAnimationOn() {
+            if(this.properties.getProperty("isEndLevelAnimationOn")!=null)
+		return this.properties.getProperty("isEndLevelAnimationOn").toLowerCase().equals("true");
+            else{
+                saveProperty("isEndLevelAnimationOn","false");
+                return false;
+            }
+	}
+        public boolean isScoreLabelOn(){
+            if(this.properties.getProperty("isScoreLabelOn")!=null)
+                return this.properties.getProperty("isScoreLabelOn").toLowerCase().equals("true");
+            else{
+                saveProperty("isScoreLabelOn","false");
+                return false;
+            }
+        }
         
         public void saveGame(){
             int level=ControllerForView.getInstance().getLevel();
@@ -107,13 +232,13 @@ public class Config {
             int lineLeft=ControllerForView.getInstance().getLineLeft();
             String playerName = ControllerForView.getInstance().getPlayerName();
             
-            saveProperty("PlayerName",playerName,"");
+            saveProperty("PlayerName",playerName);
             if(level<0)
-                saveProperty("Level","-1","");
+                saveProperty("Level","-1");
             else
-                saveProperty("Level",""+level,"");
-            saveProperty("Score",""+score,"");
-            saveProperty("LineLeft",""+lineLeft,"");
+                saveProperty("Level",""+level);
+            saveProperty("Score",""+score);
+            saveProperty("LineLeft",""+lineLeft);
             String board="";
             for(int i=0; i<ControllerForView.getInstance().getNumRowsOfBoard();i++){
                     String row="";
@@ -124,114 +249,23 @@ public class Config {
 //                    saveProperty(""+i,row,"");
             }
             
-            saveProperty("Board",board,"");
+            saveProperty("Board",board);
             
         }
         public void removeSavedGame(){
-//            for(int i=0; i<ControllerForView.getInstance().getNumRowsOfBoard();i++)
-//                this.properties.remove(""+i);
-//            this.properties.remove("Board");
-//            this.properties.remove("PlayerName");
-//            this.properties.remove("Level");
-//            this.properties.remove("Score");
-//            this.properties.remove("LineLeft");
-            saveProperty("Board","","");
-            saveProperty("Level","","");
-            saveProperty("Score","","");
-            saveProperty("LineLeft","","");
-            saveProperty("PlayerName","","");
-                                    
+            saveProperty("Board","");
+            saveProperty("Level","");
+            saveProperty("Score","");
+            saveProperty("LineLeft","");
+            saveProperty("PlayerName","");                         
         }
-        public String getPlayerName(){
-            return this.properties.getProperty("PlayerName");
-        }
-        public int getLevel(){//nullpointerex
-            return Integer.parseInt(this.properties.getProperty("Level"));
-        }
-        public int getScore(){
-            return Integer.parseInt(this.properties.getProperty("Score"));
-        }
-        public int getLineLeft(){
-            return Integer.parseInt(this.properties.getProperty("LineLeft"));
-        }
-//        public int[][] getBoard(){
-//            int[][] board = new int[ControllerForView.getInstance().getNumRowsOfBoard()][ControllerForView.getInstance().getNumColumnsOfBoard()];
-//            for(int i=0; i<ControllerForView.getInstance().getNumRowsOfBoard(); i++)
-//                for(int j=0; j<ControllerForView.getInstance().getNumColumnsOfBoard(); j++)
-//                    board[i][j]=this.properties.getProperty(""+i).charAt(j) - '0';
-//            if(board[0][ControllerForView.getInstance().getNumColumnsOfBoard()/2]==0)
-//                return null;
-//            return board;
-//        }
-        public int getBoardBlock(int i,int j){
-//            return this.properties.getProperty(""+i).charAt(j) - '0';
-              String[] s =this.properties.getProperty("Board").split(",");
-              if(i<s.length && j<s[0].length())
-              return s[i].charAt(j)-'0';
-              else return 0;
-        }
-        public void setVolume(int volume){
-            if(volume == 0)
-                saveProperty("isVolumeOn","false","");
-            else
-                saveProperty("isVolumeOn","true","");
-            
-            saveProperty("Volume",""+volume,"");
-        }
-        public void setEffects(int volume){
-            if(volume == 0)
-                saveProperty("EffectOn","false","");
-            else
-                saveProperty("EffectOn","true","");
-            
-            saveProperty("Effects",""+volume,"");
-        }
-        public void setScoreLabel(boolean value){
-                saveProperty("isScoreLabelOn",""+value,"");
-        }
-        public int getSoundVolume() {
-            return Integer.parseInt(this.properties.getProperty("Volume"));
-	}
-        public int getEffectsVolume() {
-		return Integer.parseInt(this.properties.getProperty("EffectsVolume"));
-	}
-         public void setBlockEffectOn(boolean value){
-                saveProperty("isBlockEffectOn",""+value,"");
-        }
-        public boolean isVolumeOn() {
-		return this.properties.getProperty("isVolumeOn").toLowerCase().equals("true");
-	}
-        public boolean isBlockEffectOn(){
-            return this.properties.getProperty("isBlockEffectOn").toLowerCase().equals("true");
-        }
-        public boolean isEndLevelAnimationOn() {
-		return this.properties.getProperty("isEndLevelAnimationOn").toLowerCase().equals("true");
-	}
-        public boolean isScoreLabelOn(){
-            return this.properties.getProperty("isScoreLabelOn").toLowerCase().equals("true");
-        }
-        public int getBlockStyle() {
-		return Integer.parseInt(this.properties.getProperty("BlockStyle"));
-	}
-        public void setBlockStyle(int i) {
-		saveProperty("BlockStyle",""+i,"Block Style");
-	}
-        public void setEndLevelAnimation(boolean value){
-            saveProperty("isEndLevelAnimationOn",""+value,"");
-        }
-        public String getGameOptionColor() { //in hex
-		return "#"+ this.properties.getProperty("gameOptionColor");
-	}
-        public String getGameBackgroundColor() { //in hex
-		return "#"+this.properties.getProperty("gameBackgroundColor");
-	}
-        private void saveProperty(String name,String value,String Comment){
+        private void saveProperty(String name, String value){
             FileOutputStream fos=null;
                 try {
                     fos = new FileOutputStream(this.getConfigFile());
                     
                     this.properties.setProperty(name,value);
-                    this.properties.store(fos, Comment);
+                    this.properties.store(fos,"");
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
                 } catch (URISyntaxException | IOException ex) {
@@ -239,7 +273,7 @@ public class Config {
                 }
                 finally{
                     try{
-                    fos.close();
+                        fos.close();
                     }catch(IOException ex){
                         
                     }

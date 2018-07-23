@@ -10,7 +10,6 @@ import blockbuster.utils.Config;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -146,15 +145,15 @@ public class Option extends JFrame{
         
         
         JLabel block0 = new JLabel();
-        block0.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 0)));
+        block0.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 0)));
         JLabel block1 = new JLabel();
-        block1.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 1)));
+        block1.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 1)));
         JLabel block2 = new JLabel();
-        block2.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 2)));
+        block2.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 2)));
         JLabel block3 = new JLabel();
-        block3.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 3)));
+        block3.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 3)));
         JLabel block4 = new JLabel();
-        block4.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(1, 4)));
+        block4.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 4)));
         
         radioPanel = new JPanel(new GridLayout(0, 2));
         
@@ -218,8 +217,7 @@ public class Option extends JFrame{
                     });
         }
     
-     private class Volume extends JPanel{    //inner class chiamata all'interno  
-         private int volumeValue;
+     private class Volume extends JPanel{
          private JSlider volumeSlide;
          private JSlider effectsSlide;
          public Volume(){
@@ -233,9 +231,8 @@ public class Option extends JFrame{
                 volumeSlide.setValue(Config.getInstance().getSoundVolume());
                 effectsSlide.setValue(Config.getInstance().getEffectsVolume());
             }catch(NumberFormatException ex){
-                System.out.println("Config field not found");
+                ex.printStackTrace();
             }
-            //to do
             add(volumeLabel);
             add(volumeSlide);
             add(effectLabel);
@@ -248,20 +245,19 @@ public class Option extends JFrame{
                       public void stateChanged(ChangeEvent e) {
                         JSlider source = (JSlider)e.getSource();
                          if (!source.getValueIsAdjusting()) {
-                             volumeValue =source.getValue();
-                             Config.getInstance().setVolume(volumeValue);
-                             Config.getInstance().setVolume(volumeValue);
+                             volumeSlider.setValue(source.getValue());
+                             if(source == volumeSlide)
+                                Config.getInstance().setVolume(source.getValue());
+                             else
+                                 Config.getInstance().setEffects(source.getValue());
                          }
                 }
             });
-            //Turn on labels at major tick marks.
             volumeSlider.setMajorTickSpacing(10);
             volumeSlider.setMinorTickSpacing(1);
             volumeSlider.setPaintTicks(true);
             volumeSlider.setPaintLabels(true);
-            volumeSlider.setBorder(
-                BorderFactory.createEmptyBorder(0,0,10,0));
-            
+
             return volumeSlider;
          }
      }//end inner class

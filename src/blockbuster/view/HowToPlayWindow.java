@@ -8,10 +8,9 @@ package blockbuster.view;
 import blockbuster.controller.ControllerForView;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -48,19 +47,18 @@ public class HowToPlayWindow extends JFrame{
         jpanePage3 = new JPanel();
         jbutPage1 = new JButton();
         jbutPage2 = new JButton();
-        jbutPage3 = new JButton();
+//        jbutPage3 = new JButton();
         
-        ReturnToStartWindows();
+        returnToStartWindows();
 //        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        
         initPage1();
         initPage2();
         mainpanel.setLayout(new java.awt.CardLayout());
         
         mainpanel.add(jpanePage1, "card1");
         mainpanel.add(jpanePage2, "card2");
-        mainpanel.add(jpanePage3, "card3");
+//        mainpanel.add(jpanePage3, "card3");
 
         jbutPage1.setText("Page 1");
         jbutPage1.addActionListener(new ActionListener() {
@@ -76,15 +74,15 @@ public class HowToPlayWindow extends JFrame{
             }
         });
 
-        jbutPage3.setText("Page 3");
-        jbutPage3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbutPage3ActionPerformed(evt);
-            }
-        });
+//        jbutPage3.setText("Page 3");
+//        jbutPage3.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                jbutPage3ActionPerformed(evt);
+//            }
+//        });
         buttonPanel.add(jbutPage1);
         buttonPanel.add(jbutPage2);
-        buttonPanel.add(jbutPage3);
+//        buttonPanel.add(jbutPage3);
 
         this.getContentPane().setLayout(new BorderLayout());
         this.add(mainpanel, BorderLayout.CENTER);
@@ -92,7 +90,7 @@ public class HowToPlayWindow extends JFrame{
         
         pack();
     }
-    private void ReturnToStartWindows(){                                    //load saved game     
+    private void returnToStartWindows(){
                this.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
@@ -110,55 +108,65 @@ public class HowToPlayWindow extends JFrame{
             card.show(mainpanel, "card2");
     }                                        
 
-    private void jbutPage3ActionPerformed(ActionEvent evt) {                                         
-            CardLayout card = (CardLayout)mainpanel.getLayout();
-            card.show(mainpanel, "card3");
-    }   
+//    private void jbutPage3ActionPerformed(ActionEvent evt) {                                         
+//            CardLayout card = (CardLayout)mainpanel.getLayout();
+//            card.show(mainpanel, "card3");
+//    }   
     private void initPage1(){
-        this.jpanePage1.setLayout(new BorderLayout(100,100));
-        this.jpanePage1.setPreferredSize(new Dimension(1200,400));
-        this.jpanePage1.setBackground(Color.ORANGE);
-        JPanel content = new JPanel();
-        content.setBackground(Color.ORANGE);
+//        JPanel content = new JPanel();
         
-       
         JLabel titleLabel1 = new JLabel("The goal");
-        JLabel textLabel1 = new JLabel("<html>Collapse the rising blocks to get "
-                                          + "<br> as many points as possible</html>");
+        JLabel textLabel1 = new JLabel("<html>Collapse the rising blocks to get as many points as possible</html>");                         
+        JLabel imgLabel1a = new JLabel();
+        imgLabel1a.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial1a.gif")));
+        JLabel imgLabel1b = new JLabel();
+        imgLabel1b.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial1b.gif")));
         
-
+        JPanel imgPanel1 = new JPanel();
+        imgPanel1.setLayout(new BorderLayout());
+        imgPanel1.add(imgLabel1a,BorderLayout.SOUTH);
+        imgPanel1.add(imgLabel1b,BorderLayout.PAGE_START);
+        
         JLabel titleLabel2 = new JLabel("How to Play");
         JLabel textLabel2 = new JLabel("<html>Score points by clickin on like-colored blocks that are grouped "
-                                            + "<br> in clusters of three or more(stacked in any direction)."
+                                            +"<br> in clusters of three or more(stacked in any direction)."
                                             +"<br> The blocks will explode and collapse onto any blocks below them</html>");
+        JLabel imgLabel2 = new JLabel();
+        imgLabel2.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial2.png")));
         
         
         JLabel titleLabel3 = new JLabel("Levels");
         JLabel textLabel3 = new JLabel("<html>To move to the next level you must first clear "
                                     + "<br> the number of lines of the blocks displayed. "
                                      +"<br> Each level speeds up, you have to be quick!</html>");
+        JLabel imgLabel3 = new JLabel();
+        imgLabel3.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial3.png")));
         
         titleLabel1.setFont(new Font("Verdana",1,20));
         titleLabel2.setFont(new Font("Verdana",1,20));
         titleLabel3.setFont(new Font("Verdana",1,20));
         
         
-         GroupLayout layout = new GroupLayout(content);
-        content.setLayout(layout);
+        GroupLayout layout = new GroupLayout(jpanePage1);
+        jpanePage1.setLayout(layout);
+       
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
         layout.setHorizontalGroup(
            layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                     .addComponent(titleLabel1)
-                     .addComponent(textLabel1))
+                    .addComponent(titleLabel1)
+                    .addComponent(textLabel1)
+                    .addComponent(imgPanel1))
                  .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                      .addComponent(titleLabel2)
-                     .addComponent(textLabel2))
+                     .addComponent(textLabel2)
+                     .addComponent(imgLabel2))
                  .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                      .addComponent(titleLabel3)
-                     .addComponent(textLabel3))
+                     .addComponent(textLabel3)
+                    .addComponent(imgLabel3))
         );
         layout.setVerticalGroup(
            layout.createSequentialGroup()
@@ -170,32 +178,43 @@ public class HowToPlayWindow extends JFrame{
                       .addComponent(textLabel1)
                       .addComponent(textLabel2)
                       .addComponent(textLabel3))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                      .addComponent(imgPanel1)
+                      .addComponent(imgLabel2)
+                      .addComponent(imgLabel3))
         );
-        jpanePage1.add(content);
 
+        this.pack();
     }
     private void initPage2(){
         JPanel blockPane = new JPanel();
-        blockPane.setLayout(new GridLayout(0,2));
-        JLabel b1 = new JLabel("There are 5 normal colored blocks");
-        
-        for(int b=1; b<=9; b++){
-            JPanel block1 = new JPanel();
+        blockPane.setLayout(new GridLayout(0,7));
+        for(int type=1; type<=9; type++){
+            JLabel numlab = new JLabel(""+type);
+            numlab.setFont(new Font("Verdana",Font.PLAIN,20));
+            blockPane.add(numlab);
+            
             for (int i=0; i<=5; ++i) {
-                JLabel l = new JLabel();
-                l.setIcon(new ImageIcon(BlockStyle.getInstance().getBlockSprite(b,i)));
-                block1.add(l);
+                JLabel block = new JLabel();
+                block.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(type,i).getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+                
+                blockPane.add(block);
             }
-            JLabel lab = new JLabel(""+b);
-            lab.setFont(new Font("Verdana",Font.PLAIN,20));
-            blockPane.add(lab);
-            blockPane.add(block1);
+
         }
          jpanePage2.setLayout(new GridLayout(0,2));
          jpanePage2.add(blockPane);
-         JLabel description = new JLabel("Block from 1 to 5 are simple block to remove if 3 or more");
+         JLabel description = new JLabel("<html>Blocks from 1 to 5 are simple colored blocks, once you advance in the game"
+                 + "<br>  it will became more difficult to find adjacent blocks"
+                 + "<br><br>6 : Click on it won't work you must find a way with other blocks"
+                 + "<br>7 : This block is the real enemy for blocks, "
+                 + "<br>   click on it to detonate all like-colored blocks in the game area "
+                 + "<br>8:Click on it to explode the surrounding blocks...even the nice ones!!"
+                 + "<br>9: If there's a mess, it's the right choice, "
+                 + "<br>it will randomly change the color of the blocks around it</html>");
+         description.setFont(new Font("Verdana",Font.BOLD,16));
          jpanePage2.add(description);
-         
+         this.pack();
     }
         
         

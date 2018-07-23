@@ -124,6 +124,7 @@ public class ControllerForView implements IControllerForView{
                         Model.getInstance().pushIncrement();
                         Model.getInstance().updateLine();
                         View.getInstance().updateLineLabel(getLineLeft());
+                        View.getInstance().updateScoreLabel(getScore()); 
                     }
             }
             else if(Model.getInstance().isLevelCompleted()) {
@@ -153,7 +154,7 @@ public class ControllerForView implements IControllerForView{
                 if(Model.getInstance().getVisitedBlockNumber() >=3){
                     Model.getInstance().removeVisitedBlocks();
                     Model.getInstance().addScore();
-                    View.getInstance().updateScoreLabel(Model.getInstance().getScore()); 
+                    View.getInstance().updateScoreLabel(getScore()); 
                     if(Config.getInstance().isBlockEffectOn())
                         new SoundPlayer("bubble").play();
                 }
