@@ -10,7 +10,7 @@ import javax.sound.sampled.*;
 
 public class SoundPlayer implements Runnable 
 {
-    private final static boolean IS_DIST_VERSION = true;// this flag must be set to true when compiling for the dist version
+    private final static boolean IS_DIST_VERSION = false;// this flag must be set to true when compiling for the dist version
     
     private static SoundPlayer instance = null;
     private String relFileLocation;

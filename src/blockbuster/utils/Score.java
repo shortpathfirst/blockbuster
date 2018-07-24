@@ -17,7 +17,7 @@ public class Score {
 	//---------------------------------------------------------------
 	// STATIC CONSTANTS
 	//---------------------------------------------------------------
-	private final static boolean IS_DIST_VERSION = true; // this flag must be set to true when compiling for the dist version
+	private final static boolean IS_DIST_VERSION = false; // this flag must be set to true when compiling for the dist version
 
 	//---------------------------------------------------------------
 	// STATIC ATTRIBUTE
