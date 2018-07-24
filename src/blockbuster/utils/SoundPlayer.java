@@ -79,7 +79,7 @@ public class SoundPlayer implements Runnable
                 File configFile = null;
                 File byteCodeFileOfThisClass;
                 byteCodeFileOfThisClass = new File(SoundPlayer.class.getResource("SoundPlayer.class").toURI());
-                configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
+                configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
                 return configFile.toString();
         }
     }

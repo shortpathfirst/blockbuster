@@ -80,7 +80,7 @@ public class Config {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Config.class").toURI());
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 		return configFile.toString();
 	}
         private void saveProperty(String name, String value){
