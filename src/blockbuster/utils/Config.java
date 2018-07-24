@@ -80,14 +80,14 @@ public class Config {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Config.class").toURI());
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
 		return configFile.toString();
 	}
         private void saveProperty(String name, String value){
             FileOutputStream fos=null;
                 try {
                     fos = new FileOutputStream(this.getConfigFile());
-                    
+
                     this.properties.setProperty(name,value);
                     this.properties.store(fos,"");
                 } catch (FileNotFoundException ex) {
@@ -99,9 +99,9 @@ public class Config {
                     try{
                         fos.close();
                     }catch(IOException ex){
-                        
+
                     }
-                    
+
                 }
         }
 	//---------------------------------------------------------------
@@ -117,21 +117,21 @@ public class Config {
         public int getLevel(){
             if(this.properties.getProperty("Level")!=null)
                 return Integer.parseInt(this.properties.getProperty("Level"));
-            else 
+            else
                 return 0;
         }
         public int getScore(){
             if(this.properties.getProperty("Score")!=null)
                 return Integer.parseInt(this.properties.getProperty("Score"));
-            else 
+            else
                 return 0;
         }
         public int getLineLeft(){
             if(this.properties.getProperty("LineLeft")!=null)
                 return Integer.parseInt(this.properties.getProperty("LineLeft"));
-            else 
+            else
                 return -1;
-            
+
         }
         public int getBoardBlock(int i,int j){
               String[] s =this.properties.getProperty("Board").split(",");
@@ -139,7 +139,7 @@ public class Config {
               return s[i].charAt(j)-'0'; //-'0' convert to int
               else return 0;
         }
-        
+
         public int getSoundVolume() {
             if(this.properties.getProperty("Volume")!=null)
                 return Integer.parseInt(this.properties.getProperty("Volume"));
@@ -172,7 +172,7 @@ public class Config {
                 return "#fdb94d"; //default hex color
             }
 	}
-        
+
          public void setBlockEffectOn(boolean value){
                 saveProperty("isBlockEffectOn",""+value);
         }
@@ -181,22 +181,22 @@ public class Config {
                 saveProperty("isVolumeOn","false");
             else
                 saveProperty("isVolumeOn","true");
-            
+
             saveProperty("Volume",""+volume);
         }
-        
+
         public void setEffects(int volume){
             if(volume == 0)
                 saveProperty("EffectOn","false");
             else
                 saveProperty("EffectOn","true");
-            
+
             saveProperty("EffectsVolume",""+volume);
         }
-        
+
         public void setScoreLabel(boolean value){
                 saveProperty("isScoreLabelOn",""+value);
-        }  
+        }
         public void setBlockStyle(int i) {
 		saveProperty("BlockStyle",""+i);
 	}
@@ -210,7 +210,7 @@ public class Config {
                 saveProperty("isVolumeOn","false");
                 return false;
             }
-	}  
+	}
         public boolean isBlockEffectOn(){
             if(this.properties.getProperty("isBlockEffectOn")!=null)
 		return this.properties.getProperty("isBlockEffectOn").toLowerCase().equals("true");
@@ -235,13 +235,13 @@ public class Config {
                 return false;
             }
         }
-        
+
         public void saveGame(){
             int level=ControllerForView.getInstance().getLevel();
             int score=ControllerForView.getInstance().getScore();
             int lineLeft=ControllerForView.getInstance().getLineLeft();
             String playerName = ControllerForView.getInstance().getPlayerName();
-            
+
             saveProperty("PlayerName",playerName);
             if(level<0)
                 saveProperty("Level","-1");
@@ -254,22 +254,22 @@ public class Config {
                     String row="";
                     for(int j=0; j<ControllerForView.getInstance().getNumColumnsOfBoard();j++){
                         row+=""+ControllerForView.getInstance().getBoardBlock(i, j);
-                    }   
+                    }
                     board+=row+",";
 //                    saveProperty(""+i,row,"");
             }
-            
+
             saveProperty("Board",board);
-            
+
         }
         public void removeSavedGame(){
             saveProperty("Board","");
             saveProperty("Level","");
             saveProperty("Score","");
             saveProperty("LineLeft","");
-            saveProperty("PlayerName","");                         
+            saveProperty("PlayerName","");
         }
-        
+
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------

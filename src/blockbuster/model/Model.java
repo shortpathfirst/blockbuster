@@ -23,7 +23,7 @@ public class Model implements IModel {
     private int level;
     private IncrementLine incLine;
     private int numVisitedBlocks;
-    
+
     private Model() {
             this.boardArray = new int[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
@@ -35,9 +35,9 @@ public class Model implements IModel {
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < columns; j++){
                             this.boardArray[i][j] = 0; //EMPTY_CELL
-                            this.visitedArray[i][j] = false; 
+                            this.visitedArray[i][j] = false;
                         }
-        
+
 	}
     private int getLinesOfLevel(){
             if(this.level==0)
@@ -80,10 +80,10 @@ public class Model implements IModel {
         public int getVisitedBlockNumber(){
             return this.numVisitedBlocks;
         }
-        public int getIncrementedScore(){ 
+        public int getIncrementedScore(){
             return this.incrementedScore =(int)(numVisitedBlocks*Math.log(numVisitedBlocks)/Math.log(2));
         }
-        public int getLevel(){ 
+        public int getLevel(){
             return this.level;
         }
         public int getLineLeft(){
@@ -118,10 +118,10 @@ public class Model implements IModel {
                 return 35;
             if(this.level==9)
                 return 30;
-            if(this.level==10) 
-                return 20;
-            else 
-                return 40;
+            if(this.level==10)
+            	return 20;
+            else
+            	return 45;
         }
         public void setPlayerName(String playerName) {
 		this.playerName = playerName;
@@ -133,16 +133,16 @@ public class Model implements IModel {
                 this.level=0;
         }
         public void addScore() {
-            this.score += getIncrementedScore(); 
+            this.score += getIncrementedScore();
 	}
-        
+
         public void initGame() {
             this.score = 0;
             if(this.isLevelMode())
                 this.level=0;
             else
                 this.level=-1;
-            
+
             if (this.playerName == null)
                     this.playerName = "Unknown";
             this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
@@ -153,15 +153,15 @@ public class Model implements IModel {
         }
         public void loadGame(){
             this.score =  Config.getInstance().getScore();
-            this.playerName = Config.getInstance().getPlayerName(); 
+            this.playerName = Config.getInstance().getPlayerName();
             this.level = Config.getInstance().getLevel();
             this.incLine.setLineNumber(this.getLinesOfLevel()-Config.getInstance().getLineLeft());
-            
+
             for (int i = 0; i < this.boardArray.length; i++)
                 for (int j = 0; j < this.boardArray[0].length; j++)
                     this.boardArray[i][j] = Config.getInstance().getBoardBlock(i, j);
         }
-        
+
         public void setVisitedBlocks(int i, int j, int blockType) {
             numVisitedBlocks++;
                     this.visitedArray[i][j] = true;
@@ -177,11 +177,11 @@ public class Model implements IModel {
                     if(i>0 && blockType == this.getBoardBlock(i-1, j) && !this.visitedArray[i-1][j]){ //bottom
                         setVisitedBlocks(i-1,j,blockType);
                     }
-	} 
+	}
          public void removeVisitedBlocks(){
              for(int j=0; j<this.boardArray[0].length;j++){
                    List<Integer> boardColumn = new ArrayList<Integer>();
-                    for(int i=0; i<this.boardArray.length;i++){ 
+                    for(int i=0; i<this.boardArray.length;i++){
                         if(!this.visitedArray[i][j])
                             boardColumn.add(this.boardArray[i][j]);
                     }
@@ -195,10 +195,10 @@ public class Model implements IModel {
             this.trimColumns();
          }
        public void resetVisited(){
-            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];                                         
+            this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
             this.numVisitedBlocks = 0;
         }
-        
+
         private void trimColumns(){
                 for (int j =1; j < this.boardArray[0].length/2; j++){
                     if(this.boardArray[0][j]==0){
@@ -210,7 +210,7 @@ public class Model implements IModel {
                         removeLeftColumn(j);
                     }
                 }
-                
+
         }
         private void removeRightColumn(int indexOfColumn){
                 for (int j = indexOfColumn; j >= 0; j--){
@@ -241,52 +241,52 @@ public class Model implements IModel {
                                 this.visitedArray[row][column] = true;
                                 numVisitedBlocks++;
                             }
-        } 
+        }
         public void setVisitedSquare(int i, int j){
             this.visitedArray[i][j] = true;
             if(i>0 && j>0 && j<this.boardArray[0].length-1){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i+1][j+1] = true; //right up corner
-                
+
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i][j+1] = true; // right
-                
+
                 this.visitedArray[i-1][j-1] = true; //left bottom corner
                 this.visitedArray[i-1][j] = true; //bottom
                 this.visitedArray[i-1][j+1] = true; //right bottom corner
-                numVisitedBlocks = 8; 
+                numVisitedBlocks = 8;
             }else if(j==0 && i>0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i+1][j+1] = true; //right up corner
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i-1][j] = true; //bottom
                 this.visitedArray[i-1][j+1] = true; //right bottom corner
-                numVisitedBlocks = 5; 
+                numVisitedBlocks = 5;
             }else if(j==this.boardArray[0].length-1 && i>0){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i-1][j-1] = true; //left bottom corner
                 this.visitedArray[i-1][j] = true; //bottom
-                numVisitedBlocks = 5; 
+                numVisitedBlocks = 5;
             }else if(j==0 && i ==0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
-                numVisitedBlocks = 3; 
+                numVisitedBlocks = 3;
             }else if(j==this.boardArray[0].length-1 && i==0){
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i+1][j-1] = true; //left up corner
-                numVisitedBlocks = 3; 
+                numVisitedBlocks = 3;
             }else if(i==0 && j>0){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i][j-1] = true; // left
                 this.visitedArray[i][j+1] = true; // right
                 this.visitedArray[i+1][j+1] = true; //right up corner
-                numVisitedBlocks = 5; 
+                numVisitedBlocks = 5;
             }
         }
         public void paintSquare(int i, int j){
@@ -306,9 +306,9 @@ public class Model implements IModel {
              this.incLine.setLineNumber(0);
              this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
              if(this.level<10)
-             this.level++;
+            	 this.level++;
          }
-        
+
         public void updateLine(){
             this.incLine.updateLine();
         }
@@ -325,7 +325,7 @@ public class Model implements IModel {
                 }
         }
 
-        
+
         public boolean isLevelMode(){
             return this.level != -1;
         }
@@ -333,7 +333,7 @@ public class Model implements IModel {
             return this.incLine.isIncrementLineFull();
         }
         public boolean isLevelCompleted(){
-            return getLineLeft() ==0; 
+            return getLineLeft() ==0;
         }
         public boolean islastRowEmpty(){
             for(int j=0; j<this.boardArray[0].length;j++){
@@ -342,13 +342,13 @@ public class Model implements IModel {
             }
             return true;
         }
-        
+
 
         //---------------------------------------------------------------
 	// STATIC FIELDS
 	//---------------------------------------------------------------
 	private static Model instance = null;
-        
+
         //---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------

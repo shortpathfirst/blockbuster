@@ -74,17 +74,17 @@ public class Score {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Score.class").toURI());
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
-		
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
+
                 System.out.println("configFile: " + configFile.toString());
-		
+
                 return configFile.toString();
 	}
         private void saveProperty(String name,String value){
             FileOutputStream fos=null;
                 try {
                     fos = new FileOutputStream(this.getConfigFile());
-                    
+
                     this.properties.setProperty(name,value);
                     this.properties.store(fos, "");
                 } catch (FileNotFoundException ex) {
@@ -96,9 +96,9 @@ public class Score {
                     try{
                         fos.close();
                     }catch(IOException ex){
-                        
+
                     }
-                    
+
                 }
         }
 	//---------------------------------------------------------------
@@ -118,15 +118,15 @@ public class Score {
             if(this.properties.containsKey(player)){
                 p = this.properties.getProperty(player).split(",");
                 if(levelmode && (p[0].trim().isEmpty() || (score >  Integer.parseInt(p[0].trim())) ))
-                    this.saveProperty(player,""+score+","+p[1]);   
+                    this.saveProperty(player,""+score+","+p[1]);
                 else if(p[1].trim().isEmpty() || (score >  Integer.parseInt(p[1].trim())) )
-                        this.saveProperty(player,""+p[0]+","+score);   
+                        this.saveProperty(player,""+p[0]+","+score);
             }else if(levelmode)
-                    this.saveProperty(player,""+score+",");   
-                  else 
-                    this.saveProperty(player,","+score);    
+                    this.saveProperty(player,""+score+",");
+                  else
+                    this.saveProperty(player,","+score);
         }
-    
+
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------
