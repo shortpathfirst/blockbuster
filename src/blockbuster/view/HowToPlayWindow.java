@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForView;
@@ -22,17 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-/**
- *
- * @author Andrea
- */
+
 public class HowToPlayWindow extends JFrame{
     private JButton jbutPage1;
     private JButton jbutPage2;
-    private JButton jbutPage3;
     private JPanel jpanePage1;
     private JPanel jpanePage2;
-    private JPanel jpanePage3;
     private JPanel mainpanel;
     private JPanel buttonPanel;
     
@@ -44,13 +34,10 @@ public class HowToPlayWindow extends JFrame{
         buttonPanel = new JPanel();
         jpanePage1 = new JPanel();
         jpanePage2 = new JPanel();
-        jpanePage3 = new JPanel();
         jbutPage1 = new JButton();
         jbutPage2 = new JButton();
-//        jbutPage3 = new JButton();
         
         returnToStartWindows();
-//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         initPage1();
         initPage2();
@@ -58,7 +45,6 @@ public class HowToPlayWindow extends JFrame{
         
         mainpanel.add(jpanePage1, "card1");
         mainpanel.add(jpanePage2, "card2");
-//        mainpanel.add(jpanePage3, "card3");
 
         jbutPage1.setText("Page 1");
         jbutPage1.addActionListener(new ActionListener() {
@@ -74,15 +60,8 @@ public class HowToPlayWindow extends JFrame{
             }
         });
 
-//        jbutPage3.setText("Page 3");
-//        jbutPage3.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                jbutPage3ActionPerformed(evt);
-//            }
-//        });
         buttonPanel.add(jbutPage1);
         buttonPanel.add(jbutPage2);
-//        buttonPanel.add(jbutPage3);
 
         this.getContentPane().setLayout(new BorderLayout());
         this.add(mainpanel, BorderLayout.CENTER);
@@ -108,19 +87,13 @@ public class HowToPlayWindow extends JFrame{
             card.show(mainpanel, "card2");
     }                                        
 
-//    private void jbutPage3ActionPerformed(ActionEvent evt) {                                         
-//            CardLayout card = (CardLayout)mainpanel.getLayout();
-//            card.show(mainpanel, "card3");
-//    }   
     private void initPage1(){
-//        JPanel content = new JPanel();
-        
-        JLabel titleLabel1 = new JLabel("The goal");
+         JLabel titleLabel1 = new JLabel("The goal");
         JLabel textLabel1 = new JLabel("<html>Collapse the rising blocks to get as many points as possible</html>");                         
         JLabel imgLabel1a = new JLabel();
-        imgLabel1a.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial1a.gif")));
+        imgLabel1a.setIcon(new ImageIcon(ImgSetting.getInstance().getImagePath("tutorial1a.gif")));
         JLabel imgLabel1b = new JLabel();
-        imgLabel1b.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial1b.gif")));
+        imgLabel1b.setIcon(new ImageIcon(ImgSetting.getInstance().getImagePath("tutorial1b.gif")));
         
         JPanel imgPanel1 = new JPanel();
         imgPanel1.setLayout(new BorderLayout());
@@ -132,7 +105,7 @@ public class HowToPlayWindow extends JFrame{
                                             +"<br> in clusters of three or more(stacked in any direction)."
                                             +"<br> The blocks will explode and collapse onto any blocks below them</html>");
         JLabel imgLabel2 = new JLabel();
-        imgLabel2.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial2.png")));
+        imgLabel2.setIcon(new ImageIcon(ImgSetting.getInstance().getImagePath("tutorial2.png")));
         
         
         JLabel titleLabel3 = new JLabel("Levels");
@@ -140,7 +113,7 @@ public class HowToPlayWindow extends JFrame{
                                     + "<br> the number of lines of the blocks displayed. "
                                      +"<br> Each level speeds up, you have to be quick!</html>");
         JLabel imgLabel3 = new JLabel();
-        imgLabel3.setIcon(new ImageIcon(imgSetting.getInstance().getImagePath("tutorial3.png")));
+        imgLabel3.setIcon(new ImageIcon(ImgSetting.getInstance().getImagePath("tutorial3.png")));
         
         titleLabel1.setFont(new Font("Verdana",1,20));
         titleLabel2.setFont(new Font("Verdana",1,20));
@@ -196,7 +169,7 @@ public class HowToPlayWindow extends JFrame{
             
             for (int i=0; i<=5; ++i) {
                 JLabel block = new JLabel();
-                block.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(type,i).getScaledInstance(50,50, Image.SCALE_DEFAULT)));
+                block.setIcon(new ImageIcon(ImgSetting.getInstance().getBlockSprite(type,i).getScaledInstance(50,50, Image.SCALE_DEFAULT)));
                 
                 blockPane.add(block);
             }

@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForView;
 import blockbuster.utils.SoundPlayer;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Andrea
- */
+
 public class View implements IView{
         //---------------------------------------------------------------
 	// STATIC FIELDS
@@ -24,7 +16,7 @@ public class View implements IView{
 	//---------------------------------------------------------------
 	protected StartWindow startWindow = null;
 	protected MainGUI mainGUI = null;
-        protected Option optionWindow = null;
+        protected OptionWindow optionWindow = null;
         protected HowToPlayWindow HowToPlayWindow= null;
         protected ScoreBoardWindow scoreBoardWindow = null;
 
@@ -86,7 +78,7 @@ public class View implements IView{
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (optionWindow == null)
-					optionWindow = new Option();
+					optionWindow = new OptionWindow();
 				optionWindow.setVisible(true);
 			}
 		});

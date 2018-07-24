@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForView;
@@ -27,10 +22,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-/**
- *
- * @author Andrea
- */
+
 public class ScoreBoardWindow extends JFrame{
         private JButton jbutSetName;
 	private JTextField jtfName;

@@ -26,14 +26,14 @@ public class StartWindow extends JFrame {
         private JButton jbutHowToPlay;
         private JButton jbutExit;           
 
-        private backgroundPanel img;
+        private BackgroundPanel img;
 
 	public StartWindow() {
             
             super("Menù");
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            this.img = new backgroundPanel();// Background
+            this.img = new BackgroundPanel();// Background
             this.img.setLayout(new BoxLayout(img, BoxLayout.Y_AXIS));
             this.img.setBorder(BorderFactory.createEmptyBorder(200, 100, 20, 100));
             
@@ -170,7 +170,7 @@ public class StartWindow extends JFrame {
                 ControllerForView.getInstance().openHowToPlayWindow();
 	}
         private void handleOptionEvent() {
-		new Option().setVisible(true);
+		new OptionWindow().setVisible(true);
 	}
         private void handleScoreBoardEvent() {
                 new ScoreBoardWindow().setVisible(true);

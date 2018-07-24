@@ -1,19 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.controller;
 
 import blockbuster.view.View;
-import blockbuster.model.Model;                                                   //CONTROLLER FOR MODEL
+import blockbuster.model.Model;
 import blockbuster.utils.Config;
 import blockbuster.utils.Score;
-import blockbuster.utils.SoundPlayer;
-/**
- *
- * @author Andrea
- */
+
 public class ControllerForView implements IControllerForView{
     
     	//---------------------------------------------------------------
@@ -134,35 +125,6 @@ public class ControllerForView implements IControllerForView{
             }else 
                     Model.getInstance().addIncrementBlock();
 	} 
-
-        public int remove(int i,int j,int blockType) { 
-                if(blockType==6){
-                    new SoundPlayer("anvil").play();
-                }
-                if(blockType==7){
-                    Model.getInstance().removeColor(i,j);
-                    new SoundPlayer("bubble").play();
-                }
-                if(blockType==8)
-                    Model.getInstance().paintSquare(i, j);
-                if(blockType==9)
-                    Model.getInstance().setVisitedSquare(i, j);
-                else
-                    Model.getInstance().setVisitedBlocks(i,j,blockType);
-
-
-                if(Model.getInstance().getVisitedBlockNumber() >=3){
-                    Model.getInstance().removeVisitedBlocks();
-                    Model.getInstance().addScore();
-                    View.getInstance().updateScoreLabel(getScore()); 
-                    if(Config.getInstance().isBlockEffectOn())
-                        new SoundPlayer("bubble").play();
-                }
-                int score=Model.getInstance().getIncrementedScore();
-                Model.getInstance().resetVisited();
-                return score;
-                  
-	}
 
         //---------------------------------------------------------------
 	// STATIC METHODS

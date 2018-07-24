@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForModel;
@@ -32,10 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/**
- *
- * @author Andrea
- */
+
 public class MainGUI extends JFrame  implements ComponentListener,ActionListener{
     //---------------------------------------------------------------
     // STATIC CONSTANTS
@@ -73,6 +65,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 		this.isGameStarted = false;
 		this.isGameRunning = false;
 	}
+        //---------------------------------------------------------------
+        // PRIVATE INSTANCE METHODS
+        //---------------------------------------------------------------
         private void returnToStartWindows(){
                this.addWindowListener(new WindowAdapter() {
                     @Override
@@ -102,7 +97,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 
                 this.bcMusic=new SoundPlayer("bcMusic");
                 
-                Image img = imgSetting.getInstance().getButtonIcon();
+                Image img = ImgSetting.getInstance().getButtonIcon();
                 this.setIconImage(img);    
                 
 		this.pack();    
@@ -204,7 +199,9 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 }
                 
         }
-        
+        //---------------------------------------------------------------
+        // PUBLIC INSTANCE METHODS
+        //---------------------------------------------------------------
 	//-------------------------------------------------------------------------
 	// To implement the interface java.awt.event.ComponentListener
 	//-------------------------------------------------------------------------
@@ -231,6 +228,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
                 this.boardPanel.repaint();
 		this.incrementPanel.repaint();
 	}
+
         public void updateScoreLabel(int score) {
                 this.playerScoreLab.setText(String.valueOf(score));
 	}
@@ -254,7 +252,7 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.endLevelBut.setHorizontalTextPosition(JButton.CENTER);
             this.endLevelBut.setVerticalTextPosition(JButton.BOTTOM);
             this.endLevelBut.setBackground(Color.WHITE);
-            Image img = imgSetting.getInstance().getEndLevelImage();
+            Image img = ImgSetting.getInstance().getEndLevelImage();
             this.endLevelBut.setIcon(new ImageIcon(img));
             this.endLevelBut.setPreferredSize(new Dimension(220,150));
             this.endLevelBut.setMaximumSize(new Dimension(220,150));
@@ -264,7 +262,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
 			}
 		});
 
-            
             this.startPauseBut.setEnabled(false);
             this.boardPanel.add(endLevelBut);
         }
@@ -284,7 +281,6 @@ public class MainGUI extends JFrame  implements ComponentListener,ActionListener
             this.isGameRunning = true;
             this.timer = new Timer(ControllerForView.getInstance().getIncrementDelay(), this);
             this.timer.start();
-//            this.bcMusic.start();
         }
         
         public void stopGame(){

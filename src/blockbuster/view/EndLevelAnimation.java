@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForView;
@@ -10,10 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
-/**
- *
- * @author Andrea
- */
+
 public class EndLevelAnimation implements ActionListener {
         private Timer t;
         private boolean endAnimation;

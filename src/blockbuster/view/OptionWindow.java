@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
 
 import blockbuster.controller.ControllerForView;
@@ -15,7 +10,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -25,11 +19,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-/**
- *
- * @author Andrea
- */
-public class Option extends JFrame{
+
+public class OptionWindow extends JFrame{
     private JPanel volumePanel;
     private JPanel mainpanel;
     private JPanel radioPanel;
@@ -38,7 +29,7 @@ public class Option extends JFrame{
     private JCheckBox effect1;
     private JCheckBox effect2;
     private JCheckBox effect3;
-    public Option() {
+    public OptionWindow() {
         initComponents();
         
     }
@@ -46,8 +37,8 @@ public class Option extends JFrame{
         this.mainpanel = new JPanel();
         this.volumePanel = new JPanel();
         
-        ReturnToStartWindows();
-//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        returnToStartWindows();
+
         StyleMenu();
         
         this.effectPanel = new JPanel();
@@ -65,7 +56,7 @@ public class Option extends JFrame{
         this.volumePanel=new Volume();
         
         this.mainpanel.setLayout(new GridLayout(0,1));
-        this.mainpanel.add(volumePanel); //set layout
+        this.mainpanel.add(volumePanel);
         this.mainpanel.add(radioPanel);
         this.mainpanel.add(effectPanel);
         this.getContentPane();
@@ -73,7 +64,7 @@ public class Option extends JFrame{
         
         pack();
     }
-        private void ReturnToStartWindows(){                                     
+        private void returnToStartWindows(){                                     
                this.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
@@ -83,61 +74,62 @@ public class Option extends JFrame{
         }
       
      private void StyleMenu(){
-        JRadioButton birdButton = new JRadioButton("Style 1");
-        birdButton.setActionCommand("Style 1");
-        birdButton.setSelected(true);
+        JRadioButton jradStyle1 = new JRadioButton("Style 1");
+        jradStyle1.setActionCommand("Style 1");
+        jradStyle1.setSelected(true);
 
-        JRadioButton catButton = new JRadioButton("Style 2");
-        catButton.setActionCommand("Style 2");
+        JRadioButton jradStyle2 = new JRadioButton("Style 2");
+        jradStyle2.setActionCommand("Style 2");
 
-        JRadioButton dogButton = new JRadioButton("Style 3");
-        dogButton.setActionCommand("Style 3");
+        JRadioButton jradStyle3 = new JRadioButton("Style 3");
+        jradStyle3.setActionCommand("Style 3");
 
-        JRadioButton rabbitButton = new JRadioButton("Style 4");
-        rabbitButton.setActionCommand("Style 4");
+        JRadioButton jradStyle4 = new JRadioButton("Style 4");
+        jradStyle4.setActionCommand("Style 4");
 
-        JRadioButton pigButton = new JRadioButton("Style 5");
-        pigButton.setActionCommand("Style 5");
+        JRadioButton jradStyle5 = new JRadioButton("Style 5");
+        jradStyle5.setActionCommand("Style 5");
 
         //Group the radio buttons.
         ButtonGroup group = new ButtonGroup();
-        group.add(birdButton);
-        group.add(catButton);
-        group.add(dogButton);
-        group.add(rabbitButton);
-        group.add(pigButton);
+        group.add(jradStyle1);
+        group.add(jradStyle2);
+        group.add(jradStyle3);
+        group.add(jradStyle4);
+        group.add(jradStyle5);
+        
         if(Config.getInstance().getBlockStyle() == 0)
-            birdButton.setSelected(true);
+            jradStyle1.setSelected(true);
         if(Config.getInstance().getBlockStyle() == 1)
-            catButton.setSelected(true);
+            jradStyle2.setSelected(true);
         if(Config.getInstance().getBlockStyle() == 2)
-            dogButton.setSelected(true);
+            jradStyle3.setSelected(true);
         if(Config.getInstance().getBlockStyle() == 3)
-            rabbitButton.setSelected(true);
+            jradStyle4.setSelected(true);
         if(Config.getInstance().getBlockStyle() == 4)
-            pigButton.setSelected(true);
+            jradStyle5.setSelected(true);
 
-        birdButton.addActionListener(new ActionListener() {
+        jradStyle1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                               Config.getInstance().setBlockStyle(0);
 			}
 		});
-        catButton.addActionListener(new ActionListener() {
+        jradStyle2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                               Config.getInstance().setBlockStyle(1);
 			}
 		});
-        dogButton.addActionListener(new ActionListener() {
+        jradStyle3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                               Config.getInstance().setBlockStyle(2);
 			}
 		});
-        rabbitButton.addActionListener(new ActionListener() {
+        jradStyle4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                               Config.getInstance().setBlockStyle(3);
 			}
 		});
-        pigButton.addActionListener(new ActionListener() {
+        jradStyle5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                               Config.getInstance().setBlockStyle(4);
 			}
@@ -145,27 +137,27 @@ public class Option extends JFrame{
         
         
         JLabel block0 = new JLabel();
-        block0.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 0)));
+        block0.setIcon(new ImageIcon(ImgSetting.getInstance().getBlockSprite(1, 0)));
         JLabel block1 = new JLabel();
-        block1.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 1)));
+        block1.setIcon(new ImageIcon(ImgSetting.getInstance().getBlockSprite(1, 1)));
         JLabel block2 = new JLabel();
-        block2.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 2)));
+        block2.setIcon(new ImageIcon(ImgSetting.getInstance().getBlockSprite(1, 2)));
         JLabel block3 = new JLabel();
-        block3.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 3)));
+        block3.setIcon(new ImageIcon(ImgSetting.getInstance().getBlockSprite(1, 3)));
         JLabel block4 = new JLabel();
-        block4.setIcon(new ImageIcon(imgSetting.getInstance().getBlockSprite(1, 4)));
+        block4.setIcon(new ImageIcon(ImgSetting.getInstance().getBlockSprite(1, 4)));
         
         radioPanel = new JPanel(new GridLayout(0, 2));
         
-        radioPanel.add(birdButton);
+        radioPanel.add(jradStyle1);
         radioPanel.add(block0);
-        radioPanel.add(catButton);
+        radioPanel.add(jradStyle2);
         radioPanel.add(block1);
-        radioPanel.add(dogButton);
+        radioPanel.add(jradStyle3);
         radioPanel.add(block2);
-        radioPanel.add(rabbitButton);
+        radioPanel.add(jradStyle4);
         radioPanel.add(block3);
-        radioPanel.add(pigButton);
+        radioPanel.add(jradStyle5);
         radioPanel.add(block4);
      }
     private void setEffect1(){

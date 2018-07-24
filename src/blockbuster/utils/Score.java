@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.utils;
 
 import java.io.BufferedReader;
@@ -17,17 +12,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
-/**
- *
- * @author Andrea
- */
-
 public class Score {
 
 	//---------------------------------------------------------------
 	// STATIC CONSTANTS
 	//---------------------------------------------------------------
-	private final static boolean IS_DIST_VERSION = false; // this flag must be set to true when compiling for the dist version
+	private final static boolean IS_DIST_VERSION = true; // this flag must be set to true when compiling for the dist version
 
 	//---------------------------------------------------------------
 	// STATIC ATTRIBUTE

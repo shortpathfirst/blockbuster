@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
+
+import blockbuster.controller.ControllerForModel;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import blockbuster.controller.ControllerForView;
@@ -18,10 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.MouseListener;
 
-/**
- *
- * @author Andrea
- */
+
 public class BoardPanel extends JPanel implements MouseListener{ 
     //---------------------------------------------------------------
     // STATIC CONSTANTS
@@ -31,9 +25,9 @@ public class BoardPanel extends JPanel implements MouseListener{
 	private final static int X_MARGIN = 10;
 	private final static int Y_MARGIN = 10;
         
-	//---------------------------------------------------------------
-	// INSTANCE ATTRIBUTES
-	//---------------------------------------------------------------
+    //---------------------------------------------------------------
+    // INSTANCE ATTRIBUTES
+    //---------------------------------------------------------------
 
 	private double uX;
 	private double uY;
@@ -78,9 +72,9 @@ public class BoardPanel extends JPanel implements MouseListener{
                 int row= getRowIndex(e.getY());
                 int column =getColumnIndex(e.getX()); 
 		this.selectedCell = ControllerForView.getInstance().getBoardBlock(row,column);
-                if( this.selectedCell != 0){ 
+                if( this.selectedCell != 0 ){ 
                     this.pos = new int[]{e.getX(),e.getY()};
-                    this.scorePerformed=ControllerForView.getInstance().remove(row,column,selectedCell);
+                    this.scorePerformed=ControllerForModel.getInstance().remove(row,column,selectedCell);
                 }
             }
 	}
@@ -127,7 +121,7 @@ public class BoardPanel extends JPanel implements MouseListener{
         private void drawBlocks(Graphics2D g2d) { 
            for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) 
                 for (int i = 0; i < ControllerForView.getInstance().getNumRowsOfBoard(); i++){
-                    BufferedImage sprite = imgSetting.getInstance().getBlockSprite(ControllerForView.getInstance().getBoardBlock(i, j));
+                    BufferedImage sprite = ImgSetting.getInstance().getBlockSprite(ControllerForView.getInstance().getBoardBlock(i, j));
                     if(sprite != null)
                         g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN+this.uY *(ControllerForView.getInstance().getNumRowsOfBoard() -1- i)), (int) this.uX, (int)this.uY, this);
                     else
@@ -136,10 +130,10 @@ public class BoardPanel extends JPanel implements MouseListener{
         }
         private void drawBlockAtCell(Graphics2D g2d, int i, int j, int blockNumber) { 
                 Color oldColor = g2d.getColor();
-                g2d.setColor(imgSetting.getInstance().getBlockColor(blockNumber));
+                g2d.setColor(ImgSetting.getInstance().getBlockColor(blockNumber));
                 this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN + this.uY * (double)(ControllerForView.getInstance().getNumRowsOfBoard() - 1 - i), this.uX, this.uY);
                 g2d.fill(this.block);
-                g2d.setColor(imgSetting.getInstance().getGridColor()); 
+                g2d.setColor(ImgSetting.getInstance().getGridColor()); 
                 g2d.draw(this.block);
                 g2d.setColor(oldColor);
         }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.utils;
 
 import blockbuster.controller.ControllerForView;
@@ -17,17 +12,12 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 
 
-/**
- *
- * @author Andrea
- */
-
 public class Config {
 
 	//---------------------------------------------------------------
 	// STATIC CONSTANTS
 	//---------------------------------------------------------------
-	private final static boolean IS_DIST_VERSION = false; // this flag must be set to true when compiling for the dist version
+	private final static boolean IS_DIST_VERSION = true; // this flag must be set to true when compiling for the dist version
 
 	//---------------------------------------------------------------
 	// STATIC ATTRIBUTE
@@ -93,7 +83,27 @@ public class Config {
 		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();;
 		return configFile.toString();
 	}
-
+        private void saveProperty(String name, String value){
+            FileOutputStream fos=null;
+                try {
+                    fos = new FileOutputStream(this.getConfigFile());
+                    
+                    this.properties.setProperty(name,value);
+                    this.properties.store(fos,"");
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                } catch (URISyntaxException | IOException ex) {
+                    ex.printStackTrace();
+                }
+                finally{
+                    try{
+                        fos.close();
+                    }catch(IOException ex){
+                        
+                    }
+                    
+                }
+        }
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
@@ -259,27 +269,7 @@ public class Config {
             saveProperty("LineLeft","");
             saveProperty("PlayerName","");                         
         }
-        private void saveProperty(String name, String value){
-            FileOutputStream fos=null;
-                try {
-                    fos = new FileOutputStream(this.getConfigFile());
-                    
-                    this.properties.setProperty(name,value);
-                    this.properties.store(fos,"");
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
-                } catch (URISyntaxException | IOException ex) {
-                    ex.printStackTrace();
-                }
-                finally{
-                    try{
-                        fos.close();
-                    }catch(IOException ex){
-                        
-                    }
-                    
-                }
-        }
+        
 	//---------------------------------------------------------------
 	// STATIC METHODS
 	//---------------------------------------------------------------

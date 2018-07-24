@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.model;
 
-/**
- *
- * @author Andrea
- */
 public interface IModel {
         public int getNumColumnsOfBoard();
         public int getNumRowsOfBoard();
@@ -49,9 +40,5 @@ public interface IModel {
         public boolean isLevelCompleted();
         public boolean islastRowEmpty();
         public boolean isLevelMode();
-        
-        
-
-        
-        
+             
 }

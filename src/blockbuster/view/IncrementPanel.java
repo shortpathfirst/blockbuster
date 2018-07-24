@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.view;
+
 import blockbuster.controller.ControllerForView;
 
 import javax.swing.JPanel;
@@ -37,12 +33,14 @@ public class IncrementPanel extends JPanel {
         super();
         this.line = new Line2D.Double();
         this.block = new Rectangle2D.Double();
-        this.setBackground(Color.BLACK);                                        //color setting? or remove
+        this.setBackground(Color.BLACK);
     }
-
+    //---------------------------------------------------------------
+    // PRIVATE INSTANCE METHODS
+    //---------------------------------------------------------------
     private void paintGrid(Graphics2D g2d) {
             Color oldColor = g2d.getColor();
-            g2d.setColor(Color.GRAY);                                       //colorsetting getcolor for textures
+            g2d.setColor(ImgSetting.getInstance().getGridColor());
 
             // Paint the horizontal grid lines
             for (int i = 0; i <= 1; i++) {
@@ -61,19 +59,18 @@ public class IncrementPanel extends JPanel {
     }
     private void drawBlockAtCell(Graphics2D g2d, int j, int blockNumber) { 
             Color oldColor = g2d.getColor();
-            Color c  =imgSetting.getInstance().getBlockColor(blockNumber); //each piace a color
-            g2d.setColor(c); 
+            g2d.setColor(ImgSetting.getInstance().getBlockColor(blockNumber)); 
 
             this.block.setRect(X_MARGIN + this.uX * (double)j, Y_MARGIN, this.uX, this.uY);
 
             g2d.fill(this.block);
-            g2d.setColor(imgSetting.getInstance().getGridColor());                  
+            g2d.setColor(ImgSetting.getInstance().getGridColor());                  
             g2d.draw(this.block);
             g2d.setColor(oldColor);
     }
      private void drawBlocks(Graphics2D g2d) { 
            for (int j = 0; j < ControllerForView.getInstance().getNumColumnsOfBoard(); j++) {
-                    BufferedImage sprite = imgSetting.getInstance().getBlockSprite(ControllerForView.getInstance().getIncrementBlock(j));
+                    BufferedImage sprite = ImgSetting.getInstance().getBlockSprite(ControllerForView.getInstance().getIncrementBlock(j));
                     if(sprite != null)
                         g2d.drawImage(sprite, (int)(X_MARGIN + this.uX * j),(int)(Y_MARGIN), (int) this.uX, (int)this.uY, this);
                     else

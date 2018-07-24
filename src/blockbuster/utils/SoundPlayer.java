@@ -1,14 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.utils;
-
-/**
- *
- * @author Andrea
- */
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +10,7 @@ import javax.sound.sampled.*;
 
 public class SoundPlayer implements Runnable 
 {
-    private final static boolean IS_DIST_VERSION = false;// this flag must be set to true when compiling for the dist version
+    private final static boolean IS_DIST_VERSION = true;// this flag must be set to true when compiling for the dist version
     
     private static SoundPlayer instance = null;
     private String relFileLocation;
@@ -95,7 +85,7 @@ public class SoundPlayer implements Runnable
     }
     	private String getHomeFolderForDistVersion() throws URISyntaxException {
 		String homeDir = null;
-		String jarPath = Config.class.getResource("SoundPlayer.class").toURI().toString();
+		String jarPath = SoundPlayer.class.getResource("SoundPlayer.class").toURI().toString();
 		int indexOfExclamationMark = jarPath.indexOf("!");
 		String prefix = "jar:file:/"; // this is the prefix for Windows OS platform
 		if (System.getProperty("os.name").startsWith("Linux")) {

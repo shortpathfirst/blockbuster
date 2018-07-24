@@ -1,20 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blockbuster.model;
 
-import blockbuster.controller.ControllerForView;
 import blockbuster.utils.Config;
 import blockbuster.utils.SoundPlayer;
 import java.util.*;
 
 
-/**
- *
- * @author Andrea
- */
 public class Model implements IModel {
     //---------------------------------------------------------------
     // STATIC CONSTANTS
@@ -39,10 +29,7 @@ public class Model implements IModel {
             this.visitedArray = new boolean[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
             this.initGame();
     }
-    //---------------------------------------------------------------
-    // PRIVATE INSTANCE METHODS
-    //---------------------------------------------------------------
-    
+
     private void initBoardArray(int rows, int columns) {
             this.boardArray = new int[DEFAULT_NUM_ROWS][DEFAULT_NUM_COLUMNS];
 		for (int i = 0; i < rows; i++)
@@ -78,9 +65,6 @@ public class Model implements IModel {
         private int getGameOverIndex(){
             return this.boardArray.length-1;
         }
-    //---------------------------------------------------------------
-    // PUBLIC INSTANCE METHODS
-    //---------------------------------------------------------------
         public int getNumColumnsOfBoard() {
             return this.boardArray[0].length;
         }
@@ -134,7 +118,10 @@ public class Model implements IModel {
                 return 35;
             if(this.level==9)
                 return 30;
-            else return 20;
+            if(this.level==10) 
+                return 20;
+            else 
+                return 40;
         }
         public void setPlayerName(String playerName) {
 		this.playerName = playerName;
@@ -213,12 +200,12 @@ public class Model implements IModel {
         }
         
         private void trimColumns(){
-                for (int j =1; j < this.boardArray[0].length/2; j++){//prima colonna sempre vuota
+                for (int j =1; j < this.boardArray[0].length/2; j++){
                     if(this.boardArray[0][j]==0){
                         removeRightColumn(j);
                     }
                 }
-                for (int j = this.boardArray[0].length-2; j >= this.boardArray[0].length/2; j--){//ultima colonna sempre
+                for (int j = this.boardArray[0].length-2; j >= this.boardArray[0].length/2; j--){
                     if(this.boardArray[0][j]==0){
                         removeLeftColumn(j);
                     }
@@ -257,7 +244,7 @@ public class Model implements IModel {
         } 
         public void setVisitedSquare(int i, int j){
             this.visitedArray[i][j] = true;
-            if(i>0 && j>0 && j<this.boardArray[0].length-1){ //non arriva mai al top (game over)
+            if(i>0 && j>0 && j<this.boardArray[0].length-1){
                 this.visitedArray[i+1][j-1] = true; //left up corner
                 this.visitedArray[i+1][j] = true; //top
                 this.visitedArray[i+1][j+1] = true; //right up corner
@@ -318,6 +305,7 @@ public class Model implements IModel {
         public void nextLevel(){
              this.incLine.setLineNumber(0);
              this.initBoardArray(DEFAULT_NUM_ROWS, DEFAULT_NUM_COLUMNS);
+             if(this.level<10)
              this.level++;
          }
         
