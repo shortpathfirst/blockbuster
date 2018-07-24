@@ -74,7 +74,7 @@ public class Score {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Score.class").toURI());
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile();
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 
                 System.out.println("configFile: " + configFile.toString());
 
