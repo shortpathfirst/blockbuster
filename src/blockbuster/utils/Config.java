@@ -17,7 +17,7 @@ public class Config {
 	//---------------------------------------------------------------
 	// STATIC CONSTANTS
 	//---------------------------------------------------------------
-	private final static boolean IS_DIST_VERSION = true; // this flag must be set to true when compiling for the dist version
+	private final static boolean IS_DIST_VERSION = false; // this flag must be set to true when compiling for the dist version
 
 	//---------------------------------------------------------------
 	// STATIC ATTRIBUTE
@@ -80,7 +80,7 @@ public class Config {
 	private String getHomeFolderForDevVersion() throws URISyntaxException {
 		File configFile = null;
 		File byteCodeFileOfThisClass = new File(Config.class.getResource("Config.class").toURI());
-		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();;
+		configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
 		return configFile.toString();
 	}
         private void saveProperty(String name, String value){
