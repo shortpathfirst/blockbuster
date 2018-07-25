@@ -23,7 +23,8 @@ public class Config {
 	// STATIC ATTRIBUTE
 	//---------------------------------------------------------------
 	private static Config instance = null;
-
+        private static String relPath = "\\config\\config.txt";
+        private static String configFile;
 	//---------------------------------------------------------------
 	// INSTANCE ATTRIBUTE
 	//---------------------------------------------------------------
@@ -31,10 +32,13 @@ public class Config {
 
 	private Config() {
 		try {
-			String configFile = getConfigFile();
-			BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "ISO-8859-1"));
-			this.properties = new Properties();
-			this.properties.load(buffRead);
+                    if (System.getProperty("os.name").startsWith("Linux")) 
+			relPath = "/conf/config.txt";
+                    configFile = getFilePath(relPath);
+                    
+                    BufferedReader buffRead = new BufferedReader(new InputStreamReader(new FileInputStream(configFile), "ISO-8859-1"));
+                    this.properties = new Properties();
+                    this.properties.load(buffRead);
 		}
 		catch(URISyntaxException urise) {
 			urise.printStackTrace();
@@ -50,19 +54,7 @@ public class Config {
 	//---------------------------------------------------------------
 	// PRIVATE INSTANCE METHODS
 	//---------------------------------------------------------------
-	private String getConfigFile() throws URISyntaxException {
-		String configFile = null;
-		String relPath = "\\config\\config.txt";
-		if (System.getProperty("os.name").startsWith("Linux")) {
-			relPath = "/conf/config.txt";
-		}
-		if (IS_DIST_VERSION)
-			configFile = getHomeFolderForDistVersion() + relPath;
-		else
-			configFile = getHomeFolderForDevVersion() + relPath;
-		return configFile;
-	}
-
+	
 	private String getHomeFolderForDistVersion() throws URISyntaxException {
 		String homeDir = null;
 		String jarPath = Config.class.getResource("Config.class").toURI().toString();
@@ -86,13 +78,13 @@ public class Config {
         private void saveProperty(String name, String value){
             FileOutputStream fos=null;
                 try {
-                    fos = new FileOutputStream(this.getConfigFile());
+                    fos = new FileOutputStream(configFile);
 
                     this.properties.setProperty(name,value);
                     this.properties.store(fos,"");
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
-                } catch (URISyntaxException | IOException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
                 finally{
@@ -107,6 +99,14 @@ public class Config {
 	//---------------------------------------------------------------
 	// PUBLIC INSTANCE METHODS
 	//---------------------------------------------------------------
+        public String getFilePath(String relPath) throws URISyntaxException {
+		String filePath = null;
+		if (IS_DIST_VERSION)
+			filePath = getHomeFolderForDistVersion() + relPath;
+		else
+			filePath = getHomeFolderForDevVersion() + relPath;
+		return filePath;
+	}
 
         public String getPlayerName(){
             if(this.properties.getProperty("PlayerName")!=null)

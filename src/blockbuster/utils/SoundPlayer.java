@@ -10,8 +10,6 @@ import javax.sound.sampled.*;
 
 public class SoundPlayer implements Runnable
 {
-    private final static boolean IS_DIST_VERSION = false;// this flag must be set to true when compiling for the dist version
-
     private static SoundPlayer instance = null;
     private String relFileLocation;
     private final String gameoverLocation = "\\source\\gameover.wav";
@@ -19,21 +17,23 @@ public class SoundPlayer implements Runnable
     private Clip clip;
 
     public SoundPlayer(String fileToPlay) {
+        
             relFileLocation ="\\source\\"+fileToPlay+".wav";
+            if (System.getProperty("os.name").startsWith("Linux")) 
+                       relFileLocation = "/source/"+fileToPlay+".wav";
     }
 
     public void run()
     {
         try{
-                playSound(getFileLocation()+relFileLocation);
+                playSound(Config.getInstance().getFilePath(relFileLocation));
         }
         catch (URISyntaxException | UnsupportedAudioFileException | IOException | LineUnavailableException ex){
               ex.printStackTrace();
         }
     }
 
-    public void play()
-    {
+    public void play(){
         Thread t = new Thread(this);
         t.start();
     }
@@ -69,32 +69,5 @@ public class SoundPlayer implements Runnable
         clip.open(audioInputStream);
         start();
     }
-
-
-
-    private String getFileLocation() throws URISyntaxException{
-        if (IS_DIST_VERSION)
-                return getHomeFolderForDistVersion();
-        else{
-                File configFile = null;
-                File byteCodeFileOfThisClass;
-                byteCodeFileOfThisClass = new File(SoundPlayer.class.getResource("SoundPlayer.class").toURI());
-                configFile = byteCodeFileOfThisClass.getParentFile().getParentFile().getParentFile().getParentFile().getParentFile();
-                return configFile.toString();
-        }
-    }
-    	private String getHomeFolderForDistVersion() throws URISyntaxException {
-		String homeDir = null;
-		String jarPath = SoundPlayer.class.getResource("SoundPlayer.class").toURI().toString();
-		int indexOfExclamationMark = jarPath.indexOf("!");
-		String prefix = "jar:file:/"; // this is the prefix for Windows OS platform
-		if (System.getProperty("os.name").startsWith("Linux")) {
-			prefix = "jar:file:";
-		}
-		homeDir = jarPath.substring(prefix.length(), indexOfExclamationMark);
-		int lastIndexOfSlash = homeDir.lastIndexOf("/");
-		homeDir = homeDir.substring(0, lastIndexOfSlash);
-		return homeDir;
-	}
 
 }
