@@ -31,8 +31,12 @@ public class AreaRadice extends Area{
 
 	@Override
 	public int calcolaNumeroVotazioni(CalcoloSuVotanti calcolo) {
-		// TODO Auto-generated method stub
-		return 0;
+		int count = calcolo.calcola(listaVotanti);
+		
+		for(Area a : listaAreeFiglie) 
+			count+=a.calcolaNumeroVotazioni(calcolo);
+		
+		return count;
 	}
 
 }

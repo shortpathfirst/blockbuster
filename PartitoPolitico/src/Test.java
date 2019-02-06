@@ -14,7 +14,7 @@ public class Test {
 		
 		areaFoglia.aggiungiVotante(new CartaIscritto(1,new Iscritto("tizio","qua","1234","@123")));
 		areaFoglia.aggiungiVotante(new CartaIscritto(2,new Iscritto("caio","qua","1234","@123")));
-		
+		System.out.println(areaFoglia.getListaVotanti().size());
 		int num = gestore.calcoloNumeroVotzioniSuArea(radice);
 		new Stampa().stampa(""+num);
 

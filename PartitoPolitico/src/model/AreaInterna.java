@@ -32,7 +32,7 @@ public class AreaInterna extends Area {
 
 	@Override
 	public int calcolaNumeroVotazioni(CalcoloSuVotanti calcolo) {
-		int count = 0;
+		int count = calcolo.calcola(listaVotanti);
 		
 		for(Area a : listaAreeFiglie) 
 			count+=a.calcolaNumeroVotazioni(calcolo);

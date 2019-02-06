@@ -12,7 +12,7 @@ public class CalcolaNumeroVotazioni implements CalcoloSuVotanti{
 	}
 	@Override
 	public int calcola(ArrayList<CartaIscritto> votanti) {
-		return this.radice.getListaVotanti().size();
+		return votanti.size();
 	}
 
 }

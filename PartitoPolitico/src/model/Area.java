@@ -53,6 +53,7 @@ public abstract class Area {
 	public void aggiungiVotante(CartaIscritto iscritto) {
 		this.listaVotanti.add(iscritto);
 	}
+
 	public abstract void aggiungiAreaFiglio(Area figlio);
 	public abstract ArrayList<Area> getAreeFiglie();
 	public abstract Area getPadre();
